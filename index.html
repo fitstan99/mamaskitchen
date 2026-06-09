@@ -486,8 +486,73 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     </div>
     <div class="hero-right">
       <div class="hero-img-placeholder">
-        <div class="plate-icon">🍽️</div>
-        <p>Your photo here</p>
+        <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A freshly prepared meal-prep bowl" style="width:100%;height:100%;display:block">
+          <defs>
+            <radialGradient id="hk-glow" cx="50%" cy="40%" r="62%">
+              <stop offset="0%" stop-color="#3c2616"/><stop offset="55%" stop-color="#241509"/><stop offset="100%" stop-color="#150a02"/>
+            </radialGradient>
+            <linearGradient id="hk-bowl" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FAF4E8"/><stop offset="1" stop-color="#E9D7BA"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="600" fill="url(#hk-glow)"/>
+          <g fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="8" stroke-linecap="round">
+            <path d="M250 150 q-24 -34 0 -68 q24 -34 0 -68"/>
+            <path d="M300 138 q-24 -34 0 -68 q24 -34 0 -68"/>
+            <path d="M350 150 q-24 -34 0 -68 q24 -34 0 -68"/>
+          </g>
+          <ellipse cx="300" cy="512" rx="214" ry="42" fill="#000000" opacity="0.35"/>
+          <circle cx="300" cy="352" r="202" fill="url(#hk-bowl)"/>
+          <circle cx="300" cy="352" r="202" fill="none" stroke="#D7BF98" stroke-width="6"/>
+          <circle cx="300" cy="352" r="170" fill="#F2E6CF"/>
+          <g stroke="#E1CDA5" stroke-width="5" stroke-linecap="round">
+            <line x1="300" y1="184" x2="300" y2="352"/>
+            <line x1="300" y1="352" x2="130" y2="352"/>
+          </g>
+          <g>
+            <path d="M330 250 q120 30 120 102 q0 72 -120 102 q-40 -102 0 -204 Z" fill="#E8744E"/>
+            <path d="M330 250 q120 30 120 102 q0 72 -120 102 q-22 -102 0 -204 Z" fill="#F08A60"/>
+            <g stroke="#C75B38" stroke-width="6" stroke-linecap="round" opacity="0.8">
+              <line x1="360" y1="300" x2="420" y2="312"/>
+              <line x1="356" y1="332" x2="424" y2="344"/>
+              <line x1="360" y1="364" x2="420" y2="376"/>
+              <line x1="372" y1="396" x2="416" y2="404"/>
+            </g>
+          </g>
+          <g fill="#FBF6EC" stroke="#E7D6B6" stroke-width="2">
+            <g transform="translate(178,250)">
+              <ellipse cx="0" cy="0" rx="13" ry="7" transform="rotate(20)"/>
+              <ellipse cx="34" cy="6" rx="13" ry="7" transform="rotate(-15 34 6)"/>
+              <ellipse cx="64" cy="-2" rx="13" ry="7" transform="rotate(35 64 -2)"/>
+              <ellipse cx="14" cy="30" rx="13" ry="7" transform="rotate(-25 14 30)"/>
+              <ellipse cx="48" cy="34" rx="13" ry="7" transform="rotate(10 48 34)"/>
+              <ellipse cx="82" cy="26" rx="13" ry="7" transform="rotate(-30 82 26)"/>
+              <ellipse cx="28" cy="58" rx="13" ry="7" transform="rotate(15 28 58)"/>
+              <ellipse cx="62" cy="60" rx="13" ry="7" transform="rotate(-10 62 60)"/>
+            </g>
+          </g>
+          <g transform="translate(160,388)">
+            <g fill="#4E8B3D">
+              <circle cx="40" cy="20" r="22"/><circle cx="70" cy="12" r="20"/><circle cx="96" cy="26" r="22"/>
+              <circle cx="56" cy="44" r="22"/><circle cx="86" cy="50" r="20"/><circle cx="30" cy="48" r="18"/>
+            </g>
+            <g fill="#5FA94C">
+              <circle cx="44" cy="18" r="10"/><circle cx="72" cy="10" r="9"/><circle cx="92" cy="24" r="10"/>
+              <circle cx="58" cy="42" r="10"/><circle cx="84" cy="48" r="9"/>
+            </g>
+            <g stroke="#7FB86B" stroke-width="9" stroke-linecap="round">
+              <line x1="48" y1="40" x2="44" y2="66"/><line x1="78" y1="44" x2="82" y2="70"/>
+            </g>
+          </g>
+          <g transform="rotate(28 470 360)" fill="#C9A879">
+            <rect x="452" y="150" width="16" height="300" rx="8"/>
+            <rect x="438" y="150" width="6" height="70" rx="3"/>
+            <rect x="450" y="150" width="6" height="70" rx="3"/>
+            <rect x="462" y="150" width="6" height="70" rx="3"/>
+            <rect x="474" y="150" width="6" height="70" rx="3"/>
+            <path d="M438 210 h44 v18 q0 14 -22 14 q-22 0 -22 -14 Z"/>
+          </g>
+        </svg>
       </div>
       <div class="hero-badge">Made<br>on<br>Demand</div>
     </div>
@@ -747,14 +812,14 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div id="bulkLines"></div>
         <hr class="s-divider">
         <div id="summaryRows"></div>
-        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) applied at checkout via Stripe.</div>
+        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through Stripe — we never see your card details.</div>
       </div>
 
       <!-- PLACE ORDER -->
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place My Order 🍽️</button>
       <div class="success-banner" id="successBanner">
         <h3>🎉 Order Received!</h3>
-        <p>Thank you! Mom will get cooking Friday. You'll receive a confirmation via email and SMS. Pickup is Saturday 8AM–4PM — we'll confirm your window!</p>
+        <p id="successMsg">Thank you! Your order has been sent to Mom's Kitchen. We'll confirm your Saturday pickup window by email or text. Pickup is Saturday 8AM–4PM. Mom gets cooking Friday — see you soon! 💛</p>
       </div>
     </div>
   </div>
@@ -768,9 +833,42 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   </div>
   <div class="about-body">
     <div class="about-grid">
-      <div class="about-img-placeholder">
-        <div class="img-icon">👩‍🍳</div>
-        <p>Photo of Mom coming soon</p>
+      <div class="about-img-placeholder" style="overflow:hidden;padding:0">
+        <svg viewBox="0 0 480 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A home kitchen pot simmering" style="width:100%;height:100%;display:block">
+          <defs>
+            <linearGradient id="ak-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FBEDE6"/><stop offset="1" stop-color="#F3DCCF"/>
+            </linearGradient>
+            <linearGradient id="ak-pot" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#CC2200"/><stop offset="1" stop-color="#991A00"/>
+            </linearGradient>
+          </defs>
+          <rect width="480" height="600" fill="url(#ak-bg)"/>
+          <circle cx="240" cy="270" r="170" fill="#ffffff" opacity="0.45"/>
+          <g fill="none" stroke="#CC2200" stroke-opacity="0.30" stroke-width="7" stroke-linecap="round">
+            <path d="M196 150 q-22 -32 0 -64 q22 -32 0 -64"/>
+            <path d="M284 150 q-22 -32 0 -64 q22 -32 0 -64"/>
+          </g>
+          <path d="M240 96 c-10 -22 -46 -18 -46 8 c0 20 30 36 46 50 c16 -14 46 -30 46 -50 c0 -26 -36 -30 -46 -8 Z" fill="#CC2200" opacity="0.85"/>
+          <g transform="rotate(24 300 300)">
+            <rect x="316" y="120" width="15" height="250" rx="7" fill="#C9A879"/>
+            <ellipse cx="323" cy="392" rx="34" ry="44" fill="#B98E5E"/>
+          </g>
+          <ellipse cx="240" cy="470" rx="170" ry="32" fill="#000000" opacity="0.10"/>
+          <path d="M96 300 h288 v92 q0 78 -144 78 q-144 0 -144 -78 Z" fill="url(#ak-pot)"/>
+          <path d="M104 304 q136 34 272 0 v6 q-136 34 -272 0 Z" fill="#F2C84B"/>
+          <path d="M96 322 q-40 0 -40 36 q0 22 26 22" fill="none" stroke="#7A1500" stroke-width="16" stroke-linecap="round"/>
+          <path d="M384 322 q40 0 40 36 q0 22 -26 22" fill="none" stroke="#7A1500" stroke-width="16" stroke-linecap="round"/>
+          <rect x="84" y="286" width="312" height="26" rx="13" fill="#B11D00"/>
+          <ellipse cx="240" cy="252" rx="150" ry="30" fill="#E0E0DA"/>
+          <ellipse cx="240" cy="248" rx="150" ry="28" fill="#EFEFE9"/>
+          <circle cx="240" cy="226" r="13" fill="#B98E5E"/>
+          <rect x="234" y="226" width="12" height="22" rx="6" fill="#8A6A45"/>
+          <g stroke="#4E8B3D" stroke-width="5" stroke-linecap="round" fill="none">
+            <path d="M150 300 q-6 -26 8 -40"/><path d="M158 280 q14 -2 18 -14"/>
+            <path d="M330 300 q6 -26 -8 -40"/><path d="M322 280 q-14 -2 -18 -14"/>
+          </g>
+        </svg>
       </div>
       <div class="about-text">
         <h2>This isn't a<br>corporate kitchen.</h2>
@@ -1014,24 +1112,103 @@ function recalc(){
   var sr=document.getElementById('summaryRows'); if(sr) sr.innerHTML=rows;
 }
 
+// Where order + contact notifications are delivered.
+var ORDER_EMAIL='fitstan99@gmail.com';
+var FORMSUBMIT='https://formsubmit.co/ajax/'+ORDER_EMAIL;
+
+function gv(id){ var e=document.getElementById(id); return e?e.value.trim():''; }
+
+function collectOrder(){
+  var cust={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),
+            address:gv('cust-address'),unit:gv('cust-unit'),gate:gv('cust-gate'),notes:gv('special-notes')};
+  var meals=[];
+  for(var i=0;i<3;i++){
+    var p=document.getElementById('p_'+i); if(!p) continue;
+    var pv=p.value, qty=parseInt(document.getElementById('qty_'+i).value)||0;
+    if(pv===''||!qty) continue;
+    var sz=document.getElementById('s_'+i).value;
+    var parts=[],c=document.getElementById('c_'+i),v=document.getElementById('v_'+i),c2=document.getElementById('c2_'+i),v2=document.getElementById('v2_'+i);
+    if(c.value!=='')parts.push(CARBS[parseInt(c.value)]);
+    if(!c2.disabled&&c2.value!=='')parts.push(CARBS[parseInt(c2.value)]);
+    if(v.value!=='')parts.push(VEGS[parseInt(v.value)]);
+    if(!v2.disabled&&v2.value!=='')parts.push(VEGS[parseInt(v2.value)]);
+    meals.push({protein:parseInt(pv),size:parseInt(sz),qty:qty,
+      label:qty+'x '+sz+'oz '+PROTEINS[parseInt(pv)].label+(parts.length?' / '+parts.join(' + '):'')});
+  }
+  var bulk=[];
+  [{cid:'bulkProteins',items:BULK_P,cat:'protein'},{cid:'bulkCarbs',items:BULK_C,cat:'carb'},{cid:'bulkVeggies',items:BULK_V,cat:'veg'}].forEach(function(g){
+    g.items.forEach(function(item,i){ var el=document.getElementById(g.cid+'_'+i); var lbs=el?parseInt(el.value)||0:0; if(lbs>0) bulk.push({cat:g.cat,idx:i,lbs:lbs,label:lbs+'lb '+item.l}); });
+  });
+  var tipEl=document.getElementById('customTip');
+  var sr=document.getElementById('summaryRows');
+  return {customer:cust,meals:meals,bulk:bulk,subscribed:subscribed,tipMode:String(tipMode),
+          customTip:tipEl?parseFloat(tipEl.value)||0:0,
+          summaryText:sr?sr.innerText:''};
+}
+
+function emailOwner(order){
+  var c=order.customer;
+  var payload={
+    _subject:'🍽️ New Order — '+(c.name||'Website'),
+    _template:'table',
+    Name:c.name, Email:c.email, Phone:c.phone, Age:c.age,
+    Address:(c.address||'')+(c.unit?(', Unit '+c.unit):'')+(c.gate?(' (gate '+c.gate+')'):''),
+    Meals:order.meals.map(function(m){return m.label;}).join('\n')||'—',
+    Bulk:order.bulk.map(function(b){return b.label;}).join('\n')||'—',
+    Subscription:order.subscribed?'Yes (5% off)':'No',
+    Tip:order.tipMode,
+    Notes:c.notes||'—',
+    Totals:order.summaryText||'—'
+  };
+  return fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});
+}
+
 function placeOrder(){
-  var name=document.getElementById('cust-name').value.trim();
-  var email=document.getElementById('cust-email').value.trim();
-  var phone=document.getElementById('cust-phone').value.trim();
-  var age=document.getElementById('cust-age').value.trim();
-  var address=document.getElementById('cust-address').value.trim();
-  if(!name||!email||!phone||!age||!address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return; }
+  var c={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),address:gv('cust-address')};
+  if(!c.name||!c.email||!c.phone||!c.age||!c.address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return; }
+  var order=collectOrder();
+  if(order.meals.length===0){ alert('Please configure at least one meal before placing your order.'); return; }
+  var btn=document.getElementById('placeOrderBtn');
+  btn.disabled=true; btn.textContent='Processing…';
+  emailOwner(order).catch(function(){});
+  fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(d){
+      if(d&&d.url){ window.location.href=d.url; return; }
+      orderFallbackSuccess(btn);
+    })
+    .catch(function(){ orderFallbackSuccess(btn); });
+}
+
+function orderFallbackSuccess(btn){
   document.getElementById('successBanner').style.display='block';
-  document.getElementById('placeOrderBtn').disabled=true;
-  document.getElementById('placeOrderBtn').textContent='Order Submitted ✓';
-  window.scrollTo(0, document.getElementById('successBanner').offsetTop - 100);
+  if(btn){ btn.textContent='Order Submitted ✓'; }
+  var t=document.getElementById('successBanner');
+  window.scrollTo(0, t.offsetTop - 100);
 }
 
 function sendContact(){
-  var n=document.getElementById('c-name').value.trim(), e=document.getElementById('c-email').value.trim(), m=document.getElementById('c-msg').value.trim();
+  var n=gv('c-name'), e=gv('c-email'), s=gv('c-subject'), m=gv('c-msg');
   if(!n||!e||!m){ alert('Please fill in your name, email, and message.'); return; }
+  fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({_subject:'✉️ Contact form — '+(s||n),Name:n,Email:e,Subject:s||'—',Message:m})}).catch(function(){});
   document.getElementById('contactSuccess').style.display='block';
   document.getElementById('c-name').value=''; document.getElementById('c-email').value=''; document.getElementById('c-subject').value=''; document.getElementById('c-msg').value='';
+}
+
+function handleCheckoutReturn(){
+  var q=new URLSearchParams(window.location.search);
+  if(q.get('paid')==='1'){
+    showPage('order');
+    var b=document.getElementById('successBanner'); if(b) b.style.display='block';
+    var msg=document.getElementById('successMsg');
+    if(msg) msg.innerHTML="Payment received — thank you! 🎉 Your order is confirmed. Mom gets cooking Friday and we'll confirm your Saturday pickup window (8AM–4PM) by email or text.";
+    var ob=document.getElementById('placeOrderBtn'); if(ob){ ob.disabled=true; ob.textContent='Paid ✓'; }
+    setTimeout(function(){ if(b) window.scrollTo(0,b.offsetTop-100); },100);
+  } else if(q.get('canceled')==='1'){
+    showPage('order');
+    alert('Payment was canceled — your order was not charged. Your selections are still here; you can try again whenever you are ready.');
+  }
 }
 
 // Init order page
@@ -1040,6 +1217,7 @@ buildBulk('bulkProteins', BULK_P);
 buildBulk('bulkCarbs', BULK_C);
 buildBulk('bulkVeggies', BULK_V);
 recalc();
+handleCheckoutReturn();
 </script>
 </body>
 </html>
