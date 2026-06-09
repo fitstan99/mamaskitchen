@@ -1,0 +1,14 @@
+# Netlify config for Mama's Kitchen
+# Routes the website's /api/order calls to the Stripe checkout function.
+
+[build]
+  publish = "."
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/order"
+  to = "/.netlify/functions/order"
+  status = 200
+  force = true
