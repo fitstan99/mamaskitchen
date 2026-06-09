@@ -1,11 +1,14 @@
 # Netlify config for Mama's Kitchen
-# Routes the website's /api/order calls to the Stripe checkout function.
-
 [build]
   publish = "."
 
 [functions]
   node_bundler = "esbuild"
+
+# Weekly recurring billing — Sunday ~11 PM ET (Mon 04:00 UTC). Safe/dormant
+# unless BILLING_ENABLED=true (see weekly-billing.js).
+[functions."weekly-billing"]
+  schedule = "0 4 * * 1"
 
 [[redirects]]
   from = "/api/order"

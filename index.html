@@ -234,6 +234,13 @@ nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
 .badge-best { display:inline-block; font-size:10px; background:var(--red); color:#fff; padding:2px 8px; border-radius:100px; margin-top:8px; margin-left:6px; font-weight:700; letter-spacing:0.05em; }
 .benefit { display:flex; gap:10px; align-items:flex-start; background:var(--gray-100); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text); font-weight:500; line-height:1.5; }
 .benefit span { font-size:20px; line-height:1; }
+.consent-card { background:#fff; border:1px solid var(--gray-200); border-radius:14px; padding:4px 22px 8px; margin-bottom:22px; }
+.consent-head { font-weight:700; font-size:14px; padding:16px 0 4px; }
+.consent-row { display:flex; gap:14px; align-items:flex-start; padding:14px 0; border-top:1px solid var(--gray-100); font-size:14px; color:var(--gray-600); line-height:1.5; cursor:pointer; }
+.consent-row input[type=checkbox] { width:20px; height:20px; flex-shrink:0; margin-top:1px; accent-color:var(--red); cursor:pointer; }
+.consent-row a { color:var(--red); text-decoration:underline; }
+.consent-fine { font-size:11px; color:var(--gray-400); }
+.opt-tag { display:inline-block; font-size:10px; background:var(--gray-100); color:var(--gray-400); padding:2px 8px; border-radius:100px; margin-left:8px; font-weight:600; vertical-align:middle; }
 .legal-page { max-width:820px; margin:0 auto; padding:60px 8%; }
 .legal-page h1 { font-family:var(--font-display); font-size:40px; font-weight:900; letter-spacing:-1px; margin-bottom:8px; }
 .legal-page h3 { font-size:17px; font-weight:700; margin:28px 0 8px; }
@@ -751,7 +758,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         </div>
       </div>
 
-      <label style="display:flex;gap:10px;align-items:center;background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" style="width:18px;height:18px;flex-shrink:0;"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change or skip anytime.</span></label>
+      <div style="background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
+        <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" onchange="toggleBillingAuth()" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change, pause, or cancel anytime from your account.</span></label>
+        <label id="billing-auth-wrap" style="display:none;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--gray-600);margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);"><input type="checkbox" id="billing-auth" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>I authorize Mama's Kitchen to automatically charge my saved card each week for this recurring order, until I pause or cancel.<br><span class="consent-fine">You'll get a Stripe receipt each week. Manage or cancel anytime in your account before the Sunday deadline.</span></span></label>
+      </div>
 
       <!-- 15+ BANNER -->
       <div class="discount-alert" id="discountAlert">
@@ -806,10 +816,11 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       </div>
 
       <!-- CONSENT -->
-      <div class="consent-box" style="background:var(--gray-100);border-radius:12px;padding:18px 20px;margin-bottom:20px;font-size:13px;color:var(--gray-600);line-height:1.6;">
-        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;cursor:pointer;"><input type="checkbox" id="consent-sms" style="margin-top:3px;flex-shrink:0;"> <span>I agree to receive <strong>SMS text messages</strong> from Mama's Kitchen about my order status and pickup/delivery window. Msg &amp; data rates may apply; reply STOP to opt out. <span class="req-star">*</span></span></label>
-        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;cursor:pointer;"><input type="checkbox" id="consent-email" style="margin-top:3px;flex-shrink:0;"> <span>I'd like to receive <strong>emails &amp; occasional offers / marketing</strong> from Mama's Kitchen. (Optional — unsubscribe anytime.)</span></label>
-        <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;"><input type="checkbox" id="consent-terms" style="margin-top:3px;flex-shrink:0;"> <span>I have read and accept the <a href="#" onclick="showPage('terms');return false;" style="color:var(--red);text-decoration:underline;">Terms &amp; Privacy Policy</a> — including that orders are pre-paid and prepared fresh to order. <span class="req-star">*</span></span></label>
+      <div class="consent-card">
+        <div class="consent-head">A couple of quick confirmations</div>
+        <label class="consent-row"><input type="checkbox" id="consent-sms"><span>Text me order updates &amp; my pickup window. <span class="req-star">*</span><br><span class="consent-fine">Msg &amp; data rates may apply. Reply STOP to opt out.</span></span></label>
+        <label class="consent-row"><input type="checkbox" id="consent-email"><span>Email me occasional offers &amp; news.<span class="opt-tag">Optional</span></span></label>
+        <label class="consent-row"><input type="checkbox" id="consent-terms"><span>I accept the <a href="#" onclick="showPage('terms');return false;">Terms &amp; Privacy Policy</a> — orders are pre-paid &amp; made fresh to order. <span class="req-star">*</span></span></label>
       </div>
 
       <!-- PLACE ORDER -->
@@ -997,12 +1008,15 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <p>To operate and improve the business we collect and store information you provide and that is generated by your orders, including: name, contact details, delivery address, age, your stated goal/reason for ordering, meal selections and history, order totals, and communication preferences. We use this data to fulfill orders, plan purchasing and production, understand demand (e.g. popular items and customer trends), and communicate with you. We do not sell your personal information. We share data only with service providers needed to run the business (e.g. payment processing via Stripe, messaging/email delivery). Payment card details are handled directly by Stripe — we never see or store your full card number.</p>
 
     <h3>7. Accounts</h3>
-    <p>Customer accounts (for managing recurring weekly orders and your saved preferences) are launching soon. When available, you are responsible for keeping your login secure and your information accurate.</p>
+    <p>Ordering requires a free account so we can save your details, preferences, and order history. You are responsible for keeping your login secure and your information accurate.</p>
 
-    <h3>8. Pricing, taxes &amp; fees</h3>
+    <h3>8. Recurring weekly orders &amp; automatic billing</h3>
+    <p>If you opt into a recurring weekly order and authorize automatic billing, you agree that Mama's Kitchen may securely charge your saved payment method each week for that week's order total (which may vary if you change your plan), around the Sunday order deadline, until you pause or cancel. You can pause or cancel anytime from your account before the weekly deadline. Each charge is receipted by Stripe. Your card is stored securely by Stripe — we never see or store your full card number.</p>
+
+    <h3>9. Pricing, taxes &amp; fees</h3>
     <p>Prices are shown pre-tax. Massachusetts sales tax (6.25%) and a 3% card-processing fee are added at checkout. Prices and menu availability may change based on seasonal and local sourcing.</p>
 
-    <h3>9. Contact</h3>
+    <h3>10. Contact</h3>
     <p>Questions about your order or these terms? Text us at <a href="tel:+12132121290" style="color:var(--red);">+1 (213) 212-1290</a>, DM <a href="https://instagram.com/mamaskitchenptown" target="_blank" style="color:var(--red);">@mamaskitchenptown</a>, or use the chat feature. We're happy to help with any accommodations.</p>
 
     <div style="margin-top:32px;"><button class="btn-primary" onclick="showPage('order')">Back to ordering</button></div>
@@ -1195,7 +1209,8 @@ function collectOrder(){
   var cust={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),
             address:gv('cust-address'),unit:gv('cust-unit'),gate:gv('cust-gate'),notes:gv('special-notes'),
             reason:gv('cust-reason'),
-            smsConsent:ck('consent-sms'), emailConsent:ck('consent-email'), terms:ck('consent-terms')};
+            smsConsent:ck('consent-sms'), emailConsent:ck('consent-email'), terms:ck('consent-terms'),
+            userId:(currentUser?currentUser.id:null)};
   var meals=[];
   for(var i=0;i<3;i++){
     var p=document.getElementById('p_'+i); if(!p) continue;
@@ -1213,8 +1228,11 @@ function collectOrder(){
   });
   var tipEl=document.getElementById('customTip');
   var sr=document.getElementById('summaryRows');
+  var _rep=document.getElementById('repeat-weekly')&&document.getElementById('repeat-weekly').checked;
+  var _ba=document.getElementById('billing-auth')&&document.getElementById('billing-auth').checked;
   return {customer:cust,meals:meals,bulk:bulk,subscribed:subscribed,tipMode:String(tipMode),
           customTip:tipEl?parseFloat(tipEl.value)||0:0,
+          repeat:!!_rep, billingAuthorized:!!(_rep&&_ba),
           summaryText:sr?sr.innerText:''};
 }
 
@@ -1359,12 +1377,27 @@ async function renderAccount(){
   if(!currentUser) return; var p=currentProfile||{};
   var box=document.getElementById('acct-profile');
   if(box){ box.innerHTML='<div style="font-weight:700;font-size:18px;margin-bottom:6px;">Hi '+(p.full_name||currentUser.email)+' 👋</div>'+
-    '<div style="font-size:14px;color:var(--gray-600);line-height:1.8;">Email: '+currentUser.email+'<br>Phone: '+(p.phone||'—')+' · Age: '+(p.age||'—')+'<br>Goal: '+(p.reason||'—')+'<br>SMS updates: '+(p.sms_consent?'on':'off')+' · Marketing: '+(p.email_consent?'on':'off')+'</div>'; }
+    '<div style="font-size:14px;color:var(--gray-600);line-height:1.8;">Email: '+currentUser.email+'<br>Phone: '+(p.phone||'—')+' · Age: '+(p.age||'—')+'<br>Goal: '+(p.reason||'—')+'<br>SMS updates: '+(p.sms_consent?'on':'off')+' · Marketing: '+(p.email_consent?'on':'off')+'<br>Card on file: '+(p.stripe_payment_method_id?'yes ✓':'no')+'</div>'; }
   try{ var rc=await sb.from('recurring_orders').select('*').eq('customer_id',currentUser.id).maybeSingle();
     var rec=document.getElementById('acct-recurring');
-    if(rec){ if(rc.data&&rc.data.active){ var cfg=rc.data.config||{}; var n=(cfg.meals||[]).reduce(function(a,m){return a+(m.qty||0);},0);
-        rec.innerHTML='<div style="font-weight:700;margin-bottom:6px;">Your weekly order 🔁</div><div style="font-size:14px;color:var(--gray-600);">'+n+' meals saved to repeat each week. <a href="#" onclick="showPage(\'order\');return false;" style="color:var(--red);text-decoration:underline;">Order this week →</a></div>';
-      } else { rec.innerHTML='<div style="font-weight:700;margin-bottom:6px;">Your weekly order 🔁</div><div style="font-size:14px;color:var(--gray-600);">No weekly order saved yet. Tick &ldquo;repeat weekly&rdquo; when you order to save it here.</div>'; } }
+    if(rec){
+      if(rc.data){
+        var cfg=rc.data.config||{}; var n=(cfg.meals||[]).reduce(function(a,m){return a+(m.qty||0);},0);
+        var paused=rc.data.paused, auth=rc.data.billing_authorized;
+        var status=(!rc.data.active)?'canceled':(paused?'paused':'active');
+        var html='<div style="font-weight:700;margin-bottom:6px;">Your weekly order 🔁</div>';
+        html+='<div style="font-size:14px;color:var(--gray-600);">'+n+' meals · status: <strong>'+status+'</strong>'+(auth?' · auto-charge ON':' · auto-charge off')+'</div>';
+        html+='<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">';
+        html+='<button class="tip-btn" style="font-size:13px;" onclick="showPage(\'order\')">Order this week</button>';
+        if(rc.data.active && !paused) html+='<button class="tip-btn" style="font-size:13px;" onclick="pauseRecurring()">Pause</button>';
+        if(rc.data.active && paused) html+='<button class="tip-btn tipped" style="font-size:13px;" onclick="resumeRecurring()">Resume</button>';
+        if(rc.data.active) html+='<button class="tip-btn" style="font-size:13px;color:var(--red);" onclick="cancelRecurring()">Cancel weekly</button>';
+        html+='</div>';
+        rec.innerHTML=html;
+      } else {
+        rec.innerHTML='<div style="font-weight:700;margin-bottom:6px;">Your weekly order 🔁</div><div style="font-size:14px;color:var(--gray-600);">No weekly order saved yet. Tick &ldquo;repeat weekly&rdquo; when you order to save it here.</div>';
+      }
+    }
   }catch(e){}
   try{ var oh=await sb.from('orders').select('id,ordered_at,total,status').order('ordered_at',{ascending:false}).limit(20);
     var h=document.getElementById('acct-history');
@@ -1372,6 +1405,11 @@ async function renderAccount(){
       else h.innerHTML='<div style="font-weight:700;margin-bottom:8px;">Order history</div><div style="font-size:14px;color:var(--gray-400)">No orders yet.</div>'; } }
   catch(e){}
 }
+
+function toggleBillingAuth(){ var w=document.getElementById('billing-auth-wrap'), r=document.getElementById('repeat-weekly'); if(w&&r){ w.style.display=r.checked?'flex':'none'; if(!r.checked){ var b=document.getElementById('billing-auth'); if(b) b.checked=false; } } }
+async function pauseRecurring(){ if(!sb||!currentUser) return; await sb.from('recurring_orders').update({paused:true,updated_at:new Date().toISOString()}).eq('customer_id',currentUser.id); renderAccount(); }
+async function resumeRecurring(){ if(!sb||!currentUser) return; await sb.from('recurring_orders').update({paused:false,updated_at:new Date().toISOString()}).eq('customer_id',currentUser.id); renderAccount(); }
+async function cancelRecurring(){ if(!sb||!currentUser) return; if(!confirm('Cancel your weekly recurring order? You can set it up again anytime.')) return; await sb.from('recurring_orders').update({active:false,paused:true,billing_authorized:false,updated_at:new Date().toISOString()}).eq('customer_id',currentUser.id); renderAccount(); }
 
 async function doSignup(){
   if(!sb){ acctMsg('su-msg','Accounts are temporarily unavailable.'); return; }
@@ -1421,7 +1459,7 @@ async function saveOrderToDb(order){
     if(mealRows.length){ var mr=await sb.from('order_meals').insert(mealRows); if(mr.error)console.error('meals',mr.error); }
     var bulkRows=order.bulk.map(function(b){ var arr=b.cat==='protein'?BULK_P:(b.cat==='carb'?BULK_C:BULK_V); return {order_id:oid,item_type:b.cat,item_name:arr[b.idx].l,quantity_lbs:b.lbs,price_per_lb:arr[b.idx].p,line_total:arr[b.idx].p*b.lbs}; });
     if(bulkRows.length){ var br=await sb.from('order_bulk').insert(bulkRows); if(br.error)console.error('bulk',br.error); }
-    if(repeat){ await sb.from('recurring_orders').upsert({customer_id:currentUser.id,config:{meals:order.meals,bulk:order.bulk,subscribed:order.subscribed,tipMode:String(order.tipMode),customTip:order.customTip},active:true,updated_at:new Date().toISOString()}); }
+    if(repeat){ await sb.from('recurring_orders').upsert({customer_id:currentUser.id,config:{meals:order.meals,bulk:order.bulk,subscribed:order.subscribed,tipMode:String(order.tipMode),customTip:order.customTip},active:true,paused:false,billing_authorized:!!order.billingAuthorized,updated_at:new Date().toISOString()}); }
     return oid;
   }catch(e){ console.error('saveOrderToDb',e); return null; }
 }
