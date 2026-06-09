@@ -231,6 +231,15 @@ nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
 .protein-price { font-size: 22px; font-family: var(--font-display); font-weight: 700; color: var(--red); }
 .protein-price-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
 .protein-badge { display: inline-block; font-size: 10px; background: #FFF0ED; color: var(--red); padding: 2px 8px; border-radius: 100px; margin-top: 8px; font-weight: 600; letter-spacing: 0.05em; }
+.badge-best { display:inline-block; font-size:10px; background:var(--red); color:#fff; padding:2px 8px; border-radius:100px; margin-top:8px; margin-left:6px; font-weight:700; letter-spacing:0.05em; }
+.benefit { display:flex; gap:10px; align-items:flex-start; background:var(--gray-100); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text); font-weight:500; line-height:1.5; }
+.benefit span { font-size:20px; line-height:1; }
+.legal-page { max-width:820px; margin:0 auto; padding:60px 8%; }
+.legal-page h1 { font-family:var(--font-display); font-size:40px; font-weight:900; letter-spacing:-1px; margin-bottom:8px; }
+.legal-page h3 { font-size:17px; font-weight:700; margin:28px 0 8px; }
+.legal-page p, .legal-page li { font-size:14px; color:var(--gray-600); line-height:1.75; }
+.legal-page ul { padding-left:20px; margin:8px 0; }
+@media(max-width:700px){ .why-two { grid-template-columns:1fr !important; } }
 .pricing-table { background: var(--gray-100); border-radius: 12px; padding: 28px; margin-top: 32px; }
 .pricing-table h3 { font-size: 15px; font-weight: 600; margin-bottom: 18px; color: var(--text); }
 .pricing-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--gray-200); font-size: 14px; }
@@ -460,7 +469,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div class="hero-left">
       <div class="hero-tag">Provincetown's Only Meal Prep</div>
       <h1>Fresh meals.<br><em>Made for you.</em><br>Every week.</h1>
-      <p class="hero-sub">Home-cooked, organic meals crafted by Mom — built exactly the way you want them, ready every Saturday.</p>
+      <p class="hero-sub">Home-cooked, organic meals crafted by Mom — built exactly the way you want them — fresh every week.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="showPage('order')">Start Your Order</button>
         <button class="btn-secondary" onclick="showPage('menu')">View Menu</button>
@@ -479,8 +488,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
           <div class="hero-stat-label">Vegetables</div>
         </div>
         <div>
-          <div class="hero-stat-val">7</div>
-          <div class="hero-stat-label">Day Shelf Life</div>
+          <div class="hero-stat-val">3&ndash;4</div>
+          <div class="hero-stat-label">Days Fresh</div>
         </div>
       </div>
     </div>
@@ -508,25 +517,25 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="step-num">01</div>
         <div class="step-icon">🛒</div>
         <div class="step-title">Build your meals</div>
-        <div class="step-desc">Pick your protein, carbohydrate, and vegetable. Mix and match up to 3 configurations per order.</div>
+        <div class="step-desc">Pick your protein and 2 sides — mix carbs &amp; veggies however you like. Up to 3 meal configurations per order.</div>
       </div>
       <div class="step fade-in">
         <div class="step-num">02</div>
         <div class="step-icon">📅</div>
-        <div class="step-title">Order by Thursday</div>
-        <div class="step-desc">Submit your order before midnight Thursday. Minimum 5 meals per order.</div>
+        <div class="step-title">Order by Sunday</div>
+        <div class="step-desc">Build, then pre-pay before midnight Sunday. Minimum 5 meals per order.</div>
       </div>
       <div class="step fade-in">
         <div class="step-num">03</div>
         <div class="step-icon">👩‍🍳</div>
-        <div class="step-title">Mom cooks Friday</div>
-        <div class="step-desc">Every meal is cooked fresh from scratch by Mom using organic, quality ingredients.</div>
+        <div class="step-title">Mom cooks fresh</div>
+        <div class="step-desc">Every meal is cooked from scratch by Mom using fresh, local, in-season ingredients — never frozen.</div>
       </div>
       <div class="step fade-in">
         <div class="step-num">04</div>
         <div class="step-icon">🎉</div>
-        <div class="step-title">Pick up Saturday</div>
-        <div class="step-desc">Collect your labeled, ready-to-eat meals on Saturday. Enjoy all week — good for 7 days.</div>
+        <div class="step-title">Pickup Monday</div>
+        <div class="step-desc">Pick up (or get delivery) Monday 3&ndash;6 PM — we text you when it&rsquo;s ready. Large orders split: half Monday, half Thursday for freshness. Eat fresh for 3&ndash;4 days.</div>
       </div>
     </div>
   </section>
@@ -562,10 +571,37 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     </div>
   </section>
 
+  <section style="padding: 80px 8%; background: var(--white);">
+    <div class="section-label">Why it works</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(30px,4vw,46px);font-weight:900;letter-spacing:-1.5px;line-height:1.12;margin:6px 0 18px;max-width:760px;">The tastiest in <em style="color:var(--red)">high-protein, clean cuisine.</em></h2>
+    <p style="font-size:16px;color:var(--gray-600);line-height:1.85;font-weight:300;max-width:760px;margin-bottom:18px;">We use USDA Prime cuts of beef, fresh free-range chicken, wild-caught salmon, and a variety of healthy choices. What sets us apart is our ability to properly use cooking techniques and the right application of heat to ensure freshness and quality as if you ordered at a sit-down restaurant — except we saved you a tip and the gas money.</p>
+    <p style="font-size:16px;color:var(--gray-600);line-height:1.85;font-weight:300;max-width:760px;margin-bottom:36px;">We shop local — buying only the freshest local produce, herbs, and proteins from nearby markets. Menus are built around what's in season and available that week, so everything tastes its best.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;max-width:1000px;margin-bottom:40px;">
+      <div class="benefit"><span>🥦</span> Fresh — never frozen.</div>
+      <div class="benefit"><span>🎈</span> No more heavy bloating.</div>
+      <div class="benefit"><span>⚡</span> More sustained, all-day energy.</div>
+      <div class="benefit"><span>💪</span> A better, more appealing body composition.</div>
+      <div class="benefit"><span>🎯</span> Support to lower your body-fat percentage, if that's your goal.</div>
+      <div class="benefit"><span>🔥</span> Frequent meals create a metabolic effect — turning your body into a calorie-burning furnace.</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1000px;" class="why-two">
+      <div style="background:var(--gray-100);border-radius:14px;padding:24px;">
+        <div style="font-weight:700;margin-bottom:8px;">Set it &amp; forget it</div>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">You get the same meal configuration every week automatically — unless you change it on the website. That's why every customer has a free account to manage orders, skip a week, or update meals. <em>(Accounts launching soon.)</em></p>
+      </div>
+      <div style="background:var(--gray-100);border-radius:14px;padding:24px;">
+        <div style="font-weight:700;margin-bottom:8px;">We come to you</div>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.7;">We deliver to medical centers, police departments, fire stations, offices, and more. Need a special accommodation? Reach out personally by text or our chat and we'll help. We save you time, energy, and clean-up.</p>
+      </div>
+    </div>
+  </section>
+
   <section style="padding: 80px 8%; text-align:center; background: var(--white);">
     <div class="section-label">Ready to eat well?</div>
-    <h2 style="font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;">Order closes<br><em style="color:var(--red)">Thursday midnight.</em></h2>
-    <p style="font-size:17px;color:var(--gray-400);max-width:480px;margin:0 auto 36px;font-weight:300;">Don't miss this week's pickup. Build your meals now and have them ready Saturday morning.</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;">Order closes<br><em style="color:var(--red)">Sunday midnight.</em></h2>
+    <p style="font-size:17px;color:var(--gray-400);max-width:480px;margin:0 auto 36px;font-weight:300;">Don't miss this week's batch. Build your meals now and pick up fresh Monday.</p>
     <button class="btn-primary" style="font-size:17px;padding:18px 44px;" onclick="showPage('order')">Build My Meals →</button>
   </section>
 
@@ -581,19 +617,19 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   </div>
   <div class="menu-body">
     <div class="menu-note">
-      <strong>How it works:</strong> Every meal = 1 protein + 1 carbohydrate + 1 vegetable. Add a second carbohydrate or second vegetable for free. Cooked fresh every Friday, ready Saturday.
+      <strong>How it works:</strong> Every meal = 1 protein + 2 sides. Mix carbs and veggies however you like — double up (e.g. chicken + double rice) or one of each (e.g. chicken + rice + sweet potato), no upcharge either way. Cooked fresh, ready Monday.
     </div>
 
     <div class="menu-section">
       <div class="menu-section-title">Proteins</div>
       <div class="menu-section-sub">Base price shown. All proteins organic or wild-caught. Upcharge applies for 6–8 oz portions.</div>
       <div class="protein-grid">
-        <div class="protein-card"><div class="protein-name">Organic Chicken Breast</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">ORGANIC</div></div>
-        <div class="protein-card"><div class="protein-name">Organic Ground Turkey 93/7</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">ORGANIC</div></div>
-        <div class="protein-card"><div class="protein-name">Organic Pork Chops</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">ORGANIC</div></div>
-        <div class="protein-card"><div class="protein-name">Organic Grass-Fed Ground Beef 93/7</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">GRASS-FED</div></div>
-        <div class="protein-card"><div class="protein-name">Wild Caught Salmon</div><div class="protein-price">$22<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$2.50/oz above 5oz</div><div class="protein-badge">WILD CAUGHT</div></div>
-        <div class="protein-card"><div class="protein-name">Wild Caught Shrimp</div><div class="protein-price">$22<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$2.50/oz above 5oz</div><div class="protein-badge">WILD CAUGHT</div></div>
+        <div class="protein-card"><div class="protein-name">Mom's Organic Chicken Breast</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">ORGANIC</div><span class="badge-best">BEST SELLER</span></div>
+        <div class="protein-card"><div class="protein-name">Mom's Organic Ground Turkey 93/7</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">ORGANIC</div></div>
+        <div class="protein-card"><div class="protein-name">Mom's Organic Pork Chops</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">ORGANIC</div></div>
+        <div class="protein-card"><div class="protein-name">Mom's Grass-Fed Ground Beef 93/7</div><div class="protein-price">$16<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$1.50/oz above 5oz</div><div class="protein-badge">GRASS-FED</div></div>
+        <div class="protein-card"><div class="protein-name">Mom's Wild-Caught Salmon</div><div class="protein-price">$22<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$2.50/oz above 5oz</div><div class="protein-badge">WILD CAUGHT</div><span class="badge-best">LOCAL FAVORITE</span></div>
+        <div class="protein-card"><div class="protein-name">Mom's Wild-Caught Shrimp</div><div class="protein-price">$22<span style="font-size:14px;color:var(--gray-400)">/meal</span></div><div class="protein-price-sub">5 oz base · +$2.50/oz above 5oz</div><div class="protein-badge">WILD CAUGHT</div><span class="badge-best">LOCAL FAVORITE</span></div>
       </div>
 
       <div class="pricing-table" style="margin-top:24px;">
@@ -609,7 +645,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
     <div class="menu-section">
       <div class="menu-section-title">Carbohydrates</div>
-      <div class="menu-section-sub">5 oz standard · 10 oz double (add a second carb for free) · or choose No Carbohydrates</div>
+      <div class="menu-section-sub">Pick any as Side 1 or Side 2 — 5 oz each, no upcharge. Double up or mix with a veggie.</div>
       <div class="menu-grid">
         <div class="menu-item"><div class="menu-item-icon">🍚</div><div class="menu-item-name">Jasmine Rice</div></div>
         <div class="menu-item"><div class="menu-item-icon">🌾</div><div class="menu-item-name">Brown Rice</div></div>
@@ -628,7 +664,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
     <div class="menu-section">
       <div class="menu-section-title">Vegetables</div>
-      <div class="menu-section-sub">5 oz standard · 10 oz double (add a second veggie for free) · or choose No Vegetables</div>
+      <div class="menu-section-sub">Pick any as Side 1 or Side 2 — 5 oz each, no upcharge. Double up or mix with a carb.</div>
       <div class="menu-grid">
         <div class="menu-item"><div class="menu-item-icon">🥦</div><div class="menu-item-name">Broccoli</div></div>
         <div class="menu-item"><div class="menu-item-icon">🫘</div><div class="menu-item-name">Green Beans</div></div>
@@ -651,7 +687,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div style="background:var(--black);border-radius:16px;padding:36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
       <div>
         <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">Ready to order?</div>
-        <div style="font-size:15px;color:rgba(255,255,255,0.5)">Orders close Thursday midnight. Pickup Saturday 8AM–4PM.</div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.5)">Orders close Sunday midnight. Pickup or delivery Monday 3&ndash;6 PM (large orders split Mon + Thu).</div>
       </div>
       <button class="btn-primary" style="font-size:15px;padding:15px 32px;" onclick="showPage('order')">Order Now →</button>
     </div>
@@ -664,10 +700,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div class="order-header">
       <div class="section-label" style="color:rgba(255,255,255,0.35)">Place Your Order</div>
       <h1>Build your<br><em>perfect week.</em></h1>
-      <p>Minimum 5 meals · Pickup every Saturday · Order by Thursday midnight</p>
+      <p>Minimum 5 meals · Pickup or delivery Monday · Order by Sunday midnight</p>
     </div>
     <div class="order-deadline">
-      📅 &nbsp;<strong>Order deadline: Thursday at midnight EST</strong> &nbsp;·&nbsp; Pickup: Saturday 8AM–4PM
+      📅 &nbsp;<strong>Order deadline: Sunday at midnight EST</strong> &nbsp;·&nbsp; Pickup / delivery Monday 3&ndash;6 PM &nbsp;·&nbsp; large orders split Mon + Thu
     </div>
     <div class="order-body">
 
@@ -685,6 +721,17 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div class="form-row-2">
         <div class="form-field"><label>Unit Number <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="text" id="cust-unit" placeholder="Apt 4B"></div>
         <div class="form-field"><label>Gate Code <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="text" id="cust-gate" placeholder="#1234"></div>
+      </div>
+      <div class="form-field"><label>Your main goal — why meal prep? <span class="req-star">*</span></label>
+        <select id="cust-reason">
+          <option value="">Select your main goal…</option>
+          <option>Fat loss</option>
+          <option>Convenience / save time</option>
+          <option>Performance / muscle gain</option>
+          <option>General health &amp; nutrition</option>
+          <option>Medical / dietary needs</option>
+          <option>Other</option>
+        </select>
       </div>
 
       <!-- SUBSCRIPTION -->
@@ -749,11 +796,18 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through Stripe — we never see your card details.</div>
       </div>
 
+      <!-- CONSENT -->
+      <div class="consent-box" style="background:var(--gray-100);border-radius:12px;padding:18px 20px;margin-bottom:20px;font-size:13px;color:var(--gray-600);line-height:1.6;">
+        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;cursor:pointer;"><input type="checkbox" id="consent-sms" style="margin-top:3px;flex-shrink:0;"> <span>I agree to receive <strong>SMS text messages</strong> from Mama's Kitchen about my order status and pickup/delivery window. Msg &amp; data rates may apply; reply STOP to opt out. <span class="req-star">*</span></span></label>
+        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;cursor:pointer;"><input type="checkbox" id="consent-email" style="margin-top:3px;flex-shrink:0;"> <span>I'd like to receive <strong>emails &amp; occasional offers / marketing</strong> from Mama's Kitchen. (Optional — unsubscribe anytime.)</span></label>
+        <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;"><input type="checkbox" id="consent-terms" style="margin-top:3px;flex-shrink:0;"> <span>I have read and accept the <a href="#" onclick="showPage('terms');return false;" style="color:var(--red);text-decoration:underline;">Terms &amp; Privacy Policy</a> — including that orders are pre-paid and prepared fresh to order. <span class="req-star">*</span></span></label>
+      </div>
+
       <!-- PLACE ORDER -->
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place My Order 🍽️</button>
       <div class="success-banner" id="successBanner">
         <h3>🎉 Order Received!</h3>
-        <p id="successMsg">Thank you! Your order has been sent to Mom's Kitchen. We'll confirm your Saturday pickup window by email or text. Pickup is Saturday 8AM–4PM. Mom gets cooking Friday — see you soon! 💛</p>
+        <p id="successMsg">Thank you! Your order has been sent to Mom's Kitchen. We'll text you to confirm your Monday pickup/delivery (3&ndash;6 PM) and reach out when your meals are ready. Large orders are split half Monday, half Thursday for freshness. See you soon! 💛</p>
       </div>
     </div>
   </div>
@@ -846,10 +900,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-item-label">Location</div><div class="contact-item-val">Provincetown, Massachusetts</div></div></div>
         <div class="hours-box">
           <h3>Order Schedule</h3>
-          <div class="hours-row"><span>Order Deadline</span><span>Thursday midnight</span></div>
-          <div class="hours-row"><span>Cooking Day</span><span>Friday</span></div>
-          <div class="hours-row"><span>Pickup Day</span><span>Saturday</span></div>
-          <div class="hours-row"><span>Pickup Window</span><span>8AM – 4PM</span></div>
+          <div class="hours-row"><span>Order Deadline</span><span>Sunday midnight</span></div>
+          <div class="hours-row"><span>Cook &amp; Pack</span><span>Monday</span></div>
+          <div class="hours-row"><span>Pickup / Delivery</span><span>Monday 3–6 PM</span></div>
+          <div class="hours-row"><span>Large Orders</span><span>Split: half Mon, half Thu 3–6 PM</span></div>
           <div class="hours-row"><span>Minimum Order</span><span>5 meals</span></div>
         </div>
       </div>
@@ -867,11 +921,49 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 </div>
 
 <!-- FOOTER (shown on all pages) -->
+<!-- ══════════════════════════════ TERMS & PRIVACY ══════════════════════════════ -->
+<div class="page pt-nav" id="page-terms">
+  <div class="legal-page">
+    <div class="section-label">Legal</div>
+    <h1>Terms &amp; Privacy</h1>
+    <p style="margin-top:6px;">Mama's Kitchen, Provincetown, MA. Last updated 2025.</p>
+
+    <h3>1. Orders, pre-payment &amp; cancellations</h3>
+    <p>All orders are <strong>pre-ordered and pre-paid</strong> in full before cooking. The weekly order deadline is <strong>Sunday at midnight EST</strong>. Meals are cooked fresh and made available for pickup or delivery on <strong>Monday, 3–6 PM</strong>; for larger orders we split the order for freshness — roughly half on Monday and half on Thursday, 3–6 PM. Because every meal is prepared fresh to your order, orders generally cannot be changed or refunded once cooking has begun. If something is wrong with your order, contact us right away and we'll make it right.</p>
+
+    <h3>2. Freshness, storage &amp; food safety</h3>
+    <p>Meals are fresh, never frozen, and are best enjoyed within <strong>3–4 days</strong> of pickup. Keep refrigerated. Reheat thoroughly before eating. Cooked weights are listed on labels; portion sizes are approximate.</p>
+
+    <h3>3. Allergens</h3>
+    <p>Our food is prepared in a kitchen that handles common allergens (including dairy, eggs, fish, shellfish, soy, wheat, and nuts). We cannot guarantee any item is free of a given allergen. Please list allergies and dietary needs at checkout, and contact us with any concerns before ordering.</p>
+
+    <h3>4. SMS / text messaging consent</h3>
+    <p>By checking the SMS box and providing your phone number, you consent to receive recurring transactional and order-related text messages from Mama's Kitchen at the number provided, including via automated technology. Consent is not a condition of any purchase beyond order updates. Message and data rates may apply. Reply <strong>STOP</strong> to unsubscribe or <strong>HELP</strong> for help.</p>
+
+    <h3>5. Email &amp; marketing consent</h3>
+    <p>If you opt in, we may send you emails and occasional promotions or marketing. You can unsubscribe at any time using the link in any email or by contacting us.</p>
+
+    <h3>6. Data we collect &amp; how we use it</h3>
+    <p>To operate and improve the business we collect and store information you provide and that is generated by your orders, including: name, contact details, delivery address, age, your stated goal/reason for ordering, meal selections and history, order totals, and communication preferences. We use this data to fulfill orders, plan purchasing and production, understand demand (e.g. popular items and customer trends), and communicate with you. We do not sell your personal information. We share data only with service providers needed to run the business (e.g. payment processing via Stripe, messaging/email delivery). Payment card details are handled directly by Stripe — we never see or store your full card number.</p>
+
+    <h3>7. Accounts</h3>
+    <p>Customer accounts (for managing recurring weekly orders and your saved preferences) are launching soon. When available, you are responsible for keeping your login secure and your information accurate.</p>
+
+    <h3>8. Pricing, taxes &amp; fees</h3>
+    <p>Prices are shown pre-tax. Massachusetts sales tax (6.25%) and a 3% card-processing fee are added at checkout. Prices and menu availability may change based on seasonal and local sourcing.</p>
+
+    <h3>9. Contact</h3>
+    <p>Questions about your order or these terms? Text us at <a href="tel:+12132121290" style="color:var(--red);">+1 (213) 212-1290</a>, DM <a href="https://instagram.com/mamaskitchenptown" target="_blank" style="color:var(--red);">@mamaskitchenptown</a>, or use the chat feature. We're happy to help with any accommodations.</p>
+
+    <div style="margin-top:32px;"><button class="btn-primary" onclick="showPage('order')">Back to ordering</button></div>
+  </div>
+</div>
+
 <footer id="siteFooter">
   <div class="footer-top">
     <div>
       <div class="footer-brand-name">Mama's<span>Kitchen</span></div>
-      <div class="footer-tagline">Fresh, homemade meal prep in Provincetown, MA. Cooked by Mom every Friday, ready for pickup Saturday. Made on demand — just for you.</div>
+      <div class="footer-tagline">Fresh, homemade meal prep in Provincetown, MA. Cooked fresh by Mom, ready every Monday. Made on demand — just for you.</div>
     </div>
     <div>
       <div class="footer-heading">Pages</div>
@@ -892,12 +984,12 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       </ul>
       <div style="margin-top:20px;">
         <div class="footer-heading">Order Deadline</div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.6);">Thursday · Midnight EST<br>Pickup: Saturday 8AM–4PM</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);">Sunday · Midnight EST<br>Pickup / delivery: Monday 3–6 PM</div>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Mama's Kitchen · Provincetown, MA · All rights reserved.</p>
+    <p>© 2025 Mama's Kitchen · Provincetown, MA · All rights reserved. · <a href="#" onclick="showPage('terms');return false;" style="color:rgba(255,255,255,0.5);text-decoration:underline;">Terms &amp; Privacy</a></p>
     <a href="https://instagram.com/mamaskitchenptown" target="_blank" class="instagram-link">📸 @mamaskitchenptown</a>
   </div>
 </footer>
@@ -934,16 +1026,16 @@ observeFadeIns();
 
 // ── ORDER CALCULATOR ──
 var PROTEINS = [
-  {label:'Organic Chicken Breast', base:16, upcharge:1.5},
-  {label:'Organic Ground Turkey 93/7', base:16, upcharge:1.5},
-  {label:'Organic Pork Chops', base:16, upcharge:1.5},
-  {label:'Organic Grass-Fed Ground Beef 93/7', base:16, upcharge:1.5},
-  {label:'Wild Caught Salmon', base:22, upcharge:2.5},
-  {label:'Wild Caught Shrimp', base:22, upcharge:2.5}
+  {label:"Mom's Organic Chicken Breast", base:16, upcharge:1.5, yield:0.72, raw:3.00},
+  {label:"Mom's Organic Ground Turkey 93/7", base:16, upcharge:1.5, yield:0.75, raw:7.00},
+  {label:"Mom's Organic Pork Chops", base:16, upcharge:1.5, yield:0.72, raw:5.00},
+  {label:"Mom's Grass-Fed Ground Beef 93/7", base:16, upcharge:1.5, yield:0.70, raw:8.00},
+  {label:"Mom's Wild-Caught Salmon", base:22, upcharge:2.5, yield:0.80, raw:11.00},
+  {label:"Mom's Wild-Caught Shrimp", base:22, upcharge:2.5, yield:0.80, raw:12.00}
 ];
 var CARBS = ['Jasmine Rice','Brown Rice','Couscous','Pasta','Sweet Potatoes','Mashed Potatoes','Chickpeas','Black Beans','Red Beans','Brown Beans','Corn','Lentils'];
 var VEGS  = ['Broccoli','Green Beans','Cauliflower','Carrots','Mixed Vegetables'];
-var BULK_P = [{l:'Organic Chicken Breast',p:18},{l:'Organic Ground Turkey 93/7',p:18},{l:'Organic Pork Chops',p:18},{l:'Organic Grass-Fed Ground Beef 93/7',p:20},{l:'Wild Caught Salmon',p:24},{l:'Wild Caught Shrimp',p:24}];
+var BULK_P = [{l:"Mom's Organic Chicken Breast",p:18},{l:"Mom's Organic Ground Turkey 93/7",p:18},{l:"Mom's Organic Pork Chops",p:18},{l:"Mom's Grass-Fed Ground Beef 93/7",p:20},{l:"Mom's Wild-Caught Salmon",p:24},{l:"Mom's Wild-Caught Shrimp",p:24}];
 var BULK_C = CARBS.map(function(x){return{l:x,p:8};});
 var BULK_V = VEGS.map(function(x){return{l:x,p:8};});
 var subscribed = false, tipMode = 'none';
@@ -959,6 +1051,9 @@ function sizeOpts(pi){
 }
 function mealPrice(pi,sz){ if(!pi) return 0; var p=PROTEINS[parseInt(pi)],oz=parseInt(sz)||5; return p.base+(oz>5?(oz-5)*p.upcharge:0); }
 function optList(arr){ return arr.map(function(x,j){return '<option value="'+j+'">'+x+'</option>';}).join(''); }
+function sideOptions(){ var c=CARBS.map(function(x,j){return '<option value="c'+j+'">'+x+'</option>';}).join(''); var v=VEGS.map(function(x,j){return '<option value="v'+j+'">'+x+'</option>';}).join(''); return '<option value="">None</option><optgroup label="Carbohydrates">'+c+'</optgroup><optgroup label="Vegetables">'+v+'</optgroup>'; }
+function sideName(val){ if(!val) return null; var t=val.charAt(0), j=parseInt(val.slice(1)); return t==='c'?CARBS[j]:VEGS[j]; }
+function sideType(val){ return val? (val.charAt(0)==='c'?'carb':'veg') : null; }
 
 function buildConfigs(){
   var c=document.getElementById('configs'); if(!c) return;
@@ -976,15 +1071,11 @@ function buildConfigs(){
           '<div><div class="field-label">Size</div><select id="s_'+i+'" onchange="onSChange('+i+')"><option value="5">5 oz</option><option value="6">6 oz</option><option value="7">7 oz</option><option value="8">8 oz</option></select></div>'+
           '<div style="display:flex;flex-direction:column;justify-content:flex-end"><div class="price-hint" id="ph_'+i+'"></div></div>'+
         '</div>'+
-        '<div class="row3">'+
-          '<div><div class="field-label">2 — Carbohydrates</div><select id="c_'+i+'" onchange="onCChange('+i+')"><option value="">None</option>'+optList(CARBS)+'</select></div>'+
-          '<div><div class="field-label">3 — Vegetables</div><select id="v_'+i+'" onchange="onVChange('+i+')"><option value="">None</option>'+optList(VEGS)+'</select></div>'+
-          '<div></div>'+
-        '</div>'+
         '<div class="row2">'+
-          '<div><div class="field-label">4 — Second Carbohydrates <span class="free-tag">free</span></div><select id="c2_'+i+'" onchange="recalc()" disabled><option value="">No thanks</option>'+optList(CARBS)+'</select><div class="mode-note" id="cn_'+i+'">Pick a carbohydrate first</div></div>'+
-          '<div><div class="field-label">5 — Second Vegetables <span class="free-tag">free</span></div><select id="v2_'+i+'" onchange="recalc()" disabled><option value="">No thanks</option>'+optList(VEGS)+'</select><div class="mode-note" id="vn_'+i+'">Pick a vegetable first</div></div>'+
+          '<div><div class="field-label">2 — Side 1 <span class="free-tag">free</span></div><select id="s1_'+i+'" onchange="recalc()">'+sideOptions()+'</select></div>'+
+          '<div><div class="field-label">3 — Side 2 <span class="free-tag">free</span></div><select id="s2_'+i+'" onchange="recalc()">'+sideOptions()+'</select></div>'+
         '</div>'+
+        '<div class="mode-note" style="margin:-4px 0 14px;">Mix carbs &amp; veggies however you like — double up (e.g. chicken + double rice) or one of each (chicken + rice + sweet potato). Both sides are included free.</div>'+
         '<div class="portions-row">'+
           '<span class="portions-label">How many portions with this configuration?</span>'+
           '<input type="number" id="qty_'+i+'" min="1" step="1" value="'+(req?5:'')+'" placeholder="'+(req?'5':'')+'" oninput="recalc()" style="max-width:80px">'+
@@ -997,8 +1088,6 @@ function buildConfigs(){
 function onPChange(i){ var pi=document.getElementById('p_'+i).value,sEl=document.getElementById('s_'+i),cur=sEl.value; sEl.innerHTML=sizeOpts(pi); sEl.value=cur; updatePH(i); recalc(); }
 function onSChange(i){ updatePH(i); recalc(); }
 function updatePH(i){ var pi=document.getElementById('p_'+i).value,sz=document.getElementById('s_'+i).value,el=document.getElementById('ph_'+i); if(!pi){el.textContent='';return;} var p=PROTEINS[parseInt(pi)],oz=parseInt(sz)||5,price=mealPrice(pi,sz),ex=oz>5?' (+'+fmt((oz-5)*p.upcharge)+')':''; el.textContent=fmt(price)+'/meal'+ex; }
-function onCChange(i){ var v=document.getElementById('c_'+i).value,c2=document.getElementById('c2_'+i),cn=document.getElementById('cn_'+i); c2.disabled=(v===''); if(v===''){c2.value='';cn.style.display='block';}else{cn.style.display='none';} recalc(); }
-function onVChange(i){ var v=document.getElementById('v_'+i).value,v2=document.getElementById('v2_'+i),vn=document.getElementById('vn_'+i); v2.disabled=(v===''); if(v===''){v2.value='';vn.style.display='block';}else{vn.style.display='none';} recalc(); }
 
 function buildBulk(cid,items){ var c=document.getElementById(cid); if(!c) return; c.innerHTML=''; items.forEach(function(item,i){ var id=cid+'_'+i; c.innerHTML+='<div class="bulk-item"><div><div class="bulk-name">'+item.l+'</div><div class="bulk-price-sub">'+fmt(item.p)+'/lb</div></div><input type="number" id="'+id+'" min="0" step="1" placeholder="0 lbs" oninput="recalc()" style="max-width:80px;text-align:center"><div class="bulk-calc" id="'+id+'_c">—</div></div>'; }); }
 
@@ -1011,15 +1100,13 @@ function recalc(){
   for(var i=0;i<3;i++){
     var pi=document.getElementById('p_'+i); if(!pi) continue;
     var pv=pi.value, sz=document.getElementById('s_'+i).value, qty=parseInt(document.getElementById('qty_'+i).value)||0;
-    var cEl=document.getElementById('c_'+i),vEl=document.getElementById('v_'+i),c2El=document.getElementById('c2_'+i),v2El=document.getElementById('v2_'+i);
+    var s1El=document.getElementById('s1_'+i),s2El=document.getElementById('s2_'+i);
     updatePH(i);
     if(!pv||!qty) continue;
     var price=mealPrice(pv,sz),lineSub=price*qty; mSub+=lineSub; tot+=qty;
     var parts=[];
-    if(cEl.value!=='') parts.push(CARBS[parseInt(cEl.value)]);
-    if(!c2El.disabled&&c2El.value!=='') parts.push(CARBS[parseInt(c2El.value)]);
-    if(vEl.value!=='') parts.push(VEGS[parseInt(vEl.value)]);
-    if(!v2El.disabled&&v2El.value!=='') parts.push(VEGS[parseInt(v2El.value)]);
+    var sn1=sideName(s1El.value); if(sn1) parts.push(sn1);
+    var sn2=sideName(s2El.value); if(sn2) parts.push(sn2);
     mHTML+='<div class="s-line"><span>'+qty+'x '+sz+'oz '+PROTEINS[parseInt(pv)].label+(parts.length?' / '+parts.join(' + '):'')+'</span><span>'+fmt(lineSub)+'</span></div>';
   }
   var ml=document.getElementById('mealLines'); if(ml) ml.innerHTML=mHTML||'<div style="font-size:13px;color:var(--gray-400)">No meals configured yet.</div>';
@@ -1053,20 +1140,20 @@ var FORMSUBMIT='https://formsubmit.co/ajax/'+ORDER_EMAIL;
 function gv(id){ var e=document.getElementById(id); return e?e.value.trim():''; }
 
 function collectOrder(){
+  function ck(id){ var e=document.getElementById(id); return e?e.checked:false; }
   var cust={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),
-            address:gv('cust-address'),unit:gv('cust-unit'),gate:gv('cust-gate'),notes:gv('special-notes')};
+            address:gv('cust-address'),unit:gv('cust-unit'),gate:gv('cust-gate'),notes:gv('special-notes'),
+            reason:gv('cust-reason'),
+            smsConsent:ck('consent-sms'), emailConsent:ck('consent-email'), terms:ck('consent-terms')};
   var meals=[];
   for(var i=0;i<3;i++){
     var p=document.getElementById('p_'+i); if(!p) continue;
     var pv=p.value, qty=parseInt(document.getElementById('qty_'+i).value)||0;
     if(pv===''||!qty) continue;
     var sz=document.getElementById('s_'+i).value;
-    var parts=[],c=document.getElementById('c_'+i),v=document.getElementById('v_'+i),c2=document.getElementById('c2_'+i),v2=document.getElementById('v2_'+i);
-    if(c.value!=='')parts.push(CARBS[parseInt(c.value)]);
-    if(!c2.disabled&&c2.value!=='')parts.push(CARBS[parseInt(c2.value)]);
-    if(v.value!=='')parts.push(VEGS[parseInt(v.value)]);
-    if(!v2.disabled&&v2.value!=='')parts.push(VEGS[parseInt(v2.value)]);
-    meals.push({protein:parseInt(pv),size:parseInt(sz),qty:qty,
+    var parts=[],sides=[];
+    [document.getElementById('s1_'+i),document.getElementById('s2_'+i)].forEach(function(sEl){ var nm=sideName(sEl.value); if(nm){parts.push(nm); sides.push({type:sideType(sEl.value),name:nm});} });
+    meals.push({protein:parseInt(pv),size:parseInt(sz),qty:qty,sides:sides,
       label:qty+'x '+sz+'oz '+PROTEINS[parseInt(pv)].label+(parts.length?' / '+parts.join(' + '):'')});
   }
   var bulk=[];
@@ -1080,18 +1167,40 @@ function collectOrder(){
           summaryText:sr?sr.innerText:''};
 }
 
+function computeShoppingList(order){
+  var protOz={};
+  order.meals.forEach(function(m){ protOz[m.protein]=(protOz[m.protein]||0)+m.size*m.qty; });
+  order.bulk.forEach(function(b){ if(b.cat==='protein'){ protOz[b.idx]=(protOz[b.idx]||0)+b.lbs*16; } });
+  var lines=[], totalCost=0;
+  Object.keys(protOz).forEach(function(k){
+    var p=PROTEINS[parseInt(k)]; var cookedLb=protOz[k]/16; var rawLb=cookedLb/p.yield; var cost=rawLb*p.raw; totalCost+=cost;
+    lines.push(p.label+': '+cookedLb.toFixed(2)+' lb cooked -> BUY '+rawLb.toFixed(2)+' lb raw (~$'+cost.toFixed(2)+' @ $'+p.raw.toFixed(2)+'/lb, '+Math.round(p.yield*100)+'% yield)');
+  });
+  var sideOz={};
+  order.meals.forEach(function(m){ (m.sides||[]).forEach(function(s){ sideOz[s.name]=(sideOz[s.name]||0)+5*m.qty; }); });
+  order.bulk.forEach(function(b){ if(b.cat!=='protein'){ var nm=(b.cat==='carb'?BULK_C:BULK_V)[b.idx].l; sideOz[nm]=(sideOz[nm]||0)+b.lbs*16; } });
+  var sideLines=Object.keys(sideOz).map(function(nm){ return nm+': '+(sideOz[nm]/16).toFixed(2)+' lb cooked'; });
+  return {proteinLines:lines, sideLines:sideLines, estProteinCost:totalCost.toFixed(2)};
+}
+
 function emailOwner(order){
   var c=order.customer;
+  var sl=computeShoppingList(order);
   var payload={
     _subject:'🍽️ New Order — '+(c.name||'Website'),
     _template:'table',
     Name:c.name, Email:c.email, Phone:c.phone, Age:c.age,
     Address:(c.address||'')+(c.unit?(', Unit '+c.unit):'')+(c.gate?(' (gate '+c.gate+')'):''),
+    Reason:c.reason||'—',
     Meals:order.meals.map(function(m){return m.label;}).join('\n')||'—',
     Bulk:order.bulk.map(function(b){return b.label;}).join('\n')||'—',
+    'SHOPPING LIST (raw to buy)':sl.proteinLines.join('\n')||'—',
+    'Sides needed (cooked)':sl.sideLines.join('\n')||'—',
+    'Est. protein cost':'$'+sl.estProteinCost,
     Subscription:order.subscribed?'Yes (5% off)':'No',
     Tip:order.tipMode,
     Notes:c.notes||'—',
+    Consents:'SMS: '+(c.smsConsent?'YES':'no')+' | Email/marketing: '+(c.emailConsent?'YES':'no')+' | Terms: '+(c.terms?'accepted':'NOT accepted'),
     Totals:order.summaryText||'—'
   };
   return fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});
@@ -1100,6 +1209,9 @@ function emailOwner(order){
 function placeOrder(){
   var c={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),address:gv('cust-address')};
   if(!c.name||!c.email||!c.phone||!c.age||!c.address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return; }
+  if(!gv('cust-reason')){ alert('Please select your main goal for ordering — it helps Mom plan your meals.'); return; }
+  if(!document.getElementById('consent-sms').checked){ alert('Please agree to receive SMS order updates — we text you to confirm your pickup/delivery window.'); return; }
+  if(!document.getElementById('consent-terms').checked){ alert('Please read and accept the Terms & Privacy Policy to place your order.'); return; }
   var order=collectOrder();
   if(order.meals.length===0){ alert('Please configure at least one meal before placing your order.'); return; }
   var btn=document.getElementById('placeOrderBtn');
@@ -1136,7 +1248,7 @@ function handleCheckoutReturn(){
     showPage('order');
     var b=document.getElementById('successBanner'); if(b) b.style.display='block';
     var msg=document.getElementById('successMsg');
-    if(msg) msg.innerHTML="Payment received — thank you! 🎉 Your order is confirmed. Mom gets cooking Friday and we'll confirm your Saturday pickup window (8AM–4PM) by email or text.";
+    if(msg) msg.innerHTML="Payment received — thank you! 🎉 Your order is confirmed. We'll text you to confirm your Monday pickup/delivery (3&ndash;6 PM) and when your meals are ready. Large orders split half Mon, half Thu.";
     var ob=document.getElementById('placeOrderBtn'); if(ob){ ob.disabled=true; ob.textContent='Paid ✓'; }
     setTimeout(function(){ if(b) window.scrollTo(0,b.offsetTop-100); },100);
   } else if(q.get('canceled')==='1'){
