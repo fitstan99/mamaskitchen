@@ -447,6 +447,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <li><a onclick="showPage('order')" id="nav-order">Order</a></li>
     <li><a onclick="showPage('about')" id="nav-about">About</a></li>
     <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+    <li><a onclick="showPage('account')" id="nav-account">Login</a></li>
   </ul>
   <button class="nav-cta" onclick="showPage('order')">Order Now</button>
   <button class="hamburger" id="hamburger" onclick="toggleMobile()">
@@ -460,6 +461,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <a onclick="showPage('order');toggleMobile()">Order</a>
   <a onclick="showPage('about');toggleMobile()">About</a>
   <a onclick="showPage('contact');toggleMobile()">Contact</a>
+  <a onclick="showPage('account');toggleMobile()" id="nav-account-m">Login</a>
 </div>
 
 <!-- ══════════════════════════════ HOME PAGE ══════════════════════════════ -->
@@ -707,6 +709,11 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     </div>
     <div class="order-body">
 
+      <div id="orderGate" style="display:none;background:#FFF0ED;border:1.5px solid var(--red);border-radius:12px;padding:18px 20px;margin-bottom:24px;">
+        <div style="font-weight:700;color:var(--red);margin-bottom:4px;">Please log in to order</div>
+        <div style="font-size:14px;color:var(--gray-600);">Every order is tied to your free account so we save your details and your weekly plan.<br><button class="btn-primary" style="margin-top:12px;font-size:14px;padding:11px 22px;" onclick="showPage('account')">Log in / Create account</button></div>
+      </div>
+
       <!-- CUSTOMER INFO -->
       <div class="order-sec-header">Your Information</div>
       <div class="form-row-2">
@@ -743,6 +750,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
           <span class="toggle-label" id="subLabel">Subscribe and save 5%</span>
         </div>
       </div>
+
+      <label style="display:flex;gap:10px;align-items:center;background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" style="width:18px;height:18px;flex-shrink:0;"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change or skip anytime.</span></label>
 
       <!-- 15+ BANNER -->
       <div class="discount-alert" id="discountAlert">
@@ -921,6 +930,47 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 </div>
 
 <!-- FOOTER (shown on all pages) -->
+<!-- ══════════════════════════════ ACCOUNT PAGE ══════════════════════════════ -->
+<div class="page" id="page-account">
+  <div class="order-page" style="max-width:560px;">
+    <div class="order-header">
+      <div class="section-label" style="color:rgba(255,255,255,0.35)">Your Account</div>
+      <h1>Welcome to<br><em>Mama's Kitchen.</em></h1>
+      <p>Create a free account to order, save your weekly meals, and track your history.</p>
+    </div>
+    <div class="order-body">
+      <div id="acct-loggedout">
+        <div style="display:flex;gap:10px;margin-bottom:22px;">
+          <button class="tip-btn tipped" id="tab-login-btn" onclick="acctTab('login')" style="flex:1">Log in</button>
+          <button class="tip-btn" id="tab-signup-btn" onclick="acctTab('signup')" style="flex:1">Create account</button>
+        </div>
+        <div id="tab-login">
+          <div class="form-field"><label>Email</label><input type="email" id="li-email" placeholder="you@email.com"></div>
+          <div class="form-field"><label>Password</label><input type="password" id="li-pass" placeholder="Your password"></div>
+          <div id="li-msg" style="display:none;font-size:13px;margin-bottom:10px;font-weight:500;"></div>
+          <button class="place-order-btn" onclick="doLogin()">Log in</button>
+        </div>
+        <div id="tab-signup" style="display:none;">
+          <div class="form-field"><label>Full Name</label><input type="text" id="su-name" placeholder="Jane Smith"></div>
+          <div class="form-field"><label>Email</label><input type="email" id="su-email" placeholder="you@email.com"></div>
+          <div class="form-field"><label>Password <span style="color:var(--gray-400);font-size:11px">(6+ characters)</span></label><input type="password" id="su-pass" placeholder="Create a password"></div>
+          <div id="su-msg" style="display:none;font-size:13px;margin-bottom:10px;font-weight:500;"></div>
+          <button class="place-order-btn" onclick="doSignup()">Create my account</button>
+        </div>
+      </div>
+      <div id="acct-loggedin" style="display:none;">
+        <div id="acct-profile" style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:16px;"></div>
+        <div id="acct-recurring" style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:16px;"></div>
+        <div id="acct-history" style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:16px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-primary" onclick="showPage('order')">Start an order</button>
+          <button class="btn-secondary" onclick="doLogout()">Log out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════════════════════ TERMS & PRIVACY ══════════════════════════════ -->
 <div class="page pt-nav" id="page-terms">
   <div class="legal-page">
@@ -994,6 +1044,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ── NAVIGATION ──
 function showPage(id) {
@@ -1207,6 +1258,7 @@ function emailOwner(order){
 }
 
 function placeOrder(){
+  if(!currentUser){ alert('Please log in or create your free account first — every order is tied to your account so your details and weekly plan are saved.'); showPage('account'); return; }
   var c={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),address:gv('cust-address')};
   if(!c.name||!c.email||!c.phone||!c.age||!c.address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return; }
   if(!gv('cust-reason')){ alert('Please select your main goal for ordering — it helps Mom plan your meals.'); return; }
@@ -1217,6 +1269,7 @@ function placeOrder(){
   var btn=document.getElementById('placeOrderBtn');
   btn.disabled=true; btn.textContent='Processing…';
   emailOwner(order).catch(function(){});
+  saveOrderToDb(order).catch(function(e){ console.error('db save',e); });
   fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)})
     .then(function(r){ return r.ok?r.json():null; })
     .then(function(d){
@@ -1257,6 +1310,123 @@ function handleCheckoutReturn(){
   }
 }
 
+/* ===================== ACCOUNTS (Supabase) ===================== */
+var SUPABASE_URL='https://fawthgfptiqhlygibiwh.supabase.co';
+var SUPABASE_KEY='sb_publishable_k0hCds4ONf512kuH6_pDYA_69hSJwZc';
+var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+var currentUser=null, currentProfile=null;
+
+function acctMsg(id,t,ok){ var e=document.getElementById(id); if(e){ e.textContent=t; e.style.color=ok?'#0f6e56':'var(--red)'; e.style.display=t?'block':'none'; } }
+function acctTab(t){
+  document.getElementById('tab-login').style.display=(t==='login')?'block':'none';
+  document.getElementById('tab-signup').style.display=(t==='signup')?'block':'none';
+  document.getElementById('tab-login-btn').className='tip-btn'+(t==='login'?' tipped':'');
+  document.getElementById('tab-signup-btn').className='tip-btn'+(t==='signup'?' tipped':'');
+}
+
+async function refreshAuth(){
+  if(!sb) return;
+  try{
+    var s=await sb.auth.getSession(); var session=s.data?s.data.session:null;
+    currentUser=session?session.user:null;
+    if(currentUser){ var pr=await sb.from('profiles').select('*').eq('id',currentUser.id).maybeSingle(); currentProfile=pr.data||null; }
+    else currentProfile=null;
+  }catch(e){ console.error('auth',e); }
+  updateAuthUI();
+}
+
+function updateAuthUI(){
+  var loggedIn=!!currentUser;
+  var a=document.getElementById('nav-account'); if(a) a.textContent=loggedIn?'My Account':'Login';
+  var am=document.getElementById('nav-account-m'); if(am) am.textContent=loggedIn?'My Account':'Login';
+  var lo=document.getElementById('acct-loggedout'), li=document.getElementById('acct-loggedin');
+  if(lo&&li){ lo.style.display=loggedIn?'none':'block'; li.style.display=loggedIn?'block':'none'; }
+  var gate=document.getElementById('orderGate'); if(gate) gate.style.display=loggedIn?'none':'block';
+  if(loggedIn){ renderAccount(); prefillOrder(); }
+}
+
+function prefillOrder(){
+  if(!currentProfile||!currentUser) return; var p=currentProfile;
+  function setv(id,v){ var e=document.getElementById(id); if(e&&v!=null&&v!==''&&e.value==='') e.value=v; }
+  setv('cust-name',p.full_name); setv('cust-email',currentUser.email); setv('cust-phone',p.phone); setv('cust-age',p.age);
+  setv('cust-address',p.street_address); setv('cust-unit',p.unit_number); setv('cust-gate',p.gate_code);
+  var r=document.getElementById('cust-reason'); if(r&&p.reason&&!r.value) r.value=p.reason;
+  if(p.sms_consent){ var s=document.getElementById('consent-sms'); if(s) s.checked=true; }
+  if(p.email_consent){ var s2=document.getElementById('consent-email'); if(s2) s2.checked=true; }
+}
+
+async function renderAccount(){
+  if(!currentUser) return; var p=currentProfile||{};
+  var box=document.getElementById('acct-profile');
+  if(box){ box.innerHTML='<div style="font-weight:700;font-size:18px;margin-bottom:6px;">Hi '+(p.full_name||currentUser.email)+' 👋</div>'+
+    '<div style="font-size:14px;color:var(--gray-600);line-height:1.8;">Email: '+currentUser.email+'<br>Phone: '+(p.phone||'—')+' · Age: '+(p.age||'—')+'<br>Goal: '+(p.reason||'—')+'<br>SMS updates: '+(p.sms_consent?'on':'off')+' · Marketing: '+(p.email_consent?'on':'off')+'</div>'; }
+  try{ var rc=await sb.from('recurring_orders').select('*').eq('customer_id',currentUser.id).maybeSingle();
+    var rec=document.getElementById('acct-recurring');
+    if(rec){ if(rc.data&&rc.data.active){ var cfg=rc.data.config||{}; var n=(cfg.meals||[]).reduce(function(a,m){return a+(m.qty||0);},0);
+        rec.innerHTML='<div style="font-weight:700;margin-bottom:6px;">Your weekly order 🔁</div><div style="font-size:14px;color:var(--gray-600);">'+n+' meals saved to repeat each week. <a href="#" onclick="showPage(\'order\');return false;" style="color:var(--red);text-decoration:underline;">Order this week →</a></div>';
+      } else { rec.innerHTML='<div style="font-weight:700;margin-bottom:6px;">Your weekly order 🔁</div><div style="font-size:14px;color:var(--gray-600);">No weekly order saved yet. Tick &ldquo;repeat weekly&rdquo; when you order to save it here.</div>'; } }
+  }catch(e){}
+  try{ var oh=await sb.from('orders').select('id,ordered_at,total,status').order('ordered_at',{ascending:false}).limit(20);
+    var h=document.getElementById('acct-history');
+    if(h){ if(oh.data&&oh.data.length){ h.innerHTML='<div style="font-weight:700;margin-bottom:8px;">Order history</div>'+oh.data.map(function(o){ return '<div class="s-line"><span>'+new Date(o.ordered_at).toLocaleDateString()+' · '+(o.status||'')+'</span><span>$'+Number(o.total||0).toFixed(2)+'</span></div>'; }).join(''); }
+      else h.innerHTML='<div style="font-weight:700;margin-bottom:8px;">Order history</div><div style="font-size:14px;color:var(--gray-400)">No orders yet.</div>'; } }
+  catch(e){}
+}
+
+async function doSignup(){
+  if(!sb){ acctMsg('su-msg','Accounts are temporarily unavailable.'); return; }
+  var name=gv('su-name'), email=gv('su-email'), pass=gv('su-pass');
+  if(!name||!email||!pass){ acctMsg('su-msg','Please enter your name, email, and a password.'); return; }
+  if(pass.length<6){ acctMsg('su-msg','Password must be at least 6 characters.'); return; }
+  acctMsg('su-msg','Creating your account…',true);
+  var r=await sb.auth.signUp({email:email,password:pass,options:{data:{full_name:name}}});
+  if(r.error){ acctMsg('su-msg',r.error.message); return; }
+  if(r.data&&r.data.session){ await refreshAuth(); showPage('account'); }
+  else { acctMsg('su-msg','Account created! Check your email to confirm, then log in.',true); }
+}
+
+async function doLogin(){
+  if(!sb){ acctMsg('li-msg','Accounts are temporarily unavailable.'); return; }
+  var email=gv('li-email'), pass=gv('li-pass');
+  if(!email||!pass){ acctMsg('li-msg','Enter your email and password.'); return; }
+  acctMsg('li-msg','Logging in…',true);
+  var r=await sb.auth.signInWithPassword({email:email,password:pass});
+  if(r.error){ acctMsg('li-msg',r.error.message); return; }
+  await refreshAuth(); showPage('account');
+}
+
+async function doLogout(){ if(sb) await sb.auth.signOut(); await refreshAuth(); showPage('home'); }
+
+function computeTotals(order){
+  var mSub=0,cnt=0;
+  order.meals.forEach(function(m){ var p=PROTEINS[m.protein]; var price=p.base+(m.size>5?(m.size-5)*p.upcharge:0); mSub+=price*m.qty; cnt+=m.qty; });
+  var bSub=0; order.bulk.forEach(function(b){ var arr=b.cat==='protein'?BULK_P:(b.cat==='carb'?BULK_C:BULK_V); bSub+=arr[b.idx].p*b.lbs; });
+  var subtotal=mSub+bSub, show15=cnt>=15;
+  var dSub=order.subscribed?subtotal*0.05:0, d15=show15?subtotal*0.05:0;
+  var discounted=subtotal-dSub-d15, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
+  var tip=order.tipMode==='custom'?(order.customTip||0):(order.tipMode!=='none'?discounted*parseFloat(order.tipMode):0);
+  return {subtotal:subtotal,dSub:dSub,d15:d15,discounted:discounted,tax:tax,cc:cc,tip:tip,total:discounted+tax+cc+tip,cnt:cnt};
+}
+
+async function saveOrderToDb(order){
+  if(!sb||!currentUser) return null;
+  var t=computeTotals(order), sl=computeShoppingList(order), c=order.customer;
+  var repeat=(document.getElementById('repeat-weekly')&&document.getElementById('repeat-weekly').checked)||false;
+  try{
+    await sb.from('profiles').update({full_name:c.name,phone:c.phone,age:parseInt(c.age)||null,street_address:c.address,unit_number:c.unit,gate_code:c.gate,reason:c.reason,sms_consent:c.smsConsent,email_consent:c.emailConsent,is_subscribed:order.subscribed,updated_at:new Date().toISOString()}).eq('id',currentUser.id);
+    var ins=await sb.from('orders').insert({customer_id:currentUser.id,customer_name:c.name,customer_email:c.email,customer_phone:c.phone,is_subscribed:order.subscribed,special_notes:c.notes,tip_mode:String(order.tipMode),tip_amount:t.tip,subtotal:t.subtotal,discount_subscription:t.dSub,discount_bulk:0,tax_amount:t.tax,cc_fee:t.cc,total:t.total,reason:c.reason,sms_consent:c.smsConsent,email_consent:c.emailConsent,terms_accepted:c.terms,shopping_list:sl,is_recurring:repeat,status:'received'}).select('id').single();
+    if(ins.error){ console.error('order insert',ins.error); return null; }
+    var oid=ins.data.id;
+    var mealRows=order.meals.map(function(m,idx){ var p=PROTEINS[m.protein]; var price=p.base+(m.size>5?(m.size-5)*p.upcharge:0); return {order_id:oid,config_number:idx+1,protein:p.label,protein_oz:m.size,protein_base_price:p.base,protein_upcharge:p.upcharge,side_1:m.sides[0]?m.sides[0].name:null,side_2:m.sides[1]?m.sides[1].name:null,portions:m.qty,price_per_meal:price,line_total:price*m.qty}; });
+    if(mealRows.length){ var mr=await sb.from('order_meals').insert(mealRows); if(mr.error)console.error('meals',mr.error); }
+    var bulkRows=order.bulk.map(function(b){ var arr=b.cat==='protein'?BULK_P:(b.cat==='carb'?BULK_C:BULK_V); return {order_id:oid,item_type:b.cat,item_name:arr[b.idx].l,quantity_lbs:b.lbs,price_per_lb:arr[b.idx].p,line_total:arr[b.idx].p*b.lbs}; });
+    if(bulkRows.length){ var br=await sb.from('order_bulk').insert(bulkRows); if(br.error)console.error('bulk',br.error); }
+    if(repeat){ await sb.from('recurring_orders').upsert({customer_id:currentUser.id,config:{meals:order.meals,bulk:order.bulk,subscribed:order.subscribed,tipMode:String(order.tipMode),customTip:order.customTip},active:true,updated_at:new Date().toISOString()}); }
+    return oid;
+  }catch(e){ console.error('saveOrderToDb',e); return null; }
+}
+
+
 // Init order page
 buildConfigs();
 buildBulk('bulkProteins', BULK_P);
@@ -1264,6 +1434,8 @@ buildBulk('bulkCarbs', BULK_C);
 buildBulk('bulkVeggies', BULK_V);
 recalc();
 handleCheckoutReturn();
+refreshAuth();
+if(sb){ sb.auth.onAuthStateChange(function(){ refreshAuth(); }); }
 </script>
 </body>
 </html>
