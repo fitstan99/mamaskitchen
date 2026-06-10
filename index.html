@@ -875,7 +875,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
       <div style="background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
         <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" onchange="toggleBillingAuth()" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change, pause, or cancel anytime from your account.</span></label>
-        <label id="billing-auth-wrap" style="display:none;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--gray-600);margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);"><input type="checkbox" id="billing-auth" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>I authorize Mama's Kitchen to automatically charge my saved card each week for this recurring order, until I pause or cancel.<br><span class="consent-fine">You'll get a Stripe receipt each week. Manage or cancel anytime in your account before the Sunday deadline.</span></span></label>
+        <label id="billing-auth-wrap" style="display:none;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--gray-600);margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);"><input type="checkbox" id="billing-auth" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>I authorize Mama's Kitchen to automatically charge my saved card each week for this recurring order, until I pause or cancel.<br><span class="consent-fine">You'll get a card receipt each week. Manage or cancel anytime in your account before the Sunday deadline.</span></span></label>
       </div>
 
       <!-- 15+ BANNER -->
@@ -933,7 +933,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div id="extrasLines"></div>
         <hr class="s-divider">
         <div id="summaryRows"></div>
-        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through Stripe — we never see your card details.</div>
+        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through CardConnect (Fiserv) — your card details never touch this website.</div>
       </div>
 
       <!-- CONSENT -->
@@ -942,6 +942,14 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <label class="consent-row"><input type="checkbox" id="consent-sms"><span>Text me order updates &amp; my pickup window. <span class="req-star">*</span><br><span class="consent-fine">Msg &amp; data rates may apply. Reply STOP to opt out.</span></span></label>
         <label class="consent-row"><input type="checkbox" id="consent-email"><span>Email me occasional offers &amp; news.<span class="opt-tag">Optional</span></span></label>
         <label class="consent-row"><input type="checkbox" id="consent-terms"><span>I accept the <a href="#" onclick="showPage('terms');return false;">Terms &amp; Privacy Policy</a> — orders are pre-paid &amp; made fresh to order. <span class="req-star">*</span></span></label>
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="order-sec-header">Payment</div>
+      <p style="font-size:14px;color:var(--gray-400);margin-bottom:12px;">Enter your card below. Your card goes straight to our payment processor (CardConnect) inside a secure box — the details never touch this website or our servers.</p>
+      <div style="background:var(--gray-100);border-radius:12px;padding:18px;margin-bottom:24px;">
+        <iframe id="tokenframe" name="tokenframe" title="Secure card entry" frameborder="0" scrolling="no" width="100%" height="240" style="border:0;display:block;"></iframe>
+        <div id="cardStatus" style="font-size:13px;color:var(--gray-400);margin-top:2px;min-height:18px;">&nbsp;</div>
       </div>
 
       <!-- PLACE ORDER -->
@@ -1448,17 +1456,33 @@ function placeOrder(){
   if(order.meals.length===0 && order.bulk.length===0 && (order.extras||[]).length===0){ alert('Please add at least one meal, bulk item, or extra before placing your order.'); return; }
   var _minBad=null; (order.extras||[]).forEach(function(e){ if(e.qty<e.min) _minBad=e.name+' (minimum '+e.min+' per order)'; });
   if(_minBad){ alert('Please order at least the minimum for '+_minBad+'.'); return; }
+  if(!window._ccToken){ alert('Please enter your card details in the Payment box above before placing your order.'); var pf=document.getElementById('tokenframe'); if(pf) window.scrollTo(0, pf.getBoundingClientRect().top + window.pageYOffset - 120); return; }
   var btn=document.getElementById('placeOrderBtn');
-  btn.disabled=true; btn.textContent='Processing…';
-  emailOwner(order).catch(function(){});
-  saveOrderToDb(order).catch(function(e){ console.error('db save',e); });
-  fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)})
-    .then(function(r){ return r.ok?r.json():null; })
-    .then(function(d){
-      if(d&&d.url){ window.location.href=d.url; return; }
-      orderFallbackSuccess(btn);
+  btn.disabled=true; btn.textContent='Processing payment…';
+  fetch('/api/cardpointe',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({token:window._ccToken, expiry:(window._ccExpiry||''), order:order})})
+    .then(function(r){ return r.json().then(function(j){ return {status:r.status, j:j}; }).catch(function(){ return {status:r.status, j:{}}; }); })
+    .then(function(res){
+      var j=res.j||{};
+      if(res.status===200 && j.approved){
+        emailOwner(order).catch(function(){});
+        saveOrderToDb(order).catch(function(e){ console.error('db save',e); });
+        var b=document.getElementById('successBanner'); if(b) b.style.display='block';
+        btn.textContent='Paid \u2713';
+        if(b) window.scrollTo(0, b.offsetTop-100);
+        return;
+      }
+      if(j.notConfigured){
+        // Gateway password not set yet — still capture the order so it isn't lost.
+        emailOwner(order).catch(function(){});
+        saveOrderToDb(order).catch(function(e){ console.error('db save',e); });
+        orderFallbackSuccess(btn);
+        return;
+      }
+      btn.disabled=false; btn.textContent='Place My Order \ud83c\udf7d\ufe0f';
+      alert(j.message || 'Your card could not be processed. Please double-check the number, expiry, and CVV and try again.');
     })
-    .catch(function(){ orderFallbackSuccess(btn); });
+    .catch(function(){ btn.disabled=false; btn.textContent='Place My Order \ud83c\udf7d\ufe0f'; alert('Payment could not be completed right now. Please try again in a moment.'); });
 }
 
 function orderFallbackSuccess(btn){
@@ -1477,6 +1501,29 @@ function sendContact(){
   document.getElementById('c-name').value=''; document.getElementById('c-email').value=''; document.getElementById('c-subject').value=''; document.getElementById('c-msg').value='';
 }
 
+var CCSITE='isv'; // CardConnect site — change to your production site (e.g. 'fts') when going live
+window._ccToken=''; window._ccExpiry='';
+function buildCardFrame(){
+  var f=document.getElementById('tokenframe'); if(!f) return;
+  var css='body{margin:0;font-family:Arial,Helvetica,sans-serif;}'
+    +'input,select{width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;margin:0 0 10px 0;border:1.5px solid #e2e2e2;border-radius:10px;color:#1a1a1a;background:#fff;}'
+    +'input:focus,select:focus{outline:none;border-color:#E0342A;}'
+    +'select{height:46px;}.error{color:#E0342A;font-size:12px;margin:-6px 0 8px;}';
+  var params='?useexpiry=true&usecvv=true&cardinputmaxlength=19&unique=true&formatinput=true&tokenizewheninactive=true&inactivityto=750&enhancedresponse=true'
+    +'&placeholder='+encodeURIComponent('Card number')
+    +'&placeholdermonth=MM&placeholderyear=YY&placeholdercvv=CVV'
+    +'&css='+encodeURIComponent(css);
+  f.src='https://'+CCSITE+'.cardconnect.com/itoke/ajax-tokenizer.html'+params;
+}
+window.addEventListener('message', function(ev){
+  if(typeof ev.origin==='string' && ev.origin.indexOf('cardconnect.com')===-1) return;
+  var d; try{ d=JSON.parse(ev.data); }catch(e){ return; }
+  if(typeof d.message==='undefined') return;
+  var st=document.getElementById('cardStatus');
+  if(d.validationError){ window._ccToken=''; if(st){ st.textContent='Please check the card details.'; st.style.color='#E0342A'; } return; }
+  if(d.message){ window._ccToken=d.message; window._ccExpiry=d.expiry||window._ccExpiry; if(st){ st.textContent='Card ready \u2713'; st.style.color='#15A06B'; } }
+  else { window._ccToken=''; if(st){ st.textContent=''; } }
+});
 function handleCheckoutReturn(){
   var q=new URLSearchParams(window.location.search);
   if(q.get('paid')==='1'){
@@ -1635,6 +1682,7 @@ buildConfigs();
 buildBulk('bulkProteins', BULK_P, PROTEIN_MACROS, 16);
 buildBulk('bulkCarbs', BULK_C, CARB_MACROS, 3.2);
 buildBulk('bulkVeggies', BULK_V, VEG_MACROS, 3.2);
+buildCardFrame();
 buildExtras();
 recalc();
 handleCheckoutReturn();
