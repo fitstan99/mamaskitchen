@@ -722,7 +722,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div class="order-header">
       <div class="section-label" style="color:rgba(255,255,255,0.35)">Place Your Order</div>
       <h1>Build your<br><em>perfect week.</em></h1>
-      <p>Minimum 5 meals · Pickup or delivery Monday · Order by Sunday midnight</p>
+      <p>5-meal minimum, or order bulk only · Pickup or delivery Monday · Order by Sunday midnight</p>
     </div>
     <div class="order-deadline">
       📅 &nbsp;<strong>Order deadline: Sunday at midnight EST</strong> &nbsp;·&nbsp; Pickup / delivery Monday 3&ndash;6 PM &nbsp;·&nbsp; large orders split Mon + Thu
@@ -1146,7 +1146,7 @@ function buildConfigs(){
       '<div class="config-block'+(req?'':' optional-cfg')+'" id="cfg'+i+'">'+
         '<div class="config-header-row">'+
           '<span class="config-name">Meal Configuration '+(i+1)+'</span>'+
-          (req?'<span class="badge-req">Required</span>':'<span class="badge-opt">Optional</span>')+
+          '<span class="badge-opt">Optional</span>'+
         '</div>'+
         '<div class="cfg-body"><div class="cfg-main">'+
         '<div class="row3">'+
@@ -1326,7 +1326,7 @@ function placeOrder(){
   if(!document.getElementById('consent-sms').checked){ alert('Please agree to receive SMS order updates — we text you to confirm your pickup/delivery window.'); return; }
   if(!document.getElementById('consent-terms').checked){ alert('Please read and accept the Terms & Privacy Policy to place your order.'); return; }
   var order=collectOrder();
-  if(order.meals.length===0){ alert('Please configure at least one meal before placing your order.'); return; }
+  if(order.meals.length===0 && order.bulk.length===0){ alert('Please add at least one meal, or a bulk item, before placing your order.'); return; }
   var btn=document.getElementById('placeOrderBtn');
   btn.disabled=true; btn.textContent='Processing…';
   emailOwner(order).catch(function(){});
