@@ -304,6 +304,19 @@ select:disabled { opacity: 0.4; cursor: not-allowed; background-color: var(--gra
 .portions-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; border-top: 1px solid var(--gray-100); padding-top: 14px; }
 .portions-label { font-size: 13px; color: var(--gray-600); white-space: nowrap; }
 .portions-row input { max-width: 80px; }
+.cfg-body { display:flex; gap:20px; align-items:stretch; }
+.cfg-main { flex:1; min-width:0; }
+.cfg-macros { width:185px; flex-shrink:0; background:linear-gradient(160deg,#FFF0ED,#ffffff); border:1px solid var(--gray-200); border-radius:12px; padding:16px; }
+.cfg-macros-title { font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--gray-400); font-weight:700; margin-bottom:8px; }
+.macro-cal { font-family:var(--font-display); font-size:30px; font-weight:900; color:var(--red); line-height:1; }
+.macro-cal small { font-size:13px; color:var(--gray-400); font-weight:400; }
+.macro-bars { display:flex; height:6px; border-radius:4px; overflow:hidden; margin:10px 0; background:var(--gray-100); }
+.macro-bars span { display:block; height:100%; }
+.macro-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-top:1px solid var(--gray-100); }
+.macro-row span:first-child { color:var(--gray-600); }
+.macro-row span:last-child { font-weight:700; color:var(--text); }
+.macro-note { font-size:10px; color:var(--gray-400); margin-top:8px; }
+@media(max-width:760px){ .cfg-body { flex-direction:column; } .cfg-macros { width:auto; } }
 .portions-tip-tag { font-size: 12px; color: #2d6a10; background: #eaf3de; border-radius: 100px; padding: 4px 10px; font-weight: 500; }
 .bulk-item { display: grid; grid-template-columns: 1fr 80px 130px; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
 .bulk-item:last-child { border-bottom: none; }
@@ -1100,6 +1113,10 @@ var PROTEINS = [
 ];
 var CARBS = ['Jasmine Rice','Brown Rice','Couscous','Pasta','Sweet Potatoes','Mashed Potatoes','Chickpeas','Black Beans','Red Beans','Brown Beans','Corn','Lentils'];
 var VEGS  = ['Broccoli','Green Beans','Cauliflower','Carrots','Mixed Vegetables'];
+// Estimated macros. Proteins = per cooked oz. Sides = per 5oz cooked serving.
+var PROTEIN_MACROS=[{cal:47,p:8.8,c:0,f:1.0},{cal:50,p:7.7,c:0,f:2.0},{cal:58,p:8.0,c:0,f:2.6},{cal:52,p:7.3,c:0,f:2.6},{cal:58,p:6.3,c:0,f:3.7},{cal:28,p:6.8,c:0,f:0.3}];
+var CARB_MACROS=[{cal:185,p:3.8,c:40,f:0.4},{cal:159,p:3.7,c:34,f:1.3},{cal:159,p:5.4,c:33,f:0.3},{cal:224,p:8.2,c:44,f:1.3},{cal:128,p:2.8,c:30,f:0.3},{cal:160,p:2.8,c:24,f:4.0},{cal:233,p:12.6,c:38,f:3.7},{cal:187,p:12.6,c:34,f:0.7},{cal:180,p:12.4,c:32,f:0.7},{cal:203,p:12.8,c:37,f:1.0},{cal:136,p:4.8,c:30,f:2.1},{cal:165,p:12.8,c:28,f:0.6}];
+var VEG_MACROS=[{cal:50,p:3.4,c:10,f:0.6},{cal:50,p:2.7,c:11,f:0.4},{cal:33,p:2.6,c:6,f:0.7},{cal:50,p:1.1,c:12,f:0.3},{cal:71,p:3.7,c:14,f:0.4}];
 var BULK_P = [{l:"Mom's Organic Chicken Breast",p:18},{l:"Mom's Organic Ground Turkey 93/7",p:18},{l:"Mom's Organic Pork Chops",p:18},{l:"Mom's Grass-Fed Ground Beef 93/7",p:20},{l:"Mom's Wild-Caught Salmon",p:24},{l:"Mom's Wild-Caught Shrimp",p:24}];
 var BULK_C = CARBS.map(function(x){return{l:x,p:8};});
 var BULK_V = VEGS.map(function(x){return{l:x,p:8};});
@@ -1131,6 +1148,7 @@ function buildConfigs(){
           '<span class="config-name">Meal Configuration '+(i+1)+'</span>'+
           (req?'<span class="badge-req">Required</span>':'<span class="badge-opt">Optional</span>')+
         '</div>'+
+        '<div class="cfg-body"><div class="cfg-main">'+
         '<div class="row3">'+
           '<div><div class="field-label">1 — Protein</div><select id="p_'+i+'" onchange="onPChange('+i+')"><option value="">Choose protein</option>'+PROTEINS.map(function(p,j){return'<option value="'+j+'">'+p.label+'</option>';}).join('')+'</select></div>'+
           '<div><div class="field-label">Size</div><select id="s_'+i+'" onchange="onSChange('+i+')"><option value="5">5 oz</option><option value="6">6 oz</option><option value="7">7 oz</option><option value="8">8 oz</option></select></div>'+
@@ -1146,6 +1164,17 @@ function buildConfigs(){
           '<input type="number" id="qty_'+i+'" min="1" step="1" value="'+(req?5:'')+'" placeholder="'+(req?'5':'')+'" oninput="recalc()" style="max-width:80px">'+
           '<span class="portions-tip-tag">💡 15+ meals = extra 5% off</span>'+
         '</div>'+
+      '</div>'+
+      '<div class="cfg-macros" id="macros_'+i+'">'+
+        '<div class="cfg-macros-title">Macros / meal</div>'+
+        '<div class="macro-cal"><span id="mc_cal_'+i+'">—</span> <small>kcal</small></div>'+
+        '<div class="macro-bars" id="mc_bars_'+i+'"></div>'+
+        '<div class="macro-row"><span>Protein</span><span id="mc_p_'+i+'">— g</span></div>'+
+        '<div class="macro-row"><span>Carbs</span><span id="mc_c_'+i+'">— g</span></div>'+
+        '<div class="macro-row"><span>Fat</span><span id="mc_f_'+i+'">— g</span></div>'+
+        '<div class="macro-note">Estimated · per meal</div>'+
+      '</div>'+
+      '</div>'+
       '</div>';
   }
 }
@@ -1167,6 +1196,7 @@ function recalc(){
     var pv=pi.value, sz=document.getElementById('s_'+i).value, qty=parseInt(document.getElementById('qty_'+i).value)||0;
     var s1El=document.getElementById('s1_'+i),s2El=document.getElementById('s2_'+i);
     updatePH(i);
+    updateMacros(i);
     if(!pv||!qty) continue;
     var price=mealPrice(pv,sz),lineSub=price*qty; mSub+=lineSub; tot+=qty;
     var parts=[];
@@ -1196,6 +1226,19 @@ function recalc(){
   if(tipAmt>0) rows+='<div class="s-line"><span>Tip for Mom 💛</span><span>'+fmt(tipAmt)+'</span></div>';
   rows+='<div class="s-total"><span>Total</span><span>'+fmt(total)+'</span></div>';
   var sr=document.getElementById('summaryRows'); if(sr) sr.innerHTML=rows;
+}
+
+function updateMacros(i){
+  var pEl=document.getElementById('p_'+i); if(!pEl) return;
+  var calEl=document.getElementById('mc_cal_'+i),pe=document.getElementById('mc_p_'+i),ce=document.getElementById('mc_c_'+i),fe=document.getElementById('mc_f_'+i),bars=document.getElementById('mc_bars_'+i);
+  if(!pEl.value){ if(calEl)calEl.textContent='—'; if(pe)pe.textContent='— g'; if(ce)ce.textContent='— g'; if(fe)fe.textContent='— g'; if(bars)bars.innerHTML=''; return; }
+  var pi=parseInt(pEl.value),oz=parseInt(document.getElementById('s_'+i).value)||5,pm=PROTEIN_MACROS[pi];
+  var cal=pm.cal*oz,pr=pm.p*oz,cb=pm.c*oz,ft=pm.f*oz;
+  ['s1_','s2_'].forEach(function(pre){ var el=document.getElementById(pre+i); var v=el?el.value:''; if(v){ var t=v.charAt(0),j=parseInt(v.slice(1)); var m=(t==='c')?CARB_MACROS[j]:VEG_MACROS[j]; if(m){ cal+=m.cal; pr+=m.p; cb+=m.c; ft+=m.f; } } });
+  if(calEl)calEl.textContent=Math.round(cal);
+  if(pe)pe.textContent=Math.round(pr)+' g'; if(ce)ce.textContent=Math.round(cb)+' g'; if(fe)fe.textContent=Math.round(ft)+' g';
+  var pcal=pr*4,ccal=cb*4,fcal=ft*9,tot=pcal+ccal+fcal||1;
+  if(bars) bars.innerHTML='<span style="width:'+(pcal/tot*100).toFixed(1)+'%;background:var(--red)"></span><span style="width:'+(ccal/tot*100).toFixed(1)+'%;background:#E8A33D"></span><span style="width:'+(fcal/tot*100).toFixed(1)+'%;background:#5FA94C"></span>';
 }
 
 // Where order + contact notifications are delivered.
