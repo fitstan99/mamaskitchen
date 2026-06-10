@@ -946,10 +946,12 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
       <!-- PAYMENT -->
       <div class="order-sec-header">Payment</div>
-      <p style="font-size:14px;color:var(--gray-400);margin-bottom:12px;">Enter your card below. Your card goes straight to our payment processor (CardConnect) inside a secure box — the details never touch this website or our servers.</p>
+      <p style="font-size:14px;color:var(--gray-400);margin-bottom:12px;">Your card number and security code go straight into our payment processor's secure box (CardConnect) — those details never touch this website or our servers.</p>
       <div style="background:var(--gray-100);border-radius:12px;padding:18px;margin-bottom:24px;">
-        <iframe id="tokenframe" name="tokenframe" title="Secure card entry" frameborder="0" scrolling="no" width="100%" height="240" style="border:0;display:block;"></iframe>
-        <div id="cardStatus" style="font-size:13px;color:var(--gray-400);margin-top:2px;min-height:18px;">&nbsp;</div>
+        <iframe id="tokenframe" name="tokenframe" title="Secure card entry" frameborder="0" scrolling="no" width="100%" height="178" style="border:0;display:block;"></iframe>
+        <label for="cardExp" style="display:block;font-size:12px;font-weight:600;color:var(--gray-600);margin:4px 0 6px;">Expiration (MM / YY)</label>
+        <input id="cardExp" inputmode="numeric" autocomplete="cc-exp" maxlength="7" placeholder="MM / YY" oninput="formatExp(this)" style="width:100%;box-sizing:border-box;font-size:15px;height:48px;padding:12px 14px;border:1.5px solid #e2e2e2;border-radius:10px;color:var(--text);background:#fff;">
+        <div id="cardStatus" style="font-size:13px;color:var(--gray-400);margin-top:10px;min-height:18px;">&nbsp;</div>
       </div>
 
       <!-- PLACE ORDER -->
@@ -1456,11 +1458,14 @@ function placeOrder(){
   if(order.meals.length===0 && order.bulk.length===0 && (order.extras||[]).length===0){ alert('Please add at least one meal, bulk item, or extra before placing your order.'); return; }
   var _minBad=null; (order.extras||[]).forEach(function(e){ if(e.qty<e.min) _minBad=e.name+' (minimum '+e.min+' per order)'; });
   if(_minBad){ alert('Please order at least the minimum for '+_minBad+'.'); return; }
-  if(!window._ccToken){ alert('Please enter your card details in the Payment box above before placing your order.'); var pf=document.getElementById('tokenframe'); if(pf) window.scrollTo(0, pf.getBoundingClientRect().top + window.pageYOffset - 120); return; }
+  if(!window._ccToken){ alert('Please enter your card number and security code in the Payment box above before placing your order.'); var pf=document.getElementById('tokenframe'); if(pf) window.scrollTo(0, pf.getBoundingClientRect().top + window.pageYOffset - 120); return; }
+  var _ce=document.getElementById('cardExp'); var _expd=(_ce?_ce.value:'').replace(/\D/g,'');
+  var _mm=parseInt(_expd.slice(0,2),10);
+  if(_expd.length!==4 || !(_mm>=1 && _mm<=12)){ alert('Please enter the card expiration date as MM / YY.'); if(_ce){ _ce.focus(); window.scrollTo(0, _ce.getBoundingClientRect().top + window.pageYOffset - 140); } return; }
   var btn=document.getElementById('placeOrderBtn');
   btn.disabled=true; btn.textContent='Processing payment…';
   fetch('/api/cardpointe',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({token:window._ccToken, expiry:(window._ccExpiry||''), order:order})})
+    body:JSON.stringify({token:window._ccToken, expiry:_expd, order:order})})
     .then(function(r){ return r.json().then(function(j){ return {status:r.status, j:j}; }).catch(function(){ return {status:r.status, j:{}}; }); })
     .then(function(res){
       var j=res.j||{};
@@ -1505,16 +1510,19 @@ var CCSITE='isv'; // CardConnect site — change to your production site (e.g. '
 window._ccToken=''; window._ccExpiry='';
 function buildCardFrame(){
   var f=document.getElementById('tokenframe'); if(!f) return;
-  var css='body{margin:0;font-family:Arial,Helvetica,sans-serif;}'
-    +'input,select{width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;margin:0 0 10px 0;border:1.5px solid #e2e2e2;border-radius:10px;color:#1a1a1a;background:#fff;}'
-    +'input:focus,select:focus{outline:none;border-color:#E0342A;}'
-    +'select{height:46px;}.error{color:#E0342A;font-size:12px;margin:-6px 0 8px;}';
-  var params='?useexpiry=true&usecvv=true&cardinputmaxlength=19&unique=true&formatinput=true&tokenizewheninactive=true&inactivityto=750&enhancedresponse=true'
+  var css='body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}'
+    +'*{box-sizing:border-box;}'
+    +'label{display:block;font-size:12px;font-weight:600;color:#6b6b6b;margin:0 0 6px;}'
+    +'input{width:100%;box-sizing:border-box;font-size:15px;height:48px;padding:12px 14px;margin:0 0 12px 0;border:1.5px solid #e2e2e2;border-radius:10px;color:#1a1a1a;background:#fff;}'
+    +'input:focus{outline:none;border-color:#15a06b;}'
+    +'.error{color:#E0342A;font-size:12px;margin:-8px 0 8px;}';
+  var params='?usecvv=true&cardinputmaxlength=19&unique=true&formatinput=true&tokenizewheninactive=true&inactivityto=750&enhancedresponse=true'
     +'&placeholder='+encodeURIComponent('Card number')
-    +'&placeholdermonth=MM&placeholderyear=YY&placeholdercvv=CVV'
+    +'&placeholdercvv=CVV'
     +'&css='+encodeURIComponent(css);
   f.src='https://'+CCSITE+'.cardconnect.com/itoke/ajax-tokenizer.html'+params;
 }
+function formatExp(el){ var d=el.value.replace(/\D/g,'').slice(0,4); el.value = d.length>2 ? (d.slice(0,2)+' / '+d.slice(2)) : d; }
 window.addEventListener('message', function(ev){
   if(typeof ev.origin==='string' && ev.origin.indexOf('cardconnect.com')===-1) return;
   var d; try{ d=JSON.parse(ev.data); }catch(e){ return; }
