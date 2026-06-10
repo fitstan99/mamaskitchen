@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
     bulkSub += unit * lbs;
   }
   const subtotal = mealSub + bulkSub;
-  if (mealCount === 0 || subtotal <= 0) return res.status(400).json({ error: 'Empty order' });
+  if (subtotal <= 0) return res.status(400).json({ error: 'Empty order' });
 
   const show15 = mealCount >= 15;
   const discount = (order.subscribed ? subtotal * 0.05 : 0) + (show15 ? subtotal * 0.05 : 0);
@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
       mode: 'payment',
       customer_email: cust.email || undefined,
       line_items: [{ quantity: 1, price_data: { currency: 'usd', unit_amount: amount,
-        product_data: { name: `Mama's Kitchen - ${mealCount} meal${mealCount === 1 ? '' : 's'}`, description: descr } } }],
+        product_data: { name: mealCount > 0 ? `Mama's Kitchen - ${mealCount} meal${mealCount === 1 ? '' : 's'}` : "Mama's Kitchen - bulk order", description: descr } } }],
       metadata: meta,
       payment_intent_data: { metadata: meta },
       success_url: `${SITE}/?paid=1`,
