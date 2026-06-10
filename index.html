@@ -1298,7 +1298,7 @@ function onPChange(i){ var pi=document.getElementById('p_'+i).value,sEl=document
 function onSChange(i){ updatePH(i); recalc(); }
 function updatePH(i){ var pi=document.getElementById('p_'+i).value,sz=document.getElementById('s_'+i).value,el=document.getElementById('ph_'+i); if(!pi){el.textContent='';return;} var p=PROTEINS[parseInt(pi)],oz=parseInt(sz)||5,price=mealPrice(pi,sz),ex=oz>5?' (+'+fmt((oz-5)*p.upcharge)+')':''; el.textContent=fmt(price)+'/meal'+ex; }
 
-function buildBulk(cid,items){ var c=document.getElementById(cid); if(!c) return; c.innerHTML=''; items.forEach(function(item,i){ var id=cid+'_'+i; c.innerHTML+='<div class="bulk-item"><div><div class="bulk-name">'+item.l+'</div><div class="bulk-price-sub">'+fmt(item.p)+'/lb</div></div><input type="number" id="'+id+'" min="0" step="1" placeholder="0 lbs" oninput="recalc()" style="max-width:80px;text-align:center"><div class="bulk-calc" id="'+id+'_c">—</div></div>'; }); }
+function buildBulk(cid,items,macros,mult){ var c=document.getElementById(cid); if(!c) return; c.innerHTML=''; items.forEach(function(item,i){ var id=cid+'_'+i; var mac=''; if(macros&&macros[i]){ var m=macros[i]; mac=' · '+Math.round(m.cal*mult)+' kcal · '+Math.round(m.p*mult)+'P/'+Math.round(m.c*mult)+'C/'+Math.round(m.f*mult)+'F per lb'; } c.innerHTML+='<div class="bulk-item"><div><div class="bulk-name">'+item.l+'</div><div class="bulk-price-sub">'+fmt(item.p)+'/lb'+mac+'</div></div><input type="number" id="'+id+'" min="0" step="1" placeholder="0 lbs" oninput="recalc()" style="max-width:80px;text-align:center"><div class="bulk-calc" id="'+id+'_c">—</div></div>'; }); }
 
 function toggleSub(){ subscribed=!subscribed; document.getElementById('subToggle').classList.toggle('on',subscribed); document.getElementById('subLabel').textContent=subscribed?'Subscribed ✓ — 5% off applied!':'Subscribe and save 5%'; recalc(); }
 
@@ -1632,9 +1632,9 @@ async function saveOrderToDb(order){
 
 // Init order page
 buildConfigs();
-buildBulk('bulkProteins', BULK_P);
-buildBulk('bulkCarbs', BULK_C);
-buildBulk('bulkVeggies', BULK_V);
+buildBulk('bulkProteins', BULK_P, PROTEIN_MACROS, 16);
+buildBulk('bulkCarbs', BULK_C, CARB_MACROS, 3.2);
+buildBulk('bulkVeggies', BULK_V, VEG_MACROS, 3.2);
 buildExtras();
 recalc();
 handleCheckoutReturn();
