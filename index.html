@@ -240,6 +240,34 @@ nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
 .consent-row input[type=checkbox] { width:20px; height:20px; flex-shrink:0; margin-top:1px; accent-color:var(--red); cursor:pointer; }
 .consent-row a { color:var(--red); text-decoration:underline; }
 .consent-fine { font-size:11px; color:var(--gray-400); }
+.why-wrap { max-width:860px; margin:0 auto; padding:0 24px; }
+.why-sec { padding:64px 0; }
+.why-sec.dark { background:var(--black); color:#fff; }
+.why-sec.red { background:var(--red); color:#fff; }
+.why-hero { background:var(--black); color:#fff; padding:140px 0 76px; }
+.why-kicker { color:var(--red); font-weight:800; letter-spacing:.16em; font-size:12.5px; text-transform:uppercase; margin-bottom:18px; }
+.why-h1 { font-family:var(--font-display); font-size:clamp(34px,6vw,62px); font-weight:800; line-height:1.03; letter-spacing:-1px; margin:0; }
+.why-sub { font-size:19px; color:rgba(255,255,255,.72); line-height:1.62; margin-top:24px; max-width:680px; }
+.why-eyebrow { font-weight:800; letter-spacing:.13em; font-size:12px; text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+.why-sec.dark .why-eyebrow, .why-sec.red .why-eyebrow { color:#fff; opacity:.82; }
+.why-h2 { font-family:var(--font-display); font-size:clamp(26px,4.6vw,42px); font-weight:800; line-height:1.08; letter-spacing:-.5px; margin:0 0 20px; }
+.why-p { font-size:17px; line-height:1.74; color:#333; margin:0 0 16px; }
+.why-sec.dark .why-p, .why-sec.red .why-p { color:rgba(255,255,255,.84); }
+.why-big { font-family:var(--font-display); font-size:clamp(64px,13vw,140px); font-weight:800; line-height:.92; color:var(--red); letter-spacing:-3px; margin:6px 0 4px; }
+.why-sec.red .why-big { color:#fff; }
+.why-pull { font-family:var(--font-display); font-size:clamp(23px,4vw,34px); font-weight:800; line-height:1.2; border-left:5px solid var(--red); padding:8px 0 8px 22px; margin:30px 0; }
+.why-sec.dark .why-pull, .why-sec.red .why-pull { border-color:#fff; }
+.why-ledger { background:#fff; border:1px solid var(--gray-200); border-radius:14px; padding:6px 22px; margin:26px 0; box-shadow:0 8px 26px rgba(0,0,0,.06); }
+.why-ledger .row { display:flex; justify-content:space-between; gap:18px; padding:15px 0; border-bottom:1px solid var(--gray-100); font-size:16px; color:#333; }
+.why-ledger .row:last-child { border-bottom:none; font-weight:800; color:var(--red); font-size:17px; }
+.why-ledger .row span:last-child { font-weight:700; white-space:nowrap; }
+.why-name { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:18px 20px; margin-bottom:12px; }
+.why-name b { color:#fff; font-size:17px; }
+.why-name span { color:rgba(255,255,255,.78); font-size:15px; line-height:1.6; }
+.why-cta-btn { display:inline-block; background:#fff; color:var(--red); font-weight:800; font-size:18px; padding:18px 38px; border-radius:12px; border:none; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.18); }
+.why-cta-2 { display:inline-block; margin-left:6px; margin-top:14px; color:#fff; font-weight:700; font-size:15px; text-decoration:underline; cursor:pointer; background:none; border:none; }
+.why-fine { font-size:13px; color:var(--gray-400); margin-top:22px; }
+.why-sec.dark .why-fine, .why-sec.red .why-fine { color:rgba(255,255,255,.6); }
 .opt-tag { display:inline-block; font-size:10px; background:var(--gray-100); color:var(--gray-400); padding:2px 8px; border-radius:100px; margin-left:8px; font-weight:600; vertical-align:middle; }
 .extra-card { background:#fff; border:1.5px solid var(--gray-200); border-radius:14px; padding:24px; max-width:660px; }
 .extra-card-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
@@ -497,6 +525,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <li><a onclick="showPage('menu')" id="nav-menu">Menu</a></li>
     <li><a onclick="showPage('order')" id="nav-order">Order</a></li>
     <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><a onclick="showPage('why')" id="nav-why">Your WHY</a></li>
     <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
     <li><a onclick="showPage('account')" id="nav-account">Login</a></li>
   </ul>
@@ -511,6 +540,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <a onclick="showPage('menu');toggleMobile()">Menu</a>
   <a onclick="showPage('order');toggleMobile()">Order</a>
   <a onclick="showPage('about');toggleMobile()">About</a>
+  <a onclick="showPage('why');toggleMobile()">Your WHY</a>
   <a onclick="showPage('contact');toggleMobile()">Contact</a>
   <a onclick="showPage('account');toggleMobile()" id="nav-account-m">Login</a>
 </div>
@@ -1122,6 +1152,116 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 </div>
 
 <!-- ══════════════════════════════ TERMS & PRIVACY ══════════════════════════════ -->
+<!-- ══════════════════════════════ YOUR WHY ══════════════════════════════ -->
+<div class="page" id="page-why">
+
+  <section class="why-hero">
+    <div class="why-wrap">
+      <div class="why-kicker">⚠ Read this only if you can handle the math</div>
+      <h1 class="why-h1">Last year, you threw away<br>three weeks of your life.<br>And you paid extra for it.</h1>
+      <p class="why-sub">Most people will never finish this page, because the number at the bottom is embarrassing. If you'd rather stay comfortable, click away now — Mom won't chase you. But if you're ready to see exactly what "I'll just cook it myself" has been quietly costing you, keep reading.</p>
+    </div>
+  </section>
+
+  <section class="why-sec">
+    <div class="why-wrap">
+      <div class="why-eyebrow">The math you've been avoiding</div>
+      <h2 class="why-h2">One meal is never "just cooking."</h2>
+      <p class="why-p">It's a chain of chores you quietly agreed to do, for free, forever. Add up one single home-cooked meal — protein and two sides — honestly:</p>
+      <div class="why-ledger">
+        <div class="row"><span>Driving to the store and back</span><span>~12 min</span></div>
+        <div class="row"><span>Wandering the aisles &amp; waiting in line</span><span>~10 min</span></div>
+        <div class="row"><span>Washing, peeling, chopping</span><span>~14 min</span></div>
+        <div class="row"><span>Actually cooking it</span><span>~22 min</span></div>
+        <div class="row"><span>Scrubbing the pans, loading the sink</span><span>~12 min</span></div>
+        <div class="row"><span>Real cost of ONE plate</span><span>≈ 70 minutes</span></div>
+      </div>
+      <p class="why-p">An hour. For one plate. And then you do it again. And again. And again — like it's free. It isn't.</p>
+    </div>
+  </section>
+
+  <section class="why-sec dark">
+    <div class="why-wrap">
+      <div class="why-eyebrow">Now multiply it</div>
+      <h2 class="why-h2">This is where it starts to sting.</h2>
+      <p class="why-p">Say you eat ten of these a week. At an hour each, that's <strong>10 hours a week</strong>. Over <strong>43 hours a month</strong>. And across a year…</p>
+      <div class="why-big">520+ hours</div>
+      <p class="why-p">More than <strong>twenty full days</strong>. <strong>Three solid work-weeks</strong> — awake, on your feet, standing over a cutting board and a sink. Gone. And nobody refunded a single minute.</p>
+      <div class="why-pull">"You didn't lose minutes. You lost weeks — and you'll never get them back."</div>
+      <p class="why-p">Think ten meals is a lot? Fine. Cut it in half. Five meals a week is still <strong>a full day, every single month</strong>, that vanished into errands and dishwater.</p>
+    </div>
+  </section>
+
+  <section class="why-sec">
+    <div class="why-wrap">
+      <div class="why-eyebrow">And that's only the time</div>
+      <h2 class="why-h2">Now let's talk about the money.</h2>
+      <p class="why-p">While the clock was robbing you, your wallet was bleeding right alongside it:</p>
+      <div class="why-ledger">
+        <div class="row"><span>Food that rotted before you cooked it</span><span>$1,500+/yr</span></div>
+        <div class="row"><span>"Too tired to cook" takeout</span><span>$1,000–2,000/yr</span></div>
+        <div class="row"><span>Impulse junk grabbed while shopping hungry</span><span>$800–1,500/yr</span></div>
+        <div class="row"><span>Quietly leaving your account, every year</span><span>$3,000–5,000</span></div>
+      </div>
+      <p class="why-p">Read that bottom number again. That money wasn't <em>spent</em> — it was <strong>wasted</strong>. It bought you nothing. No memory, no progress, no joy. It evaporated, in spoiled vegetables and soggy delivery bags.</p>
+    </div>
+  </section>
+
+  <section class="why-sec red">
+    <div class="why-wrap">
+      <div class="why-eyebrow">Now picture what it could have been</div>
+      <h2 class="why-h2">Here's what that time and money actually bought you: nothing. Here's what it could have:</h2>
+      <p class="why-p"><strong>The vacation you keep "saving up for."</strong> It was sitting right there — in the food you let spoil and the dinners you handed to a delivery app. You didn't lack the money. You fed it to your trash can.</p>
+      <p class="why-p"><strong>The body you swore you'd get to "when things calm down."</strong> Those were the gym hours. You spent them peeling potatoes.</p>
+      <p class="why-p"><strong>The bedtime stories. The weekends. The evenings you were actually present</strong> for the people you love. Traded — quietly, night after night — for a sink full of dishes.</p>
+      <p class="why-p"><strong>The side business. The raise. The skill. The thing you keep saying you'd build "if you only had time."</strong> You had the time. Over 500 hours of it. You washed it down the drain.</p>
+      <div class="why-pull">"You never chose any of this on purpose. But you chose it — one peeled potato at a time."</div>
+    </div>
+  </section>
+
+  <section class="why-sec dark">
+    <div class="why-wrap">
+      <div class="why-eyebrow">Let's be honest</div>
+      <h2 class="why-h2">You were meant for more than this.</h2>
+      <p class="why-p">You are not on this earth to be your own grocery clerk, line cook, and dishwasher. That is <strong>not your highest use.</strong> It never was. And somewhere underneath the busyness, you already know that — which is exactly why this page is uncomfortable to read.</p>
+      <p class="why-p">Good. Stay uncomfortable for thirty more seconds.</p>
+    </div>
+  </section>
+
+  <section class="why-sec">
+    <div class="why-wrap">
+      <div class="why-eyebrow">The proof</div>
+      <h2 class="why-h2">The people you admire already solved this. They didn't out-work you on chores — they refused to do them.</h2>
+    </div>
+    <div class="why-wrap" style="background:var(--black);border-radius:18px;padding:34px 26px;margin-top:8px;">
+      <div class="why-name"><b>Alex Hormozi</b> — built a portfolio reportedly doing around <b>$250 million a year</b> — hammers one brutal rule: figure out what your hour is worth, then refuse to do anything beneath it. <span>Delegate it, or delete it.</span></div>
+      <div class="why-name"><b>Warren Buffett</b> keeps a famously near-empty calendar and treats his time as the one asset all his billions <span>still can't buy back.</span></div>
+      <div class="why-name"><b>Steve Jobs</b> wore the same black turtleneck. <b>Mark Zuckerberg</b>, the same grey shirt. <b>Barack Obama</b> wore only gray or blue suits — <span>on purpose — so they'd never waste a drop of energy on a decision that didn't matter.</span></div>
+      <div class="why-name"><b>Elite athletes &amp; top CEOs</b> pay private chefs for one reason: <span>so "what do I eat" is one more decision they never have to make again.</span></div>
+    </div>
+    <div class="why-wrap">
+      <div class="why-pull">"The most successful people alive don't negotiate with their time. They guard it like the one thing they can't buy more of — because it is."</div>
+      <p class="why-p">So ask the question they all asked: <strong>what is my highest use?</strong> Because I can promise you this — it is not standing at a sink at 9 p.m., scrubbing a pan.</p>
+    </div>
+  </section>
+
+  <section class="why-sec red">
+    <div class="why-wrap">
+      <div class="why-eyebrow">Here's the part you can still change</div>
+      <h2 class="why-h2">You can't get last year back. You can stop the bleeding this Sunday.</h2>
+      <p class="why-p">You can't undo the weeks you've already lost. But you can refuse to lose one more. You take every hour you've been pouring into shopping, peeling, cooking, and scrubbing — and you <strong>hand it to Mom.</strong></p>
+      <p class="why-p">Fresh, high-protein meals, made for you, ready every Monday. No store. No prep. No dishes. One decision, made once — and your week is handled while you go live your actual life.</p>
+      <p class="why-p">The only question left is the one that's been quietly costing you all along: <strong>how much is your time really worth?</strong></p>
+      <div style="margin-top:26px;">
+        <button class="why-cta-btn" onclick="showPage('order')">Start My Plan — Take Back My Time →</button>
+        <div><button class="why-cta-2" onclick="showPage('menu')">Or see what Mom's cooking →</button></div>
+      </div>
+      <p class="why-fine">Mom's already shopping. All you have to do is stop doing it yourself. 💛</p>
+    </div>
+  </section>
+
+</div>
+
 <div class="page pt-nav" id="page-terms">
   <div class="legal-page">
     <div class="section-label">Legal</div>
