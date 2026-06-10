@@ -241,6 +241,37 @@ nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
 .consent-row a { color:var(--red); text-decoration:underline; }
 .consent-fine { font-size:11px; color:var(--gray-400); }
 .opt-tag { display:inline-block; font-size:10px; background:var(--gray-100); color:var(--gray-400); padding:2px 8px; border-radius:100px; margin-left:8px; font-weight:600; vertical-align:middle; }
+.extra-card { background:#fff; border:1.5px solid var(--gray-200); border-radius:14px; padding:24px; max-width:660px; }
+.extra-card-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+.extra-card-name { font-family:var(--font-display); font-size:23px; font-weight:800; letter-spacing:-0.5px; }
+.extra-card-price { font-size:23px; font-weight:800; color:var(--red); white-space:nowrap; }
+.extra-card-price small { font-size:13px; color:var(--gray-400); font-weight:400; }
+.extra-tagline { font-size:13px; color:var(--gray-600); margin:4px 0 14px; }
+.extra-badges { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+.xbadge { font-size:10px; font-weight:700; color:#1f7a3d; border:1px solid #cfe8d6; background:#f1faf3; border-radius:100px; padding:3px 9px; letter-spacing:0.03em; }
+.extra-macros { display:flex; flex-wrap:wrap; gap:20px; padding:14px 0; border-top:1px solid var(--gray-100); border-bottom:1px solid var(--gray-100); margin-bottom:14px; font-size:13px; color:var(--gray-600); }
+.extra-macros b { color:var(--text); font-size:16px; }
+.extra-ing { font-size:13px; color:var(--gray-600); line-height:1.7; margin-bottom:6px; }
+.extra-allerg { font-size:12px; color:var(--gray-400); }
+.extra-cat { font-size:10px; font-weight:700; color:var(--red); background:#FFF0ED; border-radius:100px; padding:2px 8px; margin-left:6px; vertical-align:middle; letter-spacing:0.04em; }
+.label-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; max-width:1080px; }
+.label-card { border-radius:16px; overflow:hidden; border:1px solid var(--gray-200); box-shadow:0 8px 28px rgba(0,0,0,0.07); background:#fff; display:flex; flex-direction:column; }
+.label-head { padding:24px 20px 18px; text-align:center; }
+.label-title { font-family:var(--font-display); font-weight:800; font-size:30px; letter-spacing:0.5px; line-height:1.05; color:#111; }
+.label-tag { font-family:var(--font-display); font-style:italic; font-size:12.5px; color:var(--gray-600); margin:10px 0 12px; }
+.label-badges { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+.label-badges span { font-size:9.5px; font-weight:800; color:#1f8a4c; border:1.5px solid #1f8a4c; border-radius:6px; padding:3px 7px; letter-spacing:0.02em; }
+.label-macros { background:#15a06b; padding:14px; }
+.lm-row { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.13); border-radius:8px; padding:11px 13px; margin-bottom:7px; color:#fff; }
+.lm-row:last-child { margin-bottom:0; }
+.lm-row span { font-weight:800; font-size:12px; letter-spacing:0.03em; }
+.lm-row b { font-size:18px; }
+.label-foot { background:#e0342a; color:#fff; padding:16px; margin-top:auto; }
+.label-banner { background:#fff; color:#111; font-weight:800; text-align:center; border-radius:8px; padding:9px; margin-bottom:13px; letter-spacing:0.04em; font-size:13px; }
+.label-ing { font-size:11.5px; line-height:1.6; margin-bottom:9px; }
+.label-contains { font-size:11.5px; line-height:1.6; }
+.label-price { margin-top:13px; font-size:20px; font-weight:800; background:rgba(0,0,0,0.18); display:inline-block; padding:5px 13px; border-radius:8px; }
+.label-price small { font-size:11px; font-weight:400; opacity:0.85; }
 .legal-page { max-width:820px; margin:0 auto; padding:60px 8%; }
 .legal-page h1 { font-family:var(--font-display); font-size:40px; font-weight:900; letter-spacing:-1px; margin-bottom:8px; }
 .legal-page h3 { font-size:17px; font-weight:700; margin:28px 0 8px; }
@@ -635,7 +666,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <div class="menu-hero">
     <div class="section-label" style="color:rgba(255,255,255,0.35)">Full Menu</div>
     <h1>Everything Mom<br><em>cooks for you.</em></h1>
-    <p>Organic proteins · 12 carbohydrates · 5 vegetables · bulk add-ons</p>
+    <p>Organic proteins · 12 carbohydrates · 5 vegetables · bulk add-ons · drinks, treats &amp; house specials</p>
   </div>
   <div class="menu-body">
     <div class="menu-note">
@@ -703,6 +734,77 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="protein-card"><div class="protein-name">Bulk Proteins</div><div class="protein-price" style="font-size:18px">$18–$24<span style="font-size:13px;color:var(--gray-400)">/lb</span></div><div class="protein-price-sub">Chicken, Turkey, Pork: $18/lb · Beef: $20/lb · Salmon, Shrimp: $24/lb</div></div>
         <div class="protein-card"><div class="protein-name">Bulk Carbohydrates</div><div class="protein-price" style="font-size:18px">$8<span style="font-size:13px;color:var(--gray-400)">/lb</span></div><div class="protein-price-sub">All carbohydrate options available</div></div>
         <div class="protein-card"><div class="protein-name">Bulk Vegetables</div><div class="protein-price" style="font-size:18px">$8<span style="font-size:13px;color:var(--gray-400)">/lb</span></div><div class="protein-price-sub">All vegetable options available</div></div>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <div class="menu-section-title">Drink · Sweet Treat · House Specials</div>
+      <div class="menu-section-sub">Minimums: Probiotic Elixir 5 · Protein Cake 3 · Banitsa none. Macros shown per 100 g / 100 ml, as printed on the label.</div>
+      <div class="label-grid">
+
+        <div class="label-card">
+          <div class="label-head">
+            <div class="label-title">Probiotic<br>Detox Elixir</div>
+            <div class="label-tag">6 Live Cultures · Organic A2A2 · Grass-Fed · 500 ml</div>
+            <div class="label-badges"><span>USDA ORGANIC</span><span>NON-GMO</span><span>GRASS-FED</span><span>PROBIOTIC</span><span>KETO</span></div>
+          </div>
+          <div class="label-macros">
+            <div class="lm-row"><span>&#9889; CALORIES / 100ML</span><b>48 kcal</b></div>
+            <div class="lm-row"><span>PROTEIN</span><b>1.9g</b></div>
+            <div class="lm-row"><span>CARBS</span><b>2.2g</b></div>
+            <div class="lm-row"><span>FAT</span><b>2.1g</b></div>
+            <div class="lm-row"><span>SODIUM</span><b>290mg</b></div>
+          </div>
+          <div class="label-foot">
+            <div class="label-banner">&#9660; SHAKE WELL BEFORE DRINKING &#9660;</div>
+            <div class="label-ing"><strong>Ingredients:</strong> Organic A2A2 Bulgarian yogurt (live &amp; active cultures: L. Bulgaricus, S. Thermophilus, L. Acidophilus, Bifidobacterium, L. Paracasei, L. Rhamnosus), filtered water, fresh organic cucumber, organic garlic powder, cold-pressed extra virgin olive oil, organic fresh dill, Celtic salt.</div>
+            <div class="label-contains"><strong>Contains: Milk</strong> &middot; Keep refrigerated &middot; Consume within 3 days of opening.</div>
+            <div class="label-price">$5 <small>/ 500 ml bottle</small></div>
+          </div>
+        </div>
+
+        <div class="label-card">
+          <div class="label-head">
+            <div class="label-title">Mama's<br>Protein Cake</div>
+            <div class="label-tag">A2A2 Milk · Grass-Fed Whey · No Added Sugar</div>
+            <div class="label-badges"><span>USDA ORGANIC</span><span>NON-GMO</span><span>GRASS-FED</span><span>A2A2</span><span>HIGH PROTEIN</span><span>NO ADDED SUGAR</span></div>
+          </div>
+          <div class="label-macros">
+            <div class="lm-row"><span>&#9889; CALORIES / 100G</span><b>191 kcal</b></div>
+            <div class="lm-row"><span>PROTEIN</span><b>11.7g</b></div>
+            <div class="lm-row"><span>CARBS</span><b>16.8g</b></div>
+            <div class="lm-row"><span>FAT</span><b>8.2g</b></div>
+            <div class="lm-row"><span>FIBER</span><b>2.2g</b></div>
+          </div>
+          <div class="label-foot">
+            <div class="label-banner">&#10052; KEEP REFRIGERATED &#10052;</div>
+            <div class="label-ing"><strong>Ingredients:</strong> A2A2 whole milk, grass-fed whey protein powder, biscuits, salted butter, stevia, raw walnuts.</div>
+            <div class="label-contains"><strong>Contains: Milk, Wheat &amp; Tree Nuts (Walnuts)</strong> &middot; Approx. 400g per container &middot; Consume within 3 days of opening.</div>
+            <div class="label-price">$10 <small>/ ~400 g container</small></div>
+          </div>
+        </div>
+
+        <div class="label-card">
+          <div class="label-head">
+            <div class="label-title">BANITSA</div>
+            <div class="label-tag">Authentic Bulgarian Pastry · Homemade · A2A2</div>
+            <div class="label-badges"><span>USDA ORGANIC</span><span>NON-GMO</span><span>GRASS-FED</span><span>A2A2</span><span>HOMEMADE</span></div>
+          </div>
+          <div class="label-macros">
+            <div class="lm-row"><span>&#9889; CALORIES / 100G</span><b>223 kcal</b></div>
+            <div class="lm-row"><span>PROTEIN</span><b>6.9g</b></div>
+            <div class="lm-row"><span>CARBS</span><b>15.9g</b></div>
+            <div class="lm-row"><span>FAT</span><b>14.8g</b></div>
+            <div class="lm-row"><span>SODIUM</span><b>~380mg</b></div>
+          </div>
+          <div class="label-foot">
+            <div class="label-banner">&#9733; BEST SERVED WARM &#9733;</div>
+            <div class="label-ing"><strong>Ingredients:</strong> Bulgarian pastry dough, A2A2 whole milk eggs, Bulgarian cow feta cheese, Bulgarian A2A2 yogurt, salted butter, soda water.</div>
+            <div class="label-contains"><strong>Contains: Milk, Eggs &amp; Wheat</strong> &middot; Keep refrigerated &middot; Consume within 5 days.</div>
+            <div class="label-price">$8 <small>/ 200 g package</small></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -805,6 +907,11 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div id="bulkVeggies"></div>
       </div>
 
+      <!-- EXTRAS -->
+      <div class="order-sec-header">Extras — Drinks, Treats &amp; House Specials</div>
+      <p style="font-size:14px;color:var(--gray-400);margin-bottom:16px;">Add our probiotic drink, protein cake, and banitsa. Minimums: drink 5 · cake 3 · banitsa none. (Not counted toward the 15+ meals discount.)</p>
+      <div style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:28px;" id="extras"></div>
+
       <!-- TIP -->
       <div class="order-sec-header">Tip for Mom</div>
       <div class="tip-row">
@@ -823,6 +930,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="summary-title">🧾 Order Summary</div>
         <div class="summary-lines" id="mealLines"><div style="font-size:13px;color:var(--gray-400)">No meals configured yet.</div></div>
         <div id="bulkLines"></div>
+        <div id="extrasLines"></div>
         <hr class="s-divider">
         <div id="summaryRows"></div>
         <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through Stripe — we never see your card details.</div>
@@ -1117,6 +1225,13 @@ var VEGS  = ['Broccoli','Green Beans','Cauliflower','Carrots','Mixed Vegetables'
 var PROTEIN_MACROS=[{cal:47,p:8.8,c:0,f:1.0},{cal:50,p:7.7,c:0,f:2.0},{cal:58,p:8.0,c:0,f:2.6},{cal:52,p:7.3,c:0,f:2.6},{cal:58,p:6.3,c:0,f:3.7},{cal:28,p:6.8,c:0,f:0.3}];
 var CARB_MACROS=[{cal:185,p:3.8,c:40,f:0.4},{cal:159,p:3.7,c:34,f:1.3},{cal:159,p:5.4,c:33,f:0.3},{cal:224,p:8.2,c:44,f:1.3},{cal:128,p:2.8,c:30,f:0.3},{cal:160,p:2.8,c:24,f:4.0},{cal:233,p:12.6,c:38,f:3.7},{cal:187,p:12.6,c:34,f:0.7},{cal:180,p:12.4,c:32,f:0.7},{cal:203,p:12.8,c:37,f:1.0},{cal:136,p:4.8,c:30,f:2.1},{cal:165,p:12.8,c:28,f:0.6}];
 var VEG_MACROS=[{cal:50,p:3.4,c:10,f:0.6},{cal:50,p:2.7,c:11,f:0.4},{cal:33,p:2.6,c:6,f:0.7},{cal:50,p:1.1,c:12,f:0.3},{cal:71,p:3.7,c:14,f:0.4}];
+var EXTRAS=[
+  {id:'drink',cat:'DRINK',name:'Probiotic Detox Elixir',unit:'500 ml bottle',price:5,min:5,cal:240,p:9.5,c:11,f:10.5},
+  {id:'cake',cat:'SWEET TREAT',name:"Mama's Protein Cake",unit:'~400 g container',price:10,min:3,cal:764,p:47,c:67,f:33},
+  {id:'banitsa',cat:'HOUSE SPECIALS',name:'Banitsa',unit:'200 g package',price:8,min:1,cal:446,p:14,c:32,f:30}
+];
+function buildExtras(){ var c=document.getElementById('extras'); if(!c) return; c.innerHTML=''; EXTRAS.forEach(function(x){ c.innerHTML+='<div class="bulk-item"><div><div class="bulk-name">'+x.name+' <span class="extra-cat">'+x.cat+'</span></div><div class="bulk-price-sub">'+fmt(x.price)+' · '+x.unit+(x.min>1?' · min '+x.min:'')+' · '+x.cal+' kcal · '+x.p+'P/'+x.c+'C/'+x.f+'F</div></div><input type="number" id="extra_'+x.id+'" min="0" step="1" placeholder="0" oninput="recalc()" style="max-width:80px;text-align:center"><div class="bulk-calc" id="extra_'+x.id+'_c">—</div></div>'; }); }
+function extrasData(){ var arr=[]; EXTRAS.forEach(function(x){ var el=document.getElementById('extra_'+x.id); var q=el?parseInt(el.value)||0:0; if(q>0) arr.push({id:x.id,name:x.name,qty:q,price:x.price,line:q*x.price,min:x.min,label:q+'x '+x.name}); }); return arr; }
 var BULK_P = [{l:"Mom's Organic Chicken Breast",p:18},{l:"Mom's Organic Ground Turkey 93/7",p:18},{l:"Mom's Organic Pork Chops",p:18},{l:"Mom's Grass-Fed Ground Beef 93/7",p:20},{l:"Mom's Wild-Caught Salmon",p:24},{l:"Mom's Wild-Caught Shrimp",p:24}];
 var BULK_C = CARBS.map(function(x){return{l:x,p:8};});
 var BULK_V = VEGS.map(function(x){return{l:x,p:8};});
@@ -1211,9 +1326,12 @@ function recalc(){
     g.items.forEach(function(item,i){ var id=g.cid+'_'+i,el=document.getElementById(id),calcEl=document.getElementById(id+'_c'); if(!el) return; var lbs=parseInt(el.value)||0,sub=lbs*item.p; if(calcEl) calcEl.textContent=lbs>0?lbs+' × '+fmt(item.p)+' = '+fmt(sub):'—'; if(lbs>0){bSub+=sub;bHTML+='<div class="s-line"><span>'+lbs+'lb '+item.l+'</span><span>'+fmt(sub)+'</span></div>';} });
   });
   var bl=document.getElementById('bulkLines'); if(bl) bl.innerHTML=bHTML;
+  var eSub=0,eHTML='';
+  EXTRAS.forEach(function(x){ var el=document.getElementById('extra_'+x.id); var q=el?parseInt(el.value)||0:0; var ce=document.getElementById('extra_'+x.id+'_c'); var sub=q*x.price; if(ce) ce.textContent=q>0?(q+' × '+fmt(x.price)+' = '+fmt(sub)):'—'; if(q>0){ eSub+=sub; eHTML+='<div class="s-line"><span>'+q+'× '+x.name+(q<x.min?' ⚠ min '+x.min:'')+'</span><span>'+fmt(sub)+'</span></div>'; } });
+  var exl=document.getElementById('extrasLines'); if(exl) exl.innerHTML=eHTML;
   var show15=tot>=15; var da=document.getElementById('discountAlert'); if(da) da.style.display=show15?'block':'none';
 
-  var subtotal=mSub+bSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
+  var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
   var tipEl=document.getElementById('customTip'), tipAmt=tipMode==='custom'?(parseFloat(tipEl?tipEl.value:0)||0):tipMode!=='none'?discounted*parseFloat(tipMode):0;
   var total=discounted+tax+cc+tipAmt;
 
@@ -1273,7 +1391,7 @@ function collectOrder(){
   var sr=document.getElementById('summaryRows');
   var _rep=document.getElementById('repeat-weekly')&&document.getElementById('repeat-weekly').checked;
   var _ba=document.getElementById('billing-auth')&&document.getElementById('billing-auth').checked;
-  return {customer:cust,meals:meals,bulk:bulk,subscribed:subscribed,tipMode:String(tipMode),
+  return {customer:cust,meals:meals,bulk:bulk,extras:extrasData(),subscribed:subscribed,tipMode:String(tipMode),
           customTip:tipEl?parseFloat(tipEl.value)||0:0,
           repeat:!!_rep, billingAuthorized:!!(_rep&&_ba),
           summaryText:sr?sr.innerText:''};
@@ -1306,6 +1424,7 @@ function emailOwner(order){
     Reason:c.reason||'—',
     Meals:order.meals.map(function(m){return m.label;}).join('\n')||'—',
     Bulk:order.bulk.map(function(b){return b.label;}).join('\n')||'—',
+    Extras:(order.extras||[]).map(function(e){return e.label+' = $'+e.line.toFixed(2);}).join('\n')||'—',
     'SHOPPING LIST (raw to buy)':sl.proteinLines.join('\n')||'—',
     'Sides needed (cooked)':sl.sideLines.join('\n')||'—',
     'Est. protein cost':'$'+sl.estProteinCost,
@@ -1326,7 +1445,9 @@ function placeOrder(){
   if(!document.getElementById('consent-sms').checked){ alert('Please agree to receive SMS order updates — we text you to confirm your pickup/delivery window.'); return; }
   if(!document.getElementById('consent-terms').checked){ alert('Please read and accept the Terms & Privacy Policy to place your order.'); return; }
   var order=collectOrder();
-  if(order.meals.length===0 && order.bulk.length===0){ alert('Please add at least one meal, or a bulk item, before placing your order.'); return; }
+  if(order.meals.length===0 && order.bulk.length===0 && (order.extras||[]).length===0){ alert('Please add at least one meal, bulk item, or extra before placing your order.'); return; }
+  var _minBad=null; (order.extras||[]).forEach(function(e){ if(e.qty<e.min) _minBad=e.name+' (minimum '+e.min+' per order)'; });
+  if(_minBad){ alert('Please order at least the minimum for '+_minBad+'.'); return; }
   var btn=document.getElementById('placeOrderBtn');
   btn.disabled=true; btn.textContent='Processing…';
   emailOwner(order).catch(function(){});
@@ -1482,7 +1603,8 @@ function computeTotals(order){
   var mSub=0,cnt=0;
   order.meals.forEach(function(m){ var p=PROTEINS[m.protein]; var price=p.base+(m.size>5?(m.size-5)*p.upcharge:0); mSub+=price*m.qty; cnt+=m.qty; });
   var bSub=0; order.bulk.forEach(function(b){ var arr=b.cat==='protein'?BULK_P:(b.cat==='carb'?BULK_C:BULK_V); bSub+=arr[b.idx].p*b.lbs; });
-  var subtotal=mSub+bSub, show15=cnt>=15;
+  var eSub=0; (order.extras||[]).forEach(function(e){ eSub+=e.line||(e.qty*e.price); });
+  var subtotal=mSub+bSub+eSub, show15=cnt>=15;
   var dSub=order.subscribed?subtotal*0.05:0, d15=show15?subtotal*0.05:0;
   var discounted=subtotal-dSub-d15, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
   var tip=order.tipMode==='custom'?(order.customTip||0):(order.tipMode!=='none'?discounted*parseFloat(order.tipMode):0);
@@ -1495,7 +1617,7 @@ async function saveOrderToDb(order){
   var repeat=(document.getElementById('repeat-weekly')&&document.getElementById('repeat-weekly').checked)||false;
   try{
     await sb.from('profiles').update({full_name:c.name,phone:c.phone,age:parseInt(c.age)||null,street_address:c.address,unit_number:c.unit,gate_code:c.gate,reason:c.reason,sms_consent:c.smsConsent,email_consent:c.emailConsent,is_subscribed:order.subscribed,updated_at:new Date().toISOString()}).eq('id',currentUser.id);
-    var ins=await sb.from('orders').insert({customer_id:currentUser.id,customer_name:c.name,customer_email:c.email,customer_phone:c.phone,is_subscribed:order.subscribed,special_notes:c.notes,tip_mode:String(order.tipMode),tip_amount:t.tip,subtotal:t.subtotal,discount_subscription:t.dSub,discount_bulk:0,tax_amount:t.tax,cc_fee:t.cc,total:t.total,reason:c.reason,sms_consent:c.smsConsent,email_consent:c.emailConsent,terms_accepted:c.terms,shopping_list:sl,is_recurring:repeat,status:'received'}).select('id').single();
+    var ins=await sb.from('orders').insert({customer_id:currentUser.id,customer_name:c.name,customer_email:c.email,customer_phone:c.phone,is_subscribed:order.subscribed,special_notes:c.notes,tip_mode:String(order.tipMode),tip_amount:t.tip,subtotal:t.subtotal,discount_subscription:t.dSub,discount_bulk:0,tax_amount:t.tax,cc_fee:t.cc,total:t.total,reason:c.reason,sms_consent:c.smsConsent,email_consent:c.emailConsent,terms_accepted:c.terms,extras:order.extras||[],shopping_list:sl,is_recurring:repeat,status:'received'}).select('id').single();
     if(ins.error){ console.error('order insert',ins.error); return null; }
     var oid=ins.data.id;
     var mealRows=order.meals.map(function(m,idx){ var p=PROTEINS[m.protein]; var price=p.base+(m.size>5?(m.size-5)*p.upcharge:0); return {order_id:oid,config_number:idx+1,protein:p.label,protein_oz:m.size,protein_base_price:p.base,protein_upcharge:p.upcharge,side_1:m.sides[0]?m.sides[0].name:null,side_2:m.sides[1]?m.sides[1].name:null,portions:m.qty,price_per_meal:price,line_total:price*m.qty}; });
@@ -1513,6 +1635,7 @@ buildConfigs();
 buildBulk('bulkProteins', BULK_P);
 buildBulk('bulkCarbs', BULK_C);
 buildBulk('bulkVeggies', BULK_V);
+buildExtras();
 recalc();
 handleCheckoutReturn();
 refreshAuth();
