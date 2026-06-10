@@ -13,6 +13,7 @@ const PROTEINS = [
 ];
 const BULK_PROTEIN = [18, 18, 18, 20, 24, 24];
 const BULK_CARB = 8, BULK_VEG = 8;
+const EXTRAS_PRICE = { drink: 5, cake: 10, banitsa: 8 };
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ error: 'Method not allowed' }); }
@@ -36,7 +37,9 @@ module.exports = async (req, res) => {
     let unit = b.cat === 'protein' ? (BULK_PROTEIN[b.idx] || 0) : (b.cat === 'carb' ? BULK_CARB : BULK_VEG);
     bulkSub += unit * lbs;
   }
-  const subtotal = mealSub + bulkSub;
+  let exSub = 0;
+  for (const e of (order.extras || [])) { exSub += (EXTRAS_PRICE[e.id] || 0) * Math.max(0, parseInt(e.qty) || 0); }
+  const subtotal = mealSub + bulkSub + exSub;
   if (subtotal <= 0) return res.status(400).json({ error: 'Empty order' });
 
   const show15 = mealCount >= 15;
@@ -55,7 +58,9 @@ module.exports = async (req, res) => {
   const bulkLines = (order.bulk || []).map(b => b.label).filter(Boolean);
   let descr = mealLines.join(' | ');
   if (bulkLines.length) descr += '  ||  BULK: ' + bulkLines.join(' | ');
-  descr = descr.slice(0, 480) || 'Custom meal order';
+  const exLines = (order.extras || []).map(e => e.label).filter(Boolean);
+  if (exLines.length) descr += '  ||  EXTRAS: ' + exLines.join(' | ');
+  descr = descr.slice(0, 480) || 'Custom order';
 
   const cust = order.customer || {};
   const meta = {
