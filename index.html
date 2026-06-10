@@ -257,16 +257,16 @@ nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
 .label-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; max-width:1080px; }
 .label-card { border-radius:16px; overflow:hidden; border:1px solid var(--gray-200); box-shadow:0 8px 28px rgba(0,0,0,0.07); background:#fff; display:flex; flex-direction:column; }
 .label-head { padding:24px 20px 18px; text-align:center; }
-.label-title { font-family:var(--font-display); font-weight:800; font-size:30px; letter-spacing:0.5px; line-height:1.05; color:#111; }
-.label-tag { font-family:var(--font-display); font-style:italic; font-size:12.5px; color:var(--gray-600); margin:10px 0 12px; }
-.label-badges { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+.label-title { font-family:var(--font-display); font-weight:800; font-size:30px; letter-spacing:0.5px; line-height:1.1; color:#111; min-height:66px; display:flex; align-items:center; justify-content:center; }
+.label-tag { font-family:var(--font-display); font-style:italic; font-size:12.5px; color:var(--gray-600); margin:10px 0 12px; min-height:34px; display:flex; align-items:center; justify-content:center; }
+.label-badges { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; min-height:48px; align-content:flex-start; }
 .label-badges span { font-size:9.5px; font-weight:800; color:#1f8a4c; border:1.5px solid #1f8a4c; border-radius:6px; padding:3px 7px; letter-spacing:0.02em; }
 .label-macros { background:#15a06b; padding:14px; }
 .lm-row { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.13); border-radius:8px; padding:11px 13px; margin-bottom:7px; color:#fff; }
 .lm-row:last-child { margin-bottom:0; }
 .lm-row span { font-weight:800; font-size:12px; letter-spacing:0.03em; }
 .lm-row b { font-size:18px; }
-.label-foot { background:#e0342a; color:#fff; padding:16px; margin-top:auto; }
+.label-foot { background:#e0342a; color:#fff; padding:16px; flex:1 1 auto; }
 .label-banner { background:#fff; color:#111; font-weight:800; text-align:center; border-radius:8px; padding:9px; margin-bottom:13px; letter-spacing:0.04em; font-size:13px; }
 .label-ing { font-size:11.5px; line-height:1.6; margin-bottom:9px; }
 .label-contains { font-size:11.5px; line-height:1.6; }
