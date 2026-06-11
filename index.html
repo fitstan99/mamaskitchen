@@ -1689,6 +1689,49 @@ window.addEventListener('message', function(ev){
   if(d.message){ window._ccToken=d.message; window._ccExpiry=d.expiry||window._ccExpiry; if(st){ st.textContent='Card ready \u2713'; st.style.color='#15A06B'; } }
   else { window._ccToken=''; if(st){ st.textContent=''; } }
 });
+function _sbtn(c){ return 'background:'+c+';color:#fff;border:none;border-radius:10px;padding:13px 22px;font-weight:800;font-size:15px;cursor:pointer;'; }
+function _rr(x,X,Y,w,hh,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+hh,r); x.arcTo(X+w,Y+hh,X,Y+hh,r); x.arcTo(X,Y+hh,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
+function _wrap(ctx,t,cx,y,maxw,lh){ var words=t.split(' '),line='',yy=y,i; for(i=0;i<words.length;i++){ var test=line+words[i]+' '; if(ctx.measureText(test).width>maxw && i>0){ ctx.fillText(line.trim(),cx,yy); line=words[i]+' '; yy+=lh; } else line=test; } ctx.fillText(line.trim(),cx,yy); }
+function makeStoryImage(){
+  var s=window._impactStats; if(!s){ alert('Place an order first \\u2014 your savings will be ready to share here.'); return; }
+  var W=1080,H=1920, cv=document.createElement('canvas'); cv.width=W; cv.height=H; var x=cv.getContext('2d');
+  var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#11251c'); g.addColorStop(1,'#0a0a0a'); x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.fillStyle='#E0342A'; x.fillRect(0,0,W,16);
+  function C(t,y,font,color){ x.font=font; x.fillStyle=color; x.textAlign='center'; x.fillText(t,W/2,y); }
+  C("Mama’s Kitchen", 175, "800 66px Georgia", '#FBF7EF');
+  C('M Y   T I M E - S A V E D   T R A C K E R', 233, '700 24px Arial', 'rgba(255,255,255,.5)');
+  C('Since I let Mom cook,', 372, 'italic 600 42px Georgia', 'rgba(255,255,255,.82)');
+  C("I’ve reclaimed…", 432, 'italic 600 42px Georgia', 'rgba(255,255,255,.82)');
+  C('~'+s.hrs+' hours', 590, '800 138px Georgia', '#E0342A');
+  C('& saved ~$'+s.money, 706, '800 96px Georgia', '#3ddc97');
+  var cards=[[String(s.meals),'meals cooked for me'],['≈ '+s.wd.toFixed(s.wd<10?1:0),'work-days back'],['~'+s.trips,'shopping trips skipped']];
+  var cw=300, gap=24, total=cards.length*cw+(cards.length-1)*gap, sx=(W-total)/2, cy=860, ch=300;
+  cards.forEach(function(c,i){ var cx=sx+i*(cw+gap); _rr(x,cx,cy,cw,ch,26); x.fillStyle='rgba(255,255,255,.07)'; x.fill(); x.strokeStyle='rgba(255,255,255,.18)'; x.lineWidth=2; x.stroke();
+    x.textAlign='center'; x.fillStyle='#fff'; x.font='800 70px Georgia'; x.fillText(c[0], cx+cw/2, cy+135);
+    x.fillStyle='rgba(255,255,255,.72)'; x.font='500 27px Arial'; _wrap(x,c[1],cx+cw/2,cy+195,cw-34,34); });
+  C("That’s my life back —", 1340, 'italic 600 44px Georgia', 'rgba(255,255,255,.9)');
+  C('one meal at a time.', 1400, 'italic 600 44px Georgia', 'rgba(255,255,255,.9)');
+  x.fillStyle='#E0342A'; _rr(x,W/2-345,1560,690,116,58); x.fill();
+  C('Your turn → mamaskitchenptown.com', 1632, '800 35px Arial', '#fff');
+  C('@mamaskitchenptown', 1748, '700 31px Arial', 'rgba(255,255,255,.6)');
+  _showStory(cv);
+}
+function _showStory(cv){
+  var ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:14px;';
+  var img=document.createElement('img'); img.src=cv.toDataURL('image/png'); img.style.cssText='max-height:70vh;max-width:88vw;border-radius:14px;box-shadow:0 12px 44px rgba(0,0,0,.5);';
+  var bar=document.createElement('div'); bar.style.cssText='display:flex;gap:10px;flex-wrap:wrap;justify-content:center;';
+  var dl=document.createElement('button'); dl.textContent='⬇ Download'; dl.style.cssText=_sbtn('#E0342A');
+  dl.onclick=function(){ cv.toBlob(function(b){ var u=URL.createObjectURL(b); var a=document.createElement('a'); a.href=u; a.download='mamas-kitchen-savings.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},2000); }); };
+  var cp=document.createElement('button'); cp.textContent='📋 Copy image'; cp.style.cssText=_sbtn('#15a06b');
+  cp.onclick=function(){ cv.toBlob(function(b){ try{ navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){ cp.textContent='Copied ✓'; }).catch(function(){ cp.textContent='Use Download instead'; }); }catch(e){ cp.textContent='Use Download instead'; } }); };
+  var cl=document.createElement('button'); cl.textContent='Close'; cl.style.cssText=_sbtn('#444');
+  cl.onclick=function(){ ov.remove(); };
+  var tip=document.createElement('div'); tip.style.cssText='color:#fff;font-size:13px;text-align:center;max-width:540px;opacity:.85;line-height:1.5;'; tip.innerHTML='Perfect <strong>1080×1920</strong> size for an Instagram / Facebook story. Download it, post to your story, and tag <strong>@mamaskitchenptown</strong> 💚';
+  bar.appendChild(dl); bar.appendChild(cp); bar.appendChild(cl);
+  ov.appendChild(img); ov.appendChild(bar); ov.appendChild(tip);
+  ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
+  document.body.appendChild(ov);
+}
 function handleCheckoutReturn(){
   var q=new URLSearchParams(window.location.search);
   if(q.get('paid')==='1'){
@@ -1768,35 +1811,44 @@ async function renderAccount(){
   }catch(e){ console.error('history',e); }
   window._acctOrders={orders:orders,meals:meals,bulk:bulk};
   (function(){
+    var MONEY_PER_MEAL=7;
     var om={}; meals.forEach(function(m){ om[m.order_id]=(om[m.order_id]||0)+(m.portions||0); });
-    var asc=orders.slice().reverse(); var cum=0, tm=0, rows='';
-    asc.forEach(function(o){ var c=om[o.id]||0; if(c<=0) return; tm+=c; cum+=c;
+    var asc=orders.slice().reverse(); var cumH=0, cumM=0, tm=0, rows='';
+    asc.forEach(function(o){ var c=om[o.id]||0; if(c<=0) return; tm+=c; cumH+=c; cumM+=c*MONEY_PER_MEAL;
       var dt=new Date(o.ordered_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
       var bd='border-top:1px solid var(--gray-100);';
       rows+='<tr><td style="padding:9px 8px;'+bd+'color:var(--gray-600);">'+dt+'</td>'
         +'<td style="padding:9px 8px;'+bd+'text-align:center;">'+c+'</td>'
         +'<td style="padding:9px 8px;'+bd+'text-align:center;color:#15a06b;font-weight:700;">+'+c+' h</td>'
-        +'<td style="padding:9px 8px;'+bd+'text-align:right;font-weight:800;">'+cum+' h</td></tr>'; });
+        +'<td style="padding:9px 8px;'+bd+'text-align:center;color:#15a06b;font-weight:700;">+$'+(c*MONEY_PER_MEAL)+'</td>'
+        +'<td style="padding:9px 8px;'+bd+'text-align:right;font-weight:800;white-space:nowrap;">'+cumH+' h \u00b7 $'+cumM+'</td></tr>'; });
     var imp=document.getElementById('acct-impact'); if(!imp) return;
-    if(tm<=0){ imp.innerHTML='<div style="background:var(--gray-100);border-radius:14px;padding:20px 22px;color:var(--gray-600);font-size:14px;">\u23f1\ufe0f <strong>Your time-saved tracker</strong> \u2014 place your first order and your reclaimed hours start stacking up here.</div>'; return; }
-    var hrs=cum, wd=(hrs/8), trips=Math.max(1,Math.round(tm/6));
-    var tile=function(n,l){ return '<div style="flex:1;min-width:104px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:12px 14px;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:#fff;">'+n+'</div><div style="font-size:11.5px;color:rgba(255,255,255,.92);margin-top:2px;">'+l+'</div></div>'; };
+    if(tm<=0){ window._impactStats=null; imp.innerHTML='<div style="background:var(--gray-100);border-radius:14px;padding:20px 22px;color:var(--gray-600);font-size:14px;">\u23f1\ufe0f <strong>Your time-saved tracker</strong> \u2014 place your first order and your reclaimed hours &amp; dollars start stacking up here.</div>'; return; }
+    var hrs=cumH, money=cumM, wd=(hrs/8), trips=Math.max(1,Math.round(tm/6));
+    window._impactStats={hrs:hrs, money:money, meals:tm, wd:wd, trips:trips};
+    var tile=function(n,l){ return '<div style="flex:1;min-width:96px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:12px 14px;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:#fff;">'+n+'</div><div style="font-size:11.5px;color:rgba(255,255,255,.92);margin-top:2px;">'+l+'</div></div>'; };
     imp.innerHTML=
       '<div style="background:linear-gradient(135deg,#15a06b,#0c6e49);border-radius:14px 14px 0 0;padding:20px 22px;color:#fff;box-shadow:0 6px 18px rgba(21,160,107,.18);">'
-       +'<div style="font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:2px;">\u23f1\ufe0f Your time-saved tracker</div>'
-       +'<div style="font-size:13px;color:rgba(255,255,255,.9);margin-bottom:14px;">Every meal Mom cooks is roughly an hour you didn\u2019t spend shopping, peeling, cooking, or scrubbing. Here\u2019s your running total.</div>'
-       +'<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+       +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">'
+        +'<div style="flex:1;min-width:240px;"><div style="font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:2px;">\u23f1\ufe0f Your time-saved tracker</div>'
+        +'<div style="font-size:13px;color:rgba(255,255,255,.9);max-width:430px;">Every meal Mom cooks is about an hour you didn\u2019t spend shopping, peeling, cooking, or scrubbing \u2014 and money you didn\u2019t bleed on takeout &amp; spoiled food.</div></div>'
+        +'<button onclick="makeStoryImage()" style="flex-shrink:0;background:#fff;color:#0c6e49;border:none;border-radius:8px;padding:11px 16px;font-weight:800;font-size:13px;cursor:pointer;">\ud83d\udcf8 Make my story</button>'
+       +'</div>'
+       +'<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">'
         +tile('~'+hrs+' h','hours reclaimed')
+        +tile('$'+money,'saved (est.)')
         +tile('\u2248 '+wd.toFixed(wd<10?1:0),'work-days back')
-        +tile(tm,'meals cooked for you')
+        +tile(tm,'meals cooked')
         +tile('~'+trips,'grocery trips skipped')
+        +tile(tm,'dinners decided for you')
        +'</div></div>'
       +'<div style="background:#fff;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 14px 14px;padding:4px 16px 14px;">'
-       +'<table style="width:100%;border-collapse:collapse;font-size:13.5px;">'
-        +'<thead><tr style="color:var(--gray-400);font-size:11px;text-transform:uppercase;letter-spacing:.05em;">'
-          +'<th style="text-align:left;padding:10px 8px;">Order date</th><th style="text-align:center;padding:10px 8px;">Meals</th><th style="text-align:center;padding:10px 8px;">Time saved</th><th style="text-align:right;padding:10px 8px;">Running total</th></tr></thead>'
+       +'<table style="width:100%;border-collapse:collapse;font-size:13px;">'
+        +'<thead><tr style="color:var(--gray-400);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;">'
+          +'<th style="text-align:left;padding:10px 8px;">Date</th><th style="text-align:center;padding:10px 8px;">Meals</th><th style="text-align:center;padding:10px 8px;">Time</th><th style="text-align:center;padding:10px 8px;">Money</th><th style="text-align:right;padding:10px 8px;">Running total</th></tr></thead>'
         +'<tbody>'+rows+'</tbody></table>'
-       +'<div style="font-size:12.5px;color:var(--gray-500);font-style:italic;margin-top:10px;">That\u2019s time back for the gym, the people you love, and what actually matters. Keep stacking it up. \ud83d\udc9a</div>'
+       +'<div style="font-size:11.5px;color:var(--gray-400);margin-top:8px;">Estimates: ~1 hour and ~$'+MONEY_PER_MEAL+' saved per meal (avoided shopping, prep &amp; cleanup, plus takeout and food waste).</div>'
+       +'<div style="font-size:12.5px;color:var(--gray-500);font-style:italic;margin-top:6px;">That\u2019s time and money back for what actually matters. Keep stacking it up. \ud83d\udc9a</div>'
        +'</div>';
   })();
   var st=document.getElementById('acct-stats');
