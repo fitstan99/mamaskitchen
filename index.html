@@ -1136,6 +1136,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       </div>
       <div id="acct-loggedin" style="display:none;">
         <div id="acct-thanks" style="margin-bottom:16px;"></div>
+        <div id="acct-impact" style="margin-bottom:16px;"></div>
         <div id="acct-pickup" style="background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:16px;"></div>
         <div id="acct-stats" style="margin-bottom:16px;"></div>
         <div id="acct-profile" style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:16px;"></div>
@@ -1766,6 +1767,38 @@ async function renderAccount(){
       var bq=await sb.from('order_bulk').select('*').in('order_id',ids); bulk=bq.data||[]; }
   }catch(e){ console.error('history',e); }
   window._acctOrders={orders:orders,meals:meals,bulk:bulk};
+  (function(){
+    var om={}; meals.forEach(function(m){ om[m.order_id]=(om[m.order_id]||0)+(m.portions||0); });
+    var asc=orders.slice().reverse(); var cum=0, tm=0, rows='';
+    asc.forEach(function(o){ var c=om[o.id]||0; if(c<=0) return; tm+=c; cum+=c;
+      var dt=new Date(o.ordered_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+      var bd='border-top:1px solid var(--gray-100);';
+      rows+='<tr><td style="padding:9px 8px;'+bd+'color:var(--gray-600);">'+dt+'</td>'
+        +'<td style="padding:9px 8px;'+bd+'text-align:center;">'+c+'</td>'
+        +'<td style="padding:9px 8px;'+bd+'text-align:center;color:#15a06b;font-weight:700;">+'+c+' h</td>'
+        +'<td style="padding:9px 8px;'+bd+'text-align:right;font-weight:800;">'+cum+' h</td></tr>'; });
+    var imp=document.getElementById('acct-impact'); if(!imp) return;
+    if(tm<=0){ imp.innerHTML='<div style="background:var(--gray-100);border-radius:14px;padding:20px 22px;color:var(--gray-600);font-size:14px;">\u23f1\ufe0f <strong>Your time-saved tracker</strong> \u2014 place your first order and your reclaimed hours start stacking up here.</div>'; return; }
+    var hrs=cum, wd=(hrs/8), trips=Math.max(1,Math.round(tm/6));
+    var tile=function(n,l){ return '<div style="flex:1;min-width:104px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:12px 14px;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:#fff;">'+n+'</div><div style="font-size:11.5px;color:rgba(255,255,255,.92);margin-top:2px;">'+l+'</div></div>'; };
+    imp.innerHTML=
+      '<div style="background:linear-gradient(135deg,#15a06b,#0c6e49);border-radius:14px 14px 0 0;padding:20px 22px;color:#fff;box-shadow:0 6px 18px rgba(21,160,107,.18);">'
+       +'<div style="font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:2px;">\u23f1\ufe0f Your time-saved tracker</div>'
+       +'<div style="font-size:13px;color:rgba(255,255,255,.9);margin-bottom:14px;">Every meal Mom cooks is roughly an hour you didn\u2019t spend shopping, peeling, cooking, or scrubbing. Here\u2019s your running total.</div>'
+       +'<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+        +tile('~'+hrs+' h','hours reclaimed')
+        +tile('\u2248 '+wd.toFixed(wd<10?1:0),'work-days back')
+        +tile(tm,'meals cooked for you')
+        +tile('~'+trips,'grocery trips skipped')
+       +'</div></div>'
+      +'<div style="background:#fff;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 14px 14px;padding:4px 16px 14px;">'
+       +'<table style="width:100%;border-collapse:collapse;font-size:13.5px;">'
+        +'<thead><tr style="color:var(--gray-400);font-size:11px;text-transform:uppercase;letter-spacing:.05em;">'
+          +'<th style="text-align:left;padding:10px 8px;">Order date</th><th style="text-align:center;padding:10px 8px;">Meals</th><th style="text-align:center;padding:10px 8px;">Time saved</th><th style="text-align:right;padding:10px 8px;">Running total</th></tr></thead>'
+        +'<tbody>'+rows+'</tbody></table>'
+       +'<div style="font-size:12.5px;color:var(--gray-500);font-style:italic;margin-top:10px;">That\u2019s time back for the gym, the people you love, and what actually matters. Keep stacking it up. \ud83d\udc9a</div>'
+       +'</div>';
+  })();
   var st=document.getElementById('acct-stats');
   if(st){ var count=orders.length; var spent=orders.reduce(function(a,o){return a+Number(o.total||0);},0);
     var since=count?new Date(orders[orders.length-1].ordered_at).toLocaleDateString(undefined,{month:'short',year:'numeric'}):'—';
