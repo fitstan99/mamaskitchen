@@ -66,13 +66,11 @@
   .foot-in{ text-align:center; padding:40px 24px; color:#6a5f52; }
   .foot-in .brand{ font-size:22px; }
   /* MUSIC PLAYER */
-  .gaida-btn{ position:fixed; right:18px; bottom:18px; z-index:100; display:flex; align-items:center; gap:10px;
-    background:var(--green); color:#fff; border:2px solid #fff; box-shadow:0 8px 26px rgba(0,0,0,.28);
-    border-radius:100px; padding:12px 18px 12px 14px; cursor:pointer; font-family:'Spectral'; font-weight:700; font-size:15px; }
-  .gaida-btn .ico{ width:26px; height:26px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:14px; }
-  .gaida-btn small{ display:block; font-weight:400; font-size:11px; opacity:.85; }
-  .gaida-btn.playing .ico{ animation:pulse 1.1s ease-in-out infinite; }
-  @keyframes pulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.18); } }
+  
+  
+  
+  
+  
   .preview-flag{ position:fixed; left:0; top:0; z-index:100; background:var(--ink); color:#fff; font-size:11px; padding:5px 12px; border-bottom-right-radius:8px; letter-spacing:.04em; }
 </style>
 </head>
@@ -160,24 +158,6 @@
   </div>
 </footer>
 
-<!-- GAIDA MUSIC PLAYER -->
-<audio id="gaida" loop preload="auto" src="assets/gaida-ambience.mp3"></audio>
-<button class="gaida-btn" id="gaidaBtn" onclick="toggleGaida()">
-  <span class="ico">&#9836;</span>
-  <span>Play the gaida<small>traditional Bulgarian pipes</small></span>
-</button>
-<script>
-  var a=document.getElementById('gaida'); a.volume=0.30; var playing=false;
-  var btn=document.getElementById('gaidaBtn');
-  function paint(){ btn.classList.toggle('playing',playing);
-    btn.querySelector('span:last-child').innerHTML = playing
-      ? 'Pause music<small>traditional Bulgarian gaida</small>'
-      : 'Play the gaida<small>traditional Bulgarian pipes</small>';
-    btn.querySelector('.ico').innerHTML = playing ? '&#10074;&#10074;' : '&#9836;'; }
-  function toggleGaida(){ if(playing){ a.pause(); playing=false; } else { a.play().then(function(){playing=true;paint();}).catch(function(){}); playing=true; } paint(); }
-  // gentle auto-start on the visitor's first interaction (browsers block silent autoplay)
-  function startOnce(){ if(!playing){ a.play().then(function(){playing=true;paint();}).catch(function(){}); } document.removeEventListener('click',startOnce); document.removeEventListener('keydown',startOnce); document.removeEventListener('touchstart',startOnce); }
-  document.addEventListener('click',startOnce); document.addEventListener('keydown',startOnce); document.addEventListener('touchstart',startOnce);
-</script>
+
 </body>
 </html>
