@@ -1368,6 +1368,7 @@ function showPage(id) {
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
   var el = document.getElementById('nav-' + id);
   if(el) el.classList.add('active');
+  var _sbar=document.getElementById('stickyBar'); if(_sbar){ if(id==='order'){ recalc(); } else { _sbar.classList.remove('show'); } }
   window.scrollTo(0,0);
   observeFadeIns();
 }
@@ -1571,6 +1572,16 @@ function recalc(){
   if(tipAmt>0) rows+='<div class="s-line"><span>Tip for Mom 💛</span><span>'+fmt(tipAmt)+'</span></div>';
   rows+='<div class="s-total"><span>Total</span><span>'+fmt(total)+'</span></div>';
   var sr=document.getElementById('summaryRows'); if(sr) sr.innerHTML=rows;
+  var _sbar=document.getElementById('stickyBar');
+  if(_sbar){
+    var _has=(tot>0)||(bSub>0)||(eSub>0);
+    var _lbl=tot>0?(tot+' meal'+(tot===1?'':'s')):'Add-ons';
+    if(tot>0&&(bSub>0||eSub>0)) _lbl+=' + add-ons';
+    var _c=document.getElementById('sb-count'),_t=document.getElementById('sb-total');
+    if(_c)_c.textContent=_lbl; if(_t)_t.textContent=fmt(total);
+    var _po=document.getElementById('page-order');
+    _sbar.classList.toggle('show', _has && _po && _po.classList.contains('active'));
+  }
 }
 
 function updateMacros(i){
@@ -1720,6 +1731,7 @@ async function finalizeOrder(order,btn,o){
   if(o.saveNew && sb && currentUser){ try{ await sb.from('profiles').update({cc_token:o.token,cc_exp:o.exp,cc_last4:o.last4}).eq('id',currentUser.id); if(currentProfile){currentProfile.cc_token=o.token;currentProfile.cc_exp=o.exp;currentProfile.cc_last4=o.last4;} }catch(e){} }
   if(currentUser){ saveOrderToDb(order).catch(function(e){ console.error('db save',e); }); }
   var b=document.getElementById('successBanner'); if(b) b.style.display='block';
+  var _sbDone=document.getElementById('stickyBar'); if(_sbDone) _sbDone.classList.remove('show');
   btn.textContent=o.fallback?'Order Submitted ✓':'Paid ✓';
   if(b) window.scrollTo(0, b.offsetTop-100);
   if(acctMade){ setTimeout(function(){ alert('All set — we created your account and you’re logged in. Find your orders anytime under “My Account.”'); },400); }
@@ -2134,6 +2146,23 @@ recalc();
 handleCheckoutReturn();
 refreshAuth();
 if(sb){ sb.auth.onAuthStateChange(function(){ refreshAuth(); }); }
+</script>
+<style>
+#stickyBar{position:fixed;left:0;right:0;bottom:0;z-index:200;display:none;align-items:center;justify-content:space-between;gap:14px;background:#141414;color:#fff;padding:12px 18px;box-shadow:0 -4px 18px rgba(0,0,0,.22);}
+#stickyBar.show{display:flex;}
+#stickyBar .sb-info{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;}
+#stickyBar .sb-total{font-weight:800;font-size:18px;}
+#stickyBar .sb-dot{opacity:.5;}
+#stickyBar .sb-btn{background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px 20px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+#stickyBar .sb-btn:hover{filter:brightness(1.08);}
+@media(max-width:560px){#stickyBar{padding:10px 14px;} #stickyBar .sb-info{font-size:13.5px;} #stickyBar .sb-total{font-size:16px;} #stickyBar .sb-btn{padding:10px 15px;font-size:14px;}}
+</style>
+<div id="stickyBar">
+  <div class="sb-info"><span class="sb-count" id="sb-count"></span> <span class="sb-dot">·</span> <span class="sb-total" id="sb-total">$0.00</span></div>
+  <button class="sb-btn" onclick="scrollToPay()">Review &amp; pay ↓</button>
+</div>
+<script>
+function scrollToPay(){ var b=document.getElementById('placeOrderBtn'); if(b) window.scrollTo(0, b.getBoundingClientRect().top+window.pageYOffset-170); }
 </script>
 </body>
 </html>
