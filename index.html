@@ -521,12 +521,9 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 <nav id="mainNav">
   <a class="nav-logo" href="#" onclick="showPage('home')">Mama's<span>Kitchen</span></a>
   <ul class="nav-links">
-    <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
     <li><a onclick="showPage('menu')" id="nav-menu">Menu</a></li>
     <li><a onclick="showPage('order')" id="nav-order">Order</a></li>
-    <li><a onclick="showPage('about')" id="nav-about">About</a></li>
     <li><a onclick="showPage('why')" id="nav-why">Your WHY</a></li>
-    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
     <li><a onclick="showPage('account')" id="nav-account">Login</a></li>
   </ul>
   <button class="nav-cta" onclick="showPage('order')">Order Now</button>
@@ -536,12 +533,9 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a onclick="showPage('home');toggleMobile()">Home</a>
   <a onclick="showPage('menu');toggleMobile()">Menu</a>
   <a onclick="showPage('order');toggleMobile()">Order</a>
-  <a onclick="showPage('about');toggleMobile()">About</a>
   <a onclick="showPage('why');toggleMobile()">Your WHY</a>
-  <a onclick="showPage('contact');toggleMobile()">Contact</a>
   <a onclick="showPage('account');toggleMobile()" id="nav-account-m">Login</a>
 </div>
 
@@ -1138,6 +1132,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <p>Create a free account to order, save your weekly meals, and track your history.</p>
     </div>
     <div class="order-body">
+      <div style="background:#F7FBF8;border:1px solid var(--gray-200);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--gray-600);line-height:1.7;">
+        <strong style="color:#141414;">Need help or have a question?</strong><br>
+        📱 <a href="tel:+12132121290" style="color:var(--green);font-weight:600;">+1 (213) 212-1290</a> &nbsp;·&nbsp; 📸 <a href="https://instagram.com/mamaskitchenptown" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">@mamaskitchenptown</a> &nbsp;·&nbsp; <a href="#" onclick="showPage('contact');return false;" style="color:var(--green);font-weight:600;">Send a message →</a>
+      </div>
       <div id="acct-loggedout">
         <div style="display:flex;gap:10px;margin-bottom:22px;">
           <button class="tip-btn tipped" id="tab-login-btn" onclick="acctTab('login')" style="flex:1">Log in</button>
