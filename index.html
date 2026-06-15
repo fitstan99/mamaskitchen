@@ -959,16 +959,16 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       </div>
       <div class="form-row-2">
         <div class="form-field"><label>Phone Number <span class="req-star">*</span></label><input type="tel" id="cust-phone" placeholder="+1 (508) 000-0000"></div>
-        <div class="form-field"><label>Age <span class="req-star">*</span></label><input type="number" id="cust-age" placeholder="Age" min="16" max="100"></div>
+        <div class="form-field"><label>Age <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="number" id="cust-age" placeholder="Age" min="16" max="100"></div>
       </div>
       <div class="form-field"><label>Street Address <span class="req-star">*</span></label><input type="text" id="cust-address" placeholder="123 Main St, Provincetown, MA"></div>
       <div class="form-row-2">
         <div class="form-field"><label>Unit Number <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="text" id="cust-unit" placeholder="Apt 4B"></div>
         <div class="form-field"><label>Gate Code <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="text" id="cust-gate" placeholder="#1234"></div>
       </div>
-      <div class="form-field"><label>Your main goal — why meal prep? <span class="req-star">*</span></label>
+      <div class="form-field"><label>Your main goal — why meal prep? <span style="color:var(--gray-400);font-size:11px">(optional)</span></label>
         <select id="cust-reason">
-          <option value="">Select your main goal…</option>
+          <option value="">Select your main goal… (optional)</option>
           <option>Fat loss</option>
           <option>Convenience / save time</option>
           <option>Performance / muscle gain</option>
@@ -1679,8 +1679,7 @@ function toggleGuestPass(){ var w=document.getElementById('guest-pass-wrap'), m=
 
 function placeOrder(){
   var c={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),address:gv('cust-address')};
-  if(!c.name||!c.email||!c.phone||!c.age||!c.address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return; }
-  if(!gv('cust-reason')){ alert('Please select your main goal for ordering — it helps Mom plan your meals.'); return; }
+  if(!c.name||!c.email||!c.phone||!c.address){ alert('Please fill in your name, email, phone, and your delivery or pickup address.'); return; }
   if(!document.getElementById('consent-sms').checked){ alert('Please agree to receive SMS order updates — we text you to confirm your pickup/delivery window.'); return; }
   if(!document.getElementById('consent-terms').checked){ alert('Please read and accept the Terms & Privacy Policy to place your order.'); return; }
   var order=collectOrder();
