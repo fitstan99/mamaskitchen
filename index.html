@@ -1021,8 +1021,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div id="newCardBox">
         <p style="font-size:14px;color:var(--gray-400);margin-bottom:12px;">Your card number and security code go straight into our payment processor's secure box (CardConnect) — those details never touch this website or our servers.</p>
         <div style="background:var(--gray-100);border-radius:12px;padding:18px;margin-bottom:14px;">
-          <iframe id="tokenframe" name="tokenframe" title="Secure card entry" frameborder="0" scrolling="no" width="100%" height="178" style="border:0;display:block;"></iframe>
-          <label for="cardExp" style="display:block;font-size:12px;font-weight:600;color:var(--gray-600);margin:4px 0 6px;">Expiration (MM / YY)</label>
+          <iframe id="tokenframe" name="tokenframe" title="Secure card entry" frameborder="0" scrolling="no" width="100%" height="215" style="border:0;display:block;"></iframe>
+          <label for="cardExp" style="display:block;font-size:12px;font-weight:600;color:var(--gray-600);margin:16px 0 6px;">Expiration (MM / YY)</label>
           <input id="cardExp" inputmode="numeric" autocomplete="cc-exp" maxlength="7" placeholder="MM / YY" oninput="formatExp(this)" style="width:100%;box-sizing:border-box;font-size:15px;height:48px;padding:12px 14px;border:1.5px solid #e2e2e2;border-radius:10px;color:var(--text);background:#fff;">
           <div id="cardStatus" style="font-size:13px;color:var(--gray-400);margin-top:10px;min-height:18px;">&nbsp;</div>
         </div>
@@ -1458,14 +1458,20 @@ function sideName(val){ if(!val) return null; var t=val.charAt(0), j=parseInt(va
 function sideType(val){ return val? (val.charAt(0)==='c'?'carb':'veg') : null; }
 
 var BOXES={
-  starter:{name:'5-Meal Starter',meals:5,desc:'Balanced & easy — the perfect first order.',cfgs:[
+  starter:{name:'5-Meal Starter',meals:5,desc:'Balanced & easy — the perfect first order.',emoji:'3× 🍗🍚🥦 · 2× 🦃🍠🫛',cfgs:[
     {p:0,oz:5,s1:'c0',s2:'v0',q:3},{p:1,oz:5,s1:'c4',s2:'v1',q:2}]},
-  protein10:{name:'High-Protein 10',meals:10,desc:'Bigger 7 oz portions — built for muscle gain.',cfgs:[
-    {p:0,oz:7,s1:'c1',s2:'v0',q:5},{p:3,oz:7,s1:'c4',s2:'v1',q:5}]},
-  lean10:{name:'Lean & Green 10',meals:10,desc:'Lighter carbs, double veg — fat-loss focused.',cfgs:[
-    {p:0,oz:6,s1:'v0',s2:'v1',q:5},{p:1,oz:6,s1:'v4',s2:'v2',q:5}]},
-  family15:{name:'Family / Bulk 15',meals:15,desc:'15 meals, 3 varieties — unlocks an extra 5% off.',cfgs:[
-    {p:0,oz:5,s1:'c0',s2:'v0',q:5},{p:1,oz:5,s1:'c4',s2:'v1',q:5},{p:3,oz:5,s1:'c3',s2:'v4',q:5}]}
+  protein10:{name:'High-Protein 10',meals:10,desc:'Bigger 7 oz portions — built for muscle gain.',emoji:'5× 🍗🍚🥦 · 5× 🥩🍠🫛',cfgs:[
+    {p:0,oz:7,s1:'c0',s2:'v0',q:5},{p:3,oz:7,s1:'c4',s2:'v1',q:5}]},
+  lean10:{name:'Lean & Green 10',meals:10,desc:'Lean 7 oz protein, double veg — fat-loss focused.',emoji:'5× 🍗🥦🥗 · 5× 🦃🥦🥗',cfgs:[
+    {p:0,oz:7,s1:'v0',s2:'v4',q:5},{p:1,oz:7,s1:'v0',s2:'v4',q:5}]},
+  family15:{name:'Family / Bulk 15',meals:15,desc:'15 meals, 3 varieties — unlocks an extra 5% off.',emoji:'5× 🍗🍚🥦 · 5× 🦃🍠🫛 · 5× 🥩🥔🥗',cfgs:[
+    {p:0,oz:5,s1:'c0',s2:'v0',q:5},{p:1,oz:5,s1:'c4',s2:'v1',q:5},{p:3,oz:5,s1:'c5',s2:'v4',q:5}]},
+  muscle15:{name:'Muscle Builder 15',meals:15,desc:'High 7 oz protein every meal — serious gains.',emoji:'5× 🍗🍠🥦 · 5× 🥩🍚🥦 · 5× 🦃🫘🥦',cfgs:[
+    {p:0,oz:7,s1:'c4',s2:'v0',q:5},{p:3,oz:7,s1:'c0',s2:'v0',q:5},{p:1,oz:7,s1:'c7',s2:'v0',q:5}]},
+  premium15:{name:'Premium Catch 15',meals:15,desc:'Wild salmon, shrimp & grass-fed beef at 6 oz. Best eaten in the first 2 days.',emoji:'5× 🐟🍚🥦 · 5× 🦐🍚🥗 · 5× 🥩🍠🥦',cfgs:[
+    {p:4,oz:6,s1:'c0',s2:'v0',q:5},{p:5,oz:6,s1:'c0',s2:'v4',q:5},{p:3,oz:6,s1:'c4',s2:'v0',q:5}]},
+  couples20:{name:"Couple's 20",meals:20,desc:'20 meals for two — chicken, beef, salmon & shrimp, varied sides.',emoji:'5× 🍗🍚🥦 · 5× 🥩🥔🫛 · 5× 🐟🍠🥦 · 5× 🦐🍚🥗',cfgs:[
+    {p:0,oz:5,s1:'c0',s2:'v0',q:5},{p:3,oz:5,s1:'c5',s2:'v1',q:5},{p:4,oz:5,s1:'c4',s2:'v0',q:5},{p:5,oz:5,s1:'c0',s2:'v4',q:5}]}
 };
 function boxPrice(b){ var t=0; b.cfgs.forEach(function(cf){ t+=mealPrice(String(cf.p),cf.oz)*cf.q; }); return t; }
 function buildBoxPicker(){
@@ -1474,7 +1480,7 @@ function buildBoxPicker(){
     c.innerHTML+='<div class="box-card" id="box-'+k+'" onclick="applyBox(\''+k+'\')">'+
       '<div class="bc-meals">'+b.meals+' meals</div>'+
       '<div class="bc-name">'+b.name+'</div>'+
-      '<div class="bc-desc">'+b.desc+'</div>'+
+      '<div class="bc-desc">'+b.desc+'</div>'+'<div class="bc-emoji" style="font-size:13px;line-height:1.6;margin:2px 0 9px;">'+(b.emoji||'')+'</div>'+
       '<div class="bc-price">'+fmt(pr)+' <small>before tax · ~'+fmt(pr/b.meals)+'/meal</small></div>'+
       '<div class="bc-pick">Use this box</div>'+
     '</div>';
@@ -1482,7 +1488,7 @@ function buildBoxPicker(){
 }
 function applyBox(key){
   var b=BOXES[key]; if(!b) return;
-  for(var i=0;i<3;i++){
+  for(var i=0;i<4;i++){
     var cfg=b.cfgs[i]; var pEl=document.getElementById('p_'+i); if(!pEl) continue;
     if(cfg){
       pEl.value=String(cfg.p); onPChange(i);
@@ -1507,7 +1513,7 @@ function applyBox(key){
 function buildConfigs(){
   var c=document.getElementById('configs'); if(!c) return;
   c.innerHTML='';
-  for(var i=0;i<3;i++){
+  for(var i=0;i<4;i++){
     var req=(i===0);
     c.innerHTML+=
       '<div class="config-block'+(req?'':' optional-cfg')+'" id="cfg'+i+'">'+
@@ -1558,7 +1564,7 @@ function setTip(mode,btn){ tipMode=mode; document.querySelectorAll('.tip-btn').f
 
 function recalc(){
   var mSub=0,tot=0,mHTML='';
-  for(var i=0;i<3;i++){
+  for(var i=0;i<4;i++){
     var pi=document.getElementById('p_'+i); if(!pi) continue;
     var pv=pi.value, sz=document.getElementById('s_'+i).value, qty=parseInt(document.getElementById('qty_'+i).value)||0;
     var s1El=document.getElementById('s1_'+i),s2El=document.getElementById('s2_'+i);
@@ -1635,7 +1641,7 @@ function collectOrder(){
             smsConsent:ck('consent-sms'), emailConsent:ck('consent-email'), terms:ck('consent-terms'),
             userId:(currentUser?currentUser.id:null)};
   var meals=[];
-  for(var i=0;i<3;i++){
+  for(var i=0;i<4;i++){
     var p=document.getElementById('p_'+i); if(!p) continue;
     var pv=p.value, qty=parseInt(document.getElementById('qty_'+i).value)||0;
     if(pv===''||!qty) continue;
