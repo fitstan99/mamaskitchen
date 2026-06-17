@@ -787,7 +787,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
     <div class="menu-section">
       <div class="menu-section-title">Drink · Sweet Treat · House Specials</div>
-      <div class="menu-section-sub">Minimums: Probiotic Elixir 5 · Protein Cake 3 · Banitsa 7 · Kebapche & Kofte 5. Macros shown per 100 g / 100 ml, as printed on the label.</div>
+      <div class="menu-section-sub">Minimums: Probiotic Elixir 5 · Protein Cake 3 · Banitsa 7 · Kebapche 5 · Kofte 5. Macros shown per 100 g / 100 ml, as printed on the label.</div>
       <div class="label-grid">
 
         <div class="label-card">
@@ -855,7 +855,28 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
         <div class="label-card">
           <div class="label-head">
-            <div class="label-title">Kebapche &amp;<br>Kofte Grill</div>
+            <div class="label-title">Kebapche</div>
+            <div class="label-tag">Authentic Bulgarian Grill &middot; Pork &amp; Beef &middot; Cumin-Spiced</div>
+            <div class="label-badges"><span>HIGH PROTEIN</span><span>HOMEMADE</span><span>NO FILLER</span></div>
+          </div>
+          <div class="label-macros">
+            <div class="lm-row"><span>&#9889; CALORIES / 100G</span><b>275 kcal</b></div>
+            <div class="lm-row"><span>PROTEIN</span><b>21g</b></div>
+            <div class="lm-row"><span>CARBS</span><b>2g</b></div>
+            <div class="lm-row"><span>FAT</span><b>20g</b></div>
+            <div class="lm-row"><span>SODIUM</span><b>~520mg</b></div>
+          </div>
+          <div class="label-foot">
+            <div class="label-banner">&#9733; BEST SERVED HOT &#9733;</div>
+            <div class="label-ing"><strong>Ingredients:</strong> Ground pork &amp; beef (60/40), cumin, black pepper, sea salt.</div>
+            <div class="label-contains"><strong>Contains: none of the 9 major allergens</strong> &middot; Keep refrigerated &middot; Consume within 3 days.</div>
+            <div class="label-price">$5.99 <small>/ 200 g package</small></div>
+          </div>
+        </div>
+
+        <div class="label-card">
+          <div class="label-head">
+            <div class="label-title">Kofte</div>
             <div class="label-tag">Authentic Bulgarian Grill &middot; Pork &amp; Beef &middot; Cumin-Spiced</div>
             <div class="label-badges"><span>HIGH PROTEIN</span><span>HOMEMADE</span><span>NO FILLER</span></div>
           </div>
@@ -954,7 +975,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
       <!-- EXTRAS -->
       <div class="order-sec-header">Extras — Drinks, Treats &amp; House Specials <span style="font-weight:400;font-size:13px;color:var(--gray-400);text-transform:none;letter-spacing:0;">· optional</span></div>
-      <p style="font-size:14px;color:var(--gray-400);margin-bottom:16px;">Add our probiotic drink, protein cake, and banitsa. Minimums: drink 5 · cake 3 · banitsa 7 · kebapche 5. (Not counted toward the 15+ meals discount.)</p>
+      <p style="font-size:14px;color:var(--gray-400);margin-bottom:16px;">Add our probiotic drink, protein cake, and banitsa. Minimums: drink 5 · cake 3 · banitsa 7 · kebapche 5 · kofte 5. (Not counted toward the 15+ meals discount.)</p>
       <div style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:28px;" id="extras"></div>
 
       <!-- SUBSCRIPTION -->
@@ -1004,16 +1025,16 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       </div>
       <div class="form-row-2">
         <div class="form-field"><label>Phone Number <span class="req-star">*</span></label><input type="tel" id="cust-phone" placeholder="+1 (508) 000-0000"></div>
-        <div class="form-field"><label>Age <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="number" id="cust-age" placeholder="Age" min="16" max="100"></div>
+        <div class="form-field"><label>Age <span class="req-star">*</span></label><input type="number" id="cust-age" placeholder="Age" min="16" max="100"></div>
       </div>
       <div class="form-field"><label>Street Address <span class="req-star">*</span></label><input type="text" id="cust-address" placeholder="123 Main St, Provincetown, MA"></div>
       <div class="form-row-2">
         <div class="form-field"><label>Unit Number <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="text" id="cust-unit" placeholder="Apt 4B"></div>
         <div class="form-field"><label>Gate Code <span style="color:var(--gray-400);font-size:11px">(optional)</span></label><input type="text" id="cust-gate" placeholder="#1234"></div>
       </div>
-      <div class="form-field"><label>Your main goal — why meal prep? <span style="color:var(--gray-400);font-size:11px">(optional)</span></label>
+      <div class="form-field"><label>Your main goal — why meal prep? <span class="req-star">*</span></label>
         <select id="cust-reason">
-          <option value="">Select your main goal… (optional)</option>
+          <option value="">Select your main goal…</option>
           <option>Fat loss</option>
           <option>Convenience / save time</option>
           <option>Performance / muscle gain</option>
@@ -1455,7 +1476,8 @@ var EXTRAS=[
   {id:'drink',cat:'DRINK',name:'Probiotic Detox Elixir',unit:'500 ml bottle',price:4.99,min:5,cal:240,p:9.5,c:11,f:10.5},
   {id:'cake',cat:'SWEET TREAT',name:"Mama's Protein Cake",unit:'~400 g container',price:9.99,min:3,cal:764,p:47,c:67,f:33},
   {id:'banitsa',cat:'HOUSE SPECIALS',name:'Banitsa',unit:'200 g package',price:7.99,min:7,cal:446,p:14,c:32,f:30},
-  {id:'kebapche',cat:'HOUSE SPECIALS',name:'Kebapche & Kofte Grill',unit:'200 g package',price:5.99,min:5,cal:550,p:42,c:4,f:40}
+  {id:'kebapche',cat:'HOUSE SPECIALS',name:'Kebapche',unit:'200 g package',price:5.99,min:5,cal:550,p:42,c:4,f:40},
+  {id:'kofte',cat:'HOUSE SPECIALS',name:'Kofte',unit:'200 g package',price:5.99,min:5,cal:550,p:42,c:4,f:40}
 ];
 function buildExtras(){ var c=document.getElementById('extras'); if(!c) return; c.innerHTML=''; EXTRAS.forEach(function(x){ c.innerHTML+='<div class="bulk-item"><div><div class="bulk-name">'+x.name+' <span class="extra-cat">'+x.cat+'</span></div><div class="bulk-price-sub">'+fmt(x.price)+' · '+x.unit+(x.min>1?' · min '+x.min:'')+' · '+x.cal+' kcal · '+x.p+'P/'+x.c+'C/'+x.f+'F</div></div><input type="number" id="extra_'+x.id+'" min="0" step="1" placeholder="0" oninput="recalc()" style="max-width:80px;text-align:center"><div class="bulk-calc" id="extra_'+x.id+'_c">—</div></div>'; }); }
 function extrasData(){ var arr=[]; EXTRAS.forEach(function(x){ var el=document.getElementById('extra_'+x.id); var q=el?parseInt(el.value)||0:0; if(q>0) arr.push({id:x.id,name:x.name,qty:q,price:x.price,line:q*x.price,min:x.min,label:q+'x '+x.name}); }); return arr; }
@@ -1731,7 +1753,8 @@ function toggleGuestPass(){ var w=document.getElementById('guest-pass-wrap'), m=
 
 function placeOrder(){
   var c={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),address:gv('cust-address')};
-  if(!c.name||!c.email||!c.phone||!c.address){ alert('Please fill in your name, email, phone, and your delivery or pickup address.'); return; }
+  if(!c.name||!c.email||!c.phone||!c.age||!c.address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return; }
+  if(!gv('cust-reason')){ alert('Please select your main goal for ordering — it helps Mom plan your meals.'); return; }
   if(!document.getElementById('consent-sms').checked){ alert('Please agree to receive SMS order updates — we text you to confirm your pickup/delivery window.'); return; }
   if(!document.getElementById('consent-terms').checked){ alert('Please read and accept the Terms & Privacy Policy to place your order.'); return; }
   var order=collectOrder();
