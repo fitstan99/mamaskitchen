@@ -1502,8 +1502,6 @@ function sideName(val){ if(!val) return null; var t=val.charAt(0), j=parseInt(va
 function sideType(val){ return val? (val.charAt(0)==='c'?'carb':'veg') : null; }
 
 var BOXES={
-  starter:{name:'5-Meal Starter',meals:5,desc:'Balanced & easy — the perfect first order.',emoji:'3× 🍗🍚🥦 · 2× 🦃🍠🫛',cfgs:[
-    {p:0,oz:5,s1:'c0',s2:'v0',q:3},{p:1,oz:5,s1:'c4',s2:'v1',q:2}]},
   protein10:{name:'High-Protein 10',meals:10,desc:'Bigger 7 oz portions — built for muscle gain.',emoji:'5× 🍗🍚🥦 · 5× 🥩🍠🫛',cfgs:[
     {p:0,oz:7,s1:'c0',s2:'v0',q:5},{p:3,oz:7,s1:'c4',s2:'v1',q:5}]},
   lean10:{name:'Lean & Green 10',meals:10,desc:'Lean 7 oz protein, double veg — fat-loss focused.',emoji:'5× 🍗🥦🥗 · 5× 🦃🥦🥗',cfgs:[
@@ -1514,8 +1512,12 @@ var BOXES={
     {p:0,oz:7,s1:'c4',s2:'v0',q:5},{p:3,oz:7,s1:'c0',s2:'v0',q:5},{p:1,oz:7,s1:'c7',s2:'v0',q:5}]},
   premium15:{name:'Premium Catch 15',meals:15,desc:'Wild salmon, shrimp & grass-fed beef at 6 oz. Best eaten in the first 2 days.',emoji:'5× 🐟🍚🥦 · 5× 🦐🍚🥗 · 5× 🥩🍠🥦',cfgs:[
     {p:4,oz:6,s1:'c0',s2:'v0',q:5},{p:5,oz:6,s1:'c0',s2:'v4',q:5},{p:3,oz:6,s1:'c4',s2:'v0',q:5}]},
-  couples20:{name:"Couple's 20",meals:20,desc:'20 meals for two — chicken, beef, salmon & shrimp, varied sides.',emoji:'5× 🍗🍚🥦 · 5× 🥩🥔🫛 · 5× 🐟🍠🥦 · 5× 🦐🍚🥗',cfgs:[
-    {p:0,oz:5,s1:'c0',s2:'v0',q:5},{p:3,oz:5,s1:'c5',s2:'v1',q:5},{p:4,oz:5,s1:'c4',s2:'v0',q:5},{p:5,oz:5,s1:'c0',s2:'v4',q:5}]}
+  couples20:{name:"Couple's Plan · 20",meals:20,group:'Couple',desc:'20 meals for two — chicken, beef, salmon & shrimp, varied sides.',emoji:'5× 🍗🍚🥦 · 5× 🥩🥔🫛 · 5× 🐟🍠🥦 · 5× 🦐🍚🥗',cfgs:[
+    {p:0,oz:5,s1:'c0',s2:'v0',q:5},{p:3,oz:5,s1:'c5',s2:'v1',q:5},{p:4,oz:5,s1:'c4',s2:'v0',q:5},{p:5,oz:5,s1:'c0',s2:'v4',q:5}]},
+  group25:{name:'Group Plan · 25',meals:25,group:'Group',desc:'25 meals, 4 proteins — for a small household or crew.',emoji:'7× 🍗🍚🥦 · 6× 🦃🍠🫛 · 6× 🥩🥔🥗 · 6× 🐖🌾🥦',cfgs:[
+    {p:0,oz:5,s1:'c0',s2:'v0',q:7},{p:1,oz:5,s1:'c4',s2:'v1',q:6},{p:3,oz:5,s1:'c5',s2:'v4',q:6},{p:2,oz:5,s1:'c1',s2:'v0',q:6}]},
+  group30:{name:'Group Plan · 30',meals:30,group:'Group',desc:'30 meals, 4 proteins — a full week for the whole crew.',emoji:'8× 🍗🍚🥦 · 8× 🦃🍠🫛 · 7× 🥩🥔🥗 · 7× 🐖🌾🥦',cfgs:[
+    {p:0,oz:5,s1:'c0',s2:'v0',q:8},{p:1,oz:5,s1:'c4',s2:'v1',q:8},{p:3,oz:5,s1:'c5',s2:'v4',q:7},{p:2,oz:5,s1:'c1',s2:'v0',q:7}]}
 };
 function boxPrice(b){ var t=0; b.cfgs.forEach(function(cf){ t+=mealPrice(String(cf.p),cf.oz)*cf.q; }); return t; }
 function buildBoxPicker(){
@@ -1526,6 +1528,7 @@ function buildBoxPicker(){
       '<div class="bc-name">'+b.name+'</div>'+
       '<div class="bc-desc">'+b.desc+'</div>'+'<div class="bc-emoji" style="font-size:13px;line-height:1.6;margin:2px 0 9px;">'+(b.emoji||'')+'</div>'+
       '<div class="bc-price">'+fmt(pr)+' <small>before tax · ~'+fmt(pr/b.meals)+'/meal</small></div>'+
+      ((b.meals>15)?('<div class="bc-pp" style="font-size:12px;color:var(--green);font-weight:800;margin:5px 0 2px;">👥 '+(b.group||'Group')+' plan · '+fmt(pr/(b.meals/10))+' per person / week</div><div style="font-size:10.5px;color:var(--gray-400);margin-bottom:3px;">based on ~10 meals each</div>'):'')+
       '<div class="bc-pick">Use this box</div>'+
     '</div>';
   });
@@ -1645,6 +1648,7 @@ function recalc(){
   rows+='<div class="s-line"><span>Card Processing (3%)</span><span>'+fmt(cc)+'</span></div>';
   if(tipAmt>0) rows+='<div class="s-line"><span>Tip for Mom 💛</span><span>'+fmt(tipAmt)+'</span></div>';
   rows+='<div class="s-total"><span>Total</span><span>'+fmt(total)+'</span></div>';
+  if(tot>15){ rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>👥 Group plan — per person / week</span><span>'+fmt(total/(tot/10))+'</span></div>'; }
   var sr=document.getElementById('summaryRows'); if(sr) sr.innerHTML=rows;
   var _sbar=document.getElementById('stickyBar');
   if(_sbar){
