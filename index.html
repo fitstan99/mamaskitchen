@@ -787,7 +787,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
     <div class="menu-section">
       <div class="menu-section-title">Drink · Sweet Treat · House Specials</div>
-      <div class="menu-section-sub">Minimums: Probiotic Elixir 5 · Protein Cake 3 · Banitsa none. Macros shown per 100 g / 100 ml, as printed on the label.</div>
+      <div class="menu-section-sub">Minimums: Probiotic Elixir 5 · Protein Cake 3 · Banitsa 7 · Kebapche & Kofte 5. Macros shown per 100 g / 100 ml, as printed on the label.</div>
       <div class="label-grid">
 
         <div class="label-card">
@@ -954,7 +954,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
       <!-- EXTRAS -->
       <div class="order-sec-header">Extras — Drinks, Treats &amp; House Specials <span style="font-weight:400;font-size:13px;color:var(--gray-400);text-transform:none;letter-spacing:0;">· optional</span></div>
-      <p style="font-size:14px;color:var(--gray-400);margin-bottom:16px;">Add our probiotic drink, protein cake, and banitsa. Minimums: drink 5 · cake 3 · banitsa none. (Not counted toward the 15+ meals discount.)</p>
+      <p style="font-size:14px;color:var(--gray-400);margin-bottom:16px;">Add our probiotic drink, protein cake, and banitsa. Minimums: drink 5 · cake 3 · banitsa 7 · kebapche 5. (Not counted toward the 15+ meals discount.)</p>
       <div style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:28px;" id="extras"></div>
 
       <!-- SUBSCRIPTION -->
@@ -1454,8 +1454,8 @@ var VEG_MACROS=[{cal:50,p:3.4,c:10,f:0.6},{cal:50,p:2.7,c:11,f:0.4},{cal:33,p:2.
 var EXTRAS=[
   {id:'drink',cat:'DRINK',name:'Probiotic Detox Elixir',unit:'500 ml bottle',price:4.99,min:5,cal:240,p:9.5,c:11,f:10.5},
   {id:'cake',cat:'SWEET TREAT',name:"Mama's Protein Cake",unit:'~400 g container',price:9.99,min:3,cal:764,p:47,c:67,f:33},
-  {id:'banitsa',cat:'HOUSE SPECIALS',name:'Banitsa',unit:'200 g package',price:7.99,min:1,cal:446,p:14,c:32,f:30},
-  {id:'kebapche',cat:'HOUSE SPECIALS',name:'Kebapche & Kofte Grill',unit:'200 g package',price:5.99,min:1,cal:550,p:42,c:4,f:40}
+  {id:'banitsa',cat:'HOUSE SPECIALS',name:'Banitsa',unit:'200 g package',price:7.99,min:7,cal:446,p:14,c:32,f:30},
+  {id:'kebapche',cat:'HOUSE SPECIALS',name:'Kebapche & Kofte Grill',unit:'200 g package',price:5.99,min:5,cal:550,p:42,c:4,f:40}
 ];
 function buildExtras(){ var c=document.getElementById('extras'); if(!c) return; c.innerHTML=''; EXTRAS.forEach(function(x){ c.innerHTML+='<div class="bulk-item"><div><div class="bulk-name">'+x.name+' <span class="extra-cat">'+x.cat+'</span></div><div class="bulk-price-sub">'+fmt(x.price)+' · '+x.unit+(x.min>1?' · min '+x.min:'')+' · '+x.cal+' kcal · '+x.p+'P/'+x.c+'C/'+x.f+'F</div></div><input type="number" id="extra_'+x.id+'" min="0" step="1" placeholder="0" oninput="recalc()" style="max-width:80px;text-align:center"><div class="bulk-calc" id="extra_'+x.id+'_c">—</div></div>'; }); }
 function extrasData(){ var arr=[]; EXTRAS.forEach(function(x){ var el=document.getElementById('extra_'+x.id); var q=el?parseInt(el.value)||0:0; if(q>0) arr.push({id:x.id,name:x.name,qty:q,price:x.price,line:q*x.price,min:x.min,label:q+'x '+x.name}); }); return arr; }
