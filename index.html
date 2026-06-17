@@ -919,13 +919,23 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div class="order-deadline">
       📅 &nbsp;<strong>Order deadline: Sunday at midnight EST</strong> &nbsp;·&nbsp; Pickup / delivery Monday 3&ndash;6 PM &nbsp;·&nbsp; large orders split Mon + Thu
     </div>
+    <div class="order-guarantee">💯 <span>Try it risk-free — <strong>love your first week or we'll make it right, on us.</strong></span></div>
+    <div class="order-countdown">⏰ Order closes in <strong id="ocClock">—</strong> &nbsp;·&nbsp; pickup / delivery Monday 3–6 PM</div>
     <div class="order-body">
 
       <div id="orderGate" style="display:none;background:#F0F7F2;border:1px solid var(--green);border-radius:12px;padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--gray-600);line-height:1.6;">
         👋 New here? Just build your meals below — <strong>no account needed</strong>. Returning customer? <a href="#" onclick="showPage('account');return false;" style="color:var(--green);font-weight:700;">Log in</a> to autofill your details.
       </div>
 
-      <!-- 15+ BANNER -->
+            <div class="wizbar" id="wizbar">
+        <div class="wizstep active" data-s="1"><span class="num">1</span> Choose meals</div>
+        <div class="ln" id="wln1"></div>
+        <div class="wizstep" data-s="2"><span class="num">2</span> Your details</div>
+        <div class="ln" id="wln2"></div>
+        <div class="wizstep" data-s="3"><span class="num">3</span> Pay</div>
+      </div>
+      <div class="wstep show" id="wstep1">
+<!-- 15+ BANNER -->
       <div class="discount-alert" id="discountAlert">
         🔥 You've reached 15+ meals — an extra 5% off has been applied! Combined with subscription = <strong>10% total off.</strong>
       </div>
@@ -947,6 +957,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div class="order-section-title">Start with a box <span style="font-weight:400;font-size:14px;color:var(--gray-400)">— optional, fully editable after you pick</span></div>
       <div class="mode-note" style="margin:-6px 0 12px;">New here? Pick a ready-made box and we'll fill in the meals for you — then tweak anything you like below. Or skip this and build from scratch.</div>
       <div id="boxPicker" class="box-grid"></div>
+      <button type="button" id="seeAllBoxes" onclick="toggleAllBoxes()" class="seeall-boxes">See all 9 plans →</button>
+      <div id="boxPickerMore" class="box-grid" style="display:none;margin-top:4px;"></div>
       <div class="or-divider">— or build your own from scratch —</div>
 
       <!-- MEAL CONFIGS -->
@@ -978,46 +990,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <p style="font-size:14px;color:var(--gray-400);margin-bottom:16px;">Add our probiotic drink, protein cake, and banitsa. Minimums: drink 5 · cake 3 · banitsa 7 · kebapche 5 · kofte 5. (Not counted toward the 15+ meals discount.)</p>
       <div style="background:var(--gray-100);border-radius:12px;padding:20px;margin-bottom:28px;" id="extras"></div>
 
-      <!-- SUBSCRIPTION -->
-      <div class="sub-banner-order">
-        <div class="sub-banner-order-title">⭐ Weekly Subscription — Save 5% Every Week</div>
-        <div class="sub-banner-order-sub">Subscribe and lock in 5% off every order. Cancel anytime.</div>
-        <div class="toggle-wrap">
-          <div class="toggle-track" id="subToggle" onclick="toggleSub()"><div class="toggle-thumb"></div></div>
-          <span class="toggle-label" id="subLabel">Subscribe and save 5%</span>
-        </div>
+            <div class="wiznav"><button type="button" class="wbtn next" onclick="goStep(2)">Continue to your details →</button></div>
       </div>
-
-      <div style="background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
-        <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" onchange="toggleBillingAuth()" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change, pause, or cancel anytime from your account.</span></label>
-        <label id="billing-auth-wrap" style="display:none;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--gray-600);margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);"><input type="checkbox" id="billing-auth" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>I authorize Mama's Kitchen to automatically charge my saved card each week for this recurring order, until I pause or cancel.<br><span class="consent-fine">You'll get a card receipt each week. Manage or cancel anytime in your account before the Sunday deadline.</span></span></label>
-      </div>
-
-      <!-- TIP -->
-      <div class="order-sec-header">Tip for Mom <span style="font-weight:400;font-size:13px;color:var(--gray-400);text-transform:none;letter-spacing:0;">· optional</span></div>
-      <div class="tip-row">
-        <button class="tip-btn notip" onclick="setTip('none',this)">No tip</button>
-        <button class="tip-btn" onclick="setTip(0.10,this)">10%</button>
-        <button class="tip-btn" onclick="setTip(0.15,this)">15%</button>
-        <button class="tip-btn" onclick="setTip(0.20,this)">20%</button>
-        <button class="tip-btn" onclick="setTip(0.25,this)">25%</button>
-        <button class="tip-btn" onclick="setTip('custom',this)">Custom</button>
-        <div class="tip-thanks" id="tipThanks"><span style="font-size:22px">😊</span> Thanks!</div>
-      </div>
-      <input type="number" id="customTip" style="display:none;max-width:130px;margin-top:10px" placeholder="$ custom amount" oninput="recalc()" min="0" step="1">
-
-      <!-- ORDER SUMMARY -->
-      <div class="summary-box">
-        <div class="summary-title">🧾 Order Summary</div>
-        <div class="summary-lines" id="mealLines"><div style="font-size:13px;color:var(--gray-400)">No meals configured yet.</div></div>
-        <div id="bulkLines"></div>
-        <div id="extrasLines"></div>
-        <hr class="s-divider">
-        <div id="summaryRows"></div>
-        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through CardConnect (Fiserv) — your card details never touch this website.</div>
-      </div>
-
-      <!-- CUSTOMER INFO -->
+      <div class="wstep" id="wstep2">
+<!-- CUSTOMER INFO -->
       <div class="order-sec-header">Your Information</div>
       <div class="form-row-2">
         <div class="form-field"><label>Full Name <span class="req-star">*</span></label><input type="text" id="cust-name" placeholder="Jane Smith"></div>
@@ -1057,6 +1033,49 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <label class="consent-row"><input type="checkbox" id="consent-terms"><span>I accept the <a href="#" onclick="showPage('terms');return false;">Terms &amp; Privacy Policy</a> — orders are pre-paid &amp; made fresh to order. <span class="req-star">*</span></span></label>
       </div>
 
+            <div class="wiznav"><button type="button" class="wbtn back" onclick="goStep(1)">← Back</button><button type="button" class="wbtn next" onclick="goStep(3)">Continue to payment →</button></div>
+      </div>
+      <div class="wstep" id="wstep3">
+      <div class="wiznav"><button type="button" class="wbtn back" onclick="goStep(2)">← Back to your details</button></div>
+<!-- SUBSCRIPTION -->
+      <div class="sub-banner-order">
+        <div class="sub-banner-order-title">⭐ Weekly Subscription — Save 5% Every Week</div>
+        <div class="sub-banner-order-sub">Subscribe and lock in 5% off every order. Cancel anytime.</div>
+        <div class="toggle-wrap">
+          <div class="toggle-track" id="subToggle" onclick="toggleSub()"><div class="toggle-thumb"></div></div>
+          <span class="toggle-label" id="subLabel">Subscribe and save 5%</span>
+        </div>
+      </div>
+
+      <div style="background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
+        <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" onchange="toggleBillingAuth()" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change, pause, or cancel anytime from your account.</span></label>
+        <label id="billing-auth-wrap" style="display:none;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--gray-600);margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);"><input type="checkbox" id="billing-auth" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>I authorize Mama's Kitchen to automatically charge my saved card each week for this recurring order, until I pause or cancel.<br><span class="consent-fine">You'll get a card receipt each week. Manage or cancel anytime in your account before the Sunday deadline.</span></span></label>
+      </div>
+
+      <!-- TIP -->
+      <div class="order-sec-header">Tip for Mom <span style="font-weight:400;font-size:13px;color:var(--gray-400);text-transform:none;letter-spacing:0;">· optional</span></div>
+      <div class="tip-row">
+        <button class="tip-btn notip" onclick="setTip('none',this)">No tip</button>
+        <button class="tip-btn" onclick="setTip(0.10,this)">10%</button>
+        <button class="tip-btn" onclick="setTip(0.15,this)">15%</button>
+        <button class="tip-btn" onclick="setTip(0.20,this)">20%</button>
+        <button class="tip-btn" onclick="setTip(0.25,this)">25%</button>
+        <button class="tip-btn" onclick="setTip('custom',this)">Custom</button>
+        <div class="tip-thanks" id="tipThanks"><span style="font-size:22px">😊</span> Thanks!</div>
+      </div>
+      <input type="number" id="customTip" style="display:none;max-width:130px;margin-top:10px" placeholder="$ custom amount" oninput="recalc()" min="0" step="1">
+
+      <!-- ORDER SUMMARY -->
+      <div class="summary-box">
+        <div class="summary-title">🧾 Order Summary</div>
+        <div class="summary-lines" id="mealLines"><div style="font-size:13px;color:var(--gray-400)">No meals configured yet.</div></div>
+        <div id="bulkLines"></div>
+        <div id="extrasLines"></div>
+        <hr class="s-divider">
+        <div id="summaryRows"></div>
+        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through CardConnect (Fiserv) — your card details never touch this website.</div>
+      </div>
+
       <!-- PAYMENT -->
       <div class="order-sec-header">Payment</div>
       <div id="savedCardOption" style="display:none;background:var(--gray-100);border-radius:12px;padding:16px 18px;margin-bottom:14px;"></div>
@@ -1076,7 +1095,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div class="success-banner" id="successBanner">
         <h3>🎉 Order Received!</h3>
         <p id="successMsg">Thank you! Your order has been sent to Mom's Kitchen. We'll text you to confirm your Monday pickup/delivery (3&ndash;6 PM) and reach out when your meals are ready. Large orders are split half Monday, half Thursday for freshness. See you soon! 💛</p>
-      </div>
+      </div>      </div>
+
     </div>
   </div>
 </div>
@@ -1523,19 +1543,23 @@ var BOXES={
 };
 function boxPrice(b){ var t=0; b.cfgs.forEach(function(cf){ t+=mealPrice(String(cf.p),cf.oz)*cf.q; }); return t; }
 function buildBoxPicker(){
-  var c=document.getElementById('boxPicker'); if(!c) return; c.innerHTML='';
+  var FEATURED=['everyday10','protein10','family15'];
+  var main=document.getElementById('boxPicker'); var more=document.getElementById('boxPickerMore');
+  if(!main) return; main.innerHTML=''; if(more) more.innerHTML='';
   Object.keys(BOXES).forEach(function(k){ var b=BOXES[k]; var pr=boxPrice(b);
-    c.innerHTML+='<div class="box-card" id="box-'+k+'" onclick="applyBox(\''+k+'\')">'+
+    var badge=(k==='everyday10')?'<div class="bc-badge">⭐ MOST POPULAR</div>':'';
+    var card='<div class="box-card'+(k==='everyday10'?' bc-pop':'')+'" id="box-'+k+'" onclick="applyBox(\''+k+'\')">'+badge+
       '<div class="bc-meals">'+b.meals+' meals</div>'+
       '<div class="bc-name">'+b.name+'</div>'+
-      '<div class="bc-desc">'+b.desc+'</div>'+'<div class="bc-emoji" style="font-size:13px;line-height:1.6;margin:2px 0 9px;">'+(b.emoji||'')+'</div>'+
+      '<div class="bc-desc">'+b.desc+'</div>'+'<div class="bc-emoji" style="font-size:16px;line-height:1.55;margin:2px 0 9px;letter-spacing:.5px;">'+(b.emoji||'')+'</div>'+
       '<div class="bc-price">'+fmt(pr)+' <small>before tax · ~'+fmt(pr/b.meals)+'/meal</small></div>'+
       ((b.meals>15)?('<div class="bc-pp" style="font-size:12px;color:var(--green);font-weight:800;margin:5px 0 2px;">👥 '+(b.group||'Group')+' plan · '+fmt(pr/(b.meals/10))+' per person / week</div><div style="font-size:10.5px;color:var(--gray-400);margin-bottom:3px;">based on ~10 meals each</div>'):'')+
       '<div class="bc-pick">Use this box</div>'+
     '</div>';
+    if(FEATURED.indexOf(k)>=0){ main.innerHTML+=card; } else if(more){ more.innerHTML+=card; }
   });
 }
-function applyBox(key){
+function applyBox(key,noScroll){
   var b=BOXES[key]; if(!b) return;
   for(var i=0;i<4;i++){
     var cfg=b.cfgs[i]; var pEl=document.getElementById('p_'+i); if(!pEl) continue;
@@ -1556,7 +1580,7 @@ function applyBox(key){
   recalc();
   var cards=document.querySelectorAll('#boxPicker .box-card'); for(var x=0;x<cards.length;x++) cards[x].classList.remove('sel');
   var sc=document.getElementById('box-'+key); if(sc) sc.classList.add('sel');
-  var cfgEl=document.getElementById('configs'); if(cfgEl) window.scrollTo(0, cfgEl.getBoundingClientRect().top+window.pageYOffset-90);
+  if(!noScroll){ var cfgEl=document.getElementById('configs'); if(cfgEl) window.scrollTo(0, cfgEl.getBoundingClientRect().top+window.pageYOffset-90); }
 }
 
 function buildConfigs(){
@@ -2222,6 +2246,7 @@ buildBulk('bulkCarbs', BULK_C, CARB_MACROS, 3.2);
 buildBulk('bulkVeggies', BULK_V, VEG_MACROS, 3.2);
 buildCardFrame();
 buildExtras();
+try{ applyBox('everyday10', true); }catch(e){}
 recalc();
 handleCheckoutReturn();
 refreshAuth();
@@ -2242,7 +2267,71 @@ if(sb){ sb.auth.onAuthStateChange(function(){ refreshAuth(); }); }
   <button class="sb-btn" onclick="scrollToPay()">Review &amp; pay ↓</button>
 </div>
 <script>
-function scrollToPay(){ var b=document.getElementById('placeOrderBtn'); if(b) window.scrollTo(0, b.getBoundingClientRect().top+window.pageYOffset-170); }
+function scrollToPay(){ if(typeof curStep!=='undefined'&&curStep<3){ goStep(curStep+1); return; } var b=document.getElementById('placeOrderBtn'); if(b) window.scrollTo(0, b.getBoundingClientRect().top+window.pageYOffset-170); }
+</script>
+<style id="wizCSS">
+.order-guarantee{display:flex;gap:10px;align-items:center;background:#F0F7F2;border:1px solid rgba(22,160,106,.3);border-radius:12px;padding:12px 16px;margin:0 auto 12px;max-width:760px;font-size:14px;color:#141414;}
+.order-guarantee strong{color:var(--green);}
+.order-countdown{display:flex;gap:8px;align-items:center;justify-content:center;background:#FFF0ED;border:1px solid var(--red);border-radius:12px;padding:11px 16px;margin:0 auto 22px;max-width:760px;font-size:14px;color:#141414;}
+.order-countdown strong{color:var(--red);font-variant-numeric:tabular-nums;font-weight:800;}
+.wizbar{display:flex;align-items:center;gap:6px;margin:2px 0 26px;flex-wrap:wrap;}
+.wizstep{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--gray-400);}
+.wizstep .num{width:24px;height:24px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);display:grid;place-items:center;font-size:12px;}
+.wizstep.active{color:#141414;}
+.wizstep.active .num{background:var(--red);color:#fff;}
+.wizstep.done{color:var(--green);}
+.wizstep.done .num{background:var(--green);color:#fff;}
+.wizbar .ln{flex:1;min-width:14px;height:2px;background:var(--gray-200);border-radius:2px;}
+.wizbar .ln.done{background:var(--green);}
+.wstep{display:none;}
+.wstep.show{display:block;animation:wfade .25s ease;}
+@keyframes wfade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wiznav{display:flex;gap:12px;margin:26px 0 10px;}
+.wiznav .wbtn{border:none;border-radius:12px;padding:15px 18px;font-weight:800;font-size:16px;cursor:pointer;font-family:inherit;}
+.wiznav .wbtn.next{flex:1;background:var(--red);color:#fff;}
+.wiznav .wbtn.next:hover{filter:brightness(1.06);}
+.wiznav .wbtn.back{flex:0 0 auto;background:#fff;color:#141414;border:1.5px solid var(--gray-200);}
+.box-card.bc-pop{border-color:var(--green);}
+.bc-badge{position:absolute;top:-10px;left:14px;background:var(--red);color:#fff;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:7px;letter-spacing:.03em;}
+.seeall-boxes{display:block;width:100%;text-align:center;background:none;border:1px dashed var(--gray-400);color:var(--gray-600);border-radius:10px;padding:11px;font-size:13.5px;font-weight:600;cursor:pointer;margin:6px 0 8px;font-family:inherit;}
+.seeall-boxes:hover{border-color:var(--green);color:var(--green);}
+</style>
+<script>
+var curStep=1;
+function updateStepBar(){
+  var steps=document.querySelectorAll('#wizbar .wizstep');
+  for(var i=0;i<steps.length;i++){ var s=parseInt(steps[i].getAttribute('data-s')); steps[i].classList.toggle('active',s===curStep); steps[i].classList.toggle('done',s<curStep); }
+  var l1=document.getElementById('wln1'),l2=document.getElementById('wln2');
+  if(l1)l1.classList.toggle('done',curStep>1); if(l2)l2.classList.toggle('done',curStep>2);
+}
+function wizValid1(){ var o=collectOrder(); if(o.meals.length===0&&o.bulk.length===0&&(o.extras||[]).length===0){ alert('Add at least one meal to continue — pick a box above to fill your week in one click.'); return false; } return true; }
+function wizValid2(){
+  var c={name:gv('cust-name'),email:gv('cust-email'),phone:gv('cust-phone'),age:gv('cust-age'),address:gv('cust-address')};
+  if(!c.name||!c.email||!c.phone||!c.age||!c.address){ alert('Please fill in all required fields (Name, Email, Phone, Age, Address).'); return false; }
+  if(!gv('cust-reason')){ alert('Please select your main goal for ordering — it helps Mom plan your meals.'); return false; }
+  if(!document.getElementById('consent-sms').checked){ alert('Please agree to receive SMS order updates — we text you to confirm your pickup/delivery window.'); return false; }
+  if(!document.getElementById('consent-terms').checked){ alert('Please read and accept the Terms & Privacy Policy to place your order.'); return false; }
+  return true;
+}
+function goStep(n){
+  if(n>curStep){ if(curStep===1&&!wizValid1())return; if(curStep===2&&!wizValid2())return; }
+  curStep=n;
+  for(var s=1;s<=3;s++){ var el=document.getElementById('wstep'+s); if(el) el.classList.toggle('show',s===n); }
+  updateStepBar();
+  if(typeof recalc==='function') recalc();
+  var ob=document.querySelector('.order-body'); if(ob) window.scrollTo(0, ob.getBoundingClientRect().top+window.pageYOffset-80);
+}
+function toggleAllBoxes(){ var m=document.getElementById('boxPickerMore'),b=document.getElementById('seeAllBoxes'); if(!m)return; var open=m.style.display!=='none'; m.style.display=open?'none':'grid'; if(b)b.textContent=open?'See all 9 plans →':'Show fewer plans ↑'; }
+function ocTick(){
+  var el=document.getElementById('ocClock'); if(!el)return;
+  var now=new Date(); var end=new Date(now); var day=now.getDay(); var du=(7-day)%7;
+  end.setDate(now.getDate()+du); end.setHours(23,59,59,0);
+  if(end-now<0) end.setDate(end.getDate()+7);
+  var diff=end-now; if(diff<0)diff=0;
+  var d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),mn=Math.floor(diff%3600000/60000),sc=Math.floor(diff%60000/1000);
+  el.textContent=(d>0?d+'d ':'')+h+'h '+mn+'m '+sc+'s';
+}
+setInterval(ocTick,1000); ocTick(); updateStepBar();
 </script>
 </body>
 </html>
