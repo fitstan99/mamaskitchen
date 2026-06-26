@@ -1047,7 +1047,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         </div>
       </div>
 
-      <div style="background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
+      <div id="repeatWeeklyBox" style="display:none;background:var(--gray-100);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
         <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;color:var(--gray-600);"><input type="checkbox" id="repeat-weekly" onchange="toggleBillingAuth()" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span><strong>Repeat this order every week</strong> — save it to your account as your weekly plan. Change, pause, or cancel anytime from your account.</span></label>
         <label id="billing-auth-wrap" style="display:none;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--gray-600);margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);"><input type="checkbox" id="billing-auth" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>I authorize Mama's Kitchen to automatically charge my saved card each week for this recurring order, until I pause or cancel.<br><span class="consent-fine">You'll get a card receipt each week. Manage or cancel anytime in your account before the order deadline.</span></span></label>
       </div>
@@ -1078,18 +1078,9 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
       <!-- PAYMENT -->
       <div class="order-sec-header">Payment</div>
-      <div id="savedCardOption" style="display:none;background:var(--gray-100);border-radius:12px;padding:16px 18px;margin-bottom:14px;"></div>
-      <div id="newCardBox">
-        <p style="font-size:14px;color:var(--gray-400);margin-bottom:12px;">Your card number and security code go straight into our payment processor's secure box (CardConnect) — those details never touch this website or our servers.</p>
-        <div style="background:var(--gray-100);border-radius:12px;padding:18px;margin-bottom:14px;">
-          <iframe id="tokenframe" name="tokenframe" title="Secure card entry" frameborder="0" scrolling="no" width="100%" height="215" style="border:0;display:block;"></iframe>
-          <label for="cardExp" style="display:block;font-size:12px;font-weight:600;color:var(--gray-600);margin:16px 0 6px;">Expiration (MM / YY)</label>
-          <input id="cardExp" inputmode="numeric" autocomplete="cc-exp" maxlength="7" placeholder="MM / YY" oninput="formatExp(this)" style="width:100%;box-sizing:border-box;font-size:15px;height:48px;padding:12px 14px;border:1.5px solid #e2e2e2;border-radius:10px;color:var(--text);background:#fff;">
-          <div id="cardStatus" style="font-size:13px;color:var(--gray-400);margin-top:10px;min-height:18px;">&nbsp;</div>
-        </div>
-        <label id="saveCardWrap" style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--gray-600);margin:0 0 24px;cursor:pointer;"><input type="checkbox" id="save-card" style="width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--red);"> <span>Save this card for next time, so I can check out faster. Stored securely as a token by CardConnect — we never see your card number.</span></label>
+      <div style="background:#F0F7F2;border:1px solid rgba(22,160,106,.35);border-radius:12px;padding:18px 20px;margin-bottom:18px;font-size:14.5px;color:var(--gray-600);line-height:1.65;">
+        💳 <strong>Secure card payment.</strong> When you tap the button below, we'll take you to our PCI-secure CardConnect payment page to pay <strong id="payTotalHint"></strong> by card. Your card details are entered on CardConnect&rsquo;s secure page and never touch this website.
       </div>
-
       <!-- PLACE ORDER -->
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place My Order 🍽️</button>
       <div class="success-banner" id="successBanner">
@@ -1675,6 +1666,7 @@ function recalc(){
   if(tipAmt>0) rows+='<div class="s-line"><span>Tip for Mom 💛</span><span>'+fmt(tipAmt)+'</span></div>';
   rows+='<div class="s-total"><span>Total</span><span>'+fmt(total)+'</span></div>';
   if(tot>15){ rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>👥 Group plan — per person / week</span><span>'+fmt(total/(tot/10))+'</span></div>'; }
+  window._orderTotal=total; var _ph=document.getElementById('payTotalHint'); if(_ph) _ph.textContent=fmt(total);
   var sr=document.getElementById('summaryRows'); if(sr) sr.innerHTML=rows;
   var _sbar=document.getElementById('stickyBar');
   if(_sbar){
@@ -1764,6 +1756,7 @@ function emailOwner(order){
     Name:c.name, Email:c.email, Phone:c.phone, Age:c.age,
     Address:(c.address||'')+(c.unit?(', Unit '+c.unit):'')+(c.gate?(' (gate '+c.gate+')'):''),
     Reason:c.reason||'—',
+    'Payment':'Customer sent to CardConnect Hosted Payment Page to pay — please CONFIRM the charge landed in your CardPointe dashboard.',
     Meals:order.meals.map(function(m){return m.label;}).join('\n')||'—',
     Bulk:order.bulk.map(function(b){return b.label;}).join('\n')||'—',
     Extras:(order.extras||[]).map(function(e){return e.label+' = $'+e.line.toFixed(2);}).join('\n')||'—',
@@ -1791,35 +1784,18 @@ function placeOrder(){
   if(order.meals.length===0 && order.bulk.length===0 && (order.extras||[]).length===0){ alert('Please add at least one meal, bulk item, or extra before placing your order.'); return; }
   var _minBad=null; (order.extras||[]).forEach(function(e){ if(e.qty<e.min) _minBad=e.name+' (minimum '+e.min+' per order)'; });
   if(_minBad){ alert('Please order at least the minimum for '+_minBad+'.'); return; }
-  var _wantAcct=!currentUser && document.getElementById('make-account') && document.getElementById('make-account').checked;
-  var _guestPass=gv('cust-pass');
-  if(order.repeat && !currentUser && !(_wantAcct && _guestPass.length>=6)){ alert('To set up a weekly recurring order we need to save your info. Please check “Save my info for next time” and choose a password (at least 6 characters).'); return; }
-  if(_wantAcct && _guestPass.length>0 && _guestPass.length<6){ alert('Your password must be at least 6 characters, or uncheck “Save my info for next time”.'); return; }
-  var _saved=currentProfile&&currentProfile.cc_token;
-  var _cr=document.querySelector('input[name="cardchoice"]:checked');
-  var _useSaved=_saved&&(_cr?_cr.value==='saved':true);
-  var _token, _expd, _saveNew=false, _last4='';
-  if(_useSaved){ _token=currentProfile.cc_token; _expd=(currentProfile.cc_exp||'').replace(/\D/g,''); }
-  else {
-    if(!window._ccToken){ alert('Please enter your card number and security code in the Payment box above before placing your order.'); var pf=document.getElementById('tokenframe'); if(pf) window.scrollTo(0, pf.getBoundingClientRect().top + window.pageYOffset - 120); return; }
-    var _ce=document.getElementById('cardExp'); _expd=(_ce?_ce.value:'').replace(/\D/g,''); var _mm=parseInt(_expd.slice(0,2),10);
-    if(_expd.length!==4 || !(_mm>=1 && _mm<=12)){ alert('Please enter the card expiration date as MM / YY.'); if(_ce){ _ce.focus(); window.scrollTo(0, _ce.getBoundingClientRect().top + window.pageYOffset - 140); } return; }
-    _token=window._ccToken; _last4=_token.slice(-4); var _sc=document.getElementById('save-card'); _saveNew=!!(_sc&&_sc.checked);
-  }
+  recalc();
+  var total=window._orderTotal||0;
+  if(total<0.5){ alert('Your order total looks empty — please add at least one meal before paying.'); return; }
   var btn=document.getElementById('placeOrderBtn');
-  btn.disabled=true; btn.textContent='Processing payment…';
-  var ctx={token:_token,exp:_expd,last4:_last4,saveNew:_saveNew,wantAcct:_wantAcct,guestPass:_guestPass};
-  fetch('/api/cardpointe',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({token:_token, expiry:_expd, order:order})})
-    .then(function(r){ return r.json().then(function(j){ return {status:r.status, j:j}; }).catch(function(){ return {status:r.status, j:{}}; }); })
-    .then(function(res){
-      var j=res.j||{};
-      if(res.status===200 && j.approved){ finalizeOrder(order,btn,ctx); return; }
-      if(j.notConfigured){ ctx.fallback=true; finalizeOrder(order,btn,ctx); return; }
-      btn.disabled=false; btn.textContent='Place My Order 🍽️';
-      alert(j.message || 'Your card could not be processed. Please double-check the number, expiry, and CVV and try again.');
-    })
-    .catch(function(){ btn.disabled=false; btn.textContent='Place My Order 🍽️'; alert('Payment could not be completed right now. Please try again in a moment.'); });
+  btn.disabled=true; btn.textContent='Taking you to secure payment…';
+  var inv='MK'+Date.now();
+  var payUrl='https://builtformorec.securepayments.cardpointe.com/pay?total='+total.toFixed(2)+'&invoice='+encodeURIComponent(inv);
+  if(currentUser){ try{ saveOrderToDb(order); }catch(e){} }
+  // Make sure the kitchen gets the order BEFORE we navigate away, then go to the secure pay page.
+  var done=false; function go(){ if(done) return; done=true; window.location.href=payUrl; }
+  try{ emailOwner(order).then(go, go); }catch(e){ go(); }
+  setTimeout(go, 2500);
 }
 
 async function finalizeOrder(order,btn,o){
