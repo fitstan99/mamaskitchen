@@ -1221,8 +1221,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div id="tab-login">
           <div class="form-field"><label>Email</label><input type="email" id="li-email" placeholder="you@email.com"></div>
           <div class="form-field"><label>Password</label><input type="password" id="li-pass" placeholder="Your password"></div>
+          <div style="text-align:right;margin:-6px 0 12px;"><a href="#" onclick="doForgot();return false;" style="font-size:13px;color:var(--green);font-weight:700;text-decoration:none;">Forgot password?</a></div>
           <div id="li-msg" style="display:none;font-size:13px;margin-bottom:10px;font-weight:500;"></div>
           <button class="place-order-btn" onclick="doLogin()">Log in</button>
+          <div style="font-size:12.5px;color:var(--gray-400);margin-top:10px;text-align:center;line-height:1.5;">🔒 You stay signed in on this device — no need to log in every time.</div>
         </div>
         <div id="tab-signup" style="display:none;">
           <div class="form-field"><label>Full Name</label><input type="text" id="su-name" placeholder="Jane Smith"></div>
@@ -1230,6 +1232,12 @@ footer { background: var(--black); padding: 60px 8% 30px; }
           <div class="form-field"><label>Password <span style="color:var(--gray-400);font-size:11px">(6+ characters)</span></label><input type="password" id="su-pass" placeholder="Create a password"></div>
           <div id="su-msg" style="display:none;font-size:13px;margin-bottom:10px;font-weight:500;"></div>
           <button class="place-order-btn" onclick="doSignup()">Create my account</button>
+        </div>
+        <div id="tab-reset" style="display:none;">
+          <div style="font-size:14px;color:var(--gray-600);margin-bottom:12px;">Choose a new password for your account.</div>
+          <div class="form-field"><label>New Password <span style="color:var(--gray-400);font-size:11px">(6+ characters)</span></label><input type="password" id="rs-pass" placeholder="New password"></div>
+          <div id="rs-msg" style="display:none;font-size:13px;margin-bottom:10px;font-weight:500;"></div>
+          <button class="place-order-btn" onclick="doReset()">Update password</button>
         </div>
       </div>
       <div id="acct-loggedin" style="display:none;">
@@ -1936,7 +1944,7 @@ function handleCheckoutReturn(){
 /* ===================== ACCOUNTS (Supabase) ===================== */
 var SUPABASE_URL='https://fawthgfptiqhlygibiwh.supabase.co';
 var SUPABASE_KEY='sb_publishable_k0hCds4ONf512kuH6_pDYA_69hSJwZc';
-var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{persistSession:true, autoRefreshToken:true, detectSessionInUrl:true}}) : null;
 var currentUser=null, currentProfile=null;
 
 function acctMsg(id,t,ok){ var e=document.getElementById(id); if(e){ e.textContent=t; e.style.color=ok?'#0f6e56':'var(--red)'; e.style.display=t?'block':'none'; } }
@@ -2160,25 +2168,61 @@ async function resumeRecurring(){ if(!sb||!currentUser) return; await sb.from('r
 async function cancelRecurring(){ if(!sb||!currentUser) return; if(!confirm('Cancel your weekly recurring order? You can set it up again anytime.')) return; await sb.from('recurring_orders').update({active:false,paused:true,billing_authorized:false,updated_at:new Date().toISOString()}).eq('customer_id',currentUser.id); renderAccount(); }
 
 async function doSignup(){
-  if(!sb){ acctMsg('su-msg','Accounts are temporarily unavailable.'); return; }
+  if(!sb){ acctMsg('su-msg','Accounts are temporarily unavailable — please try again shortly.'); return; }
   var name=gv('su-name'), email=gv('su-email'), pass=gv('su-pass');
   if(!name||!email||!pass){ acctMsg('su-msg','Please enter your name, email, and a password.'); return; }
   if(pass.length<6){ acctMsg('su-msg','Password must be at least 6 characters.'); return; }
   acctMsg('su-msg','Creating your account…',true);
-  var r=await sb.auth.signUp({email:email,password:pass,options:{data:{full_name:name}}});
-  if(r.error){ acctMsg('su-msg',r.error.message); return; }
-  if(r.data&&r.data.session){ await refreshAuth(); showPage('account'); }
-  else { acctMsg('su-msg','Account created! Check your email to confirm, then log in.',true); }
+  try{
+    var r=await sb.auth.signUp({email:email,password:pass,options:{data:{full_name:name}}});
+    if(r.error){ acctMsg('su-msg', _netMsg(r.error.message)); return; }
+    if(r.data&&r.data.session){ await refreshAuth(); showPage('account'); }
+    else { acctMsg('su-msg','Account created! Check your email to confirm, then log in.',true); }
+  }catch(e){ acctMsg('su-msg', _netMsg('load failed')); }
 }
 
+function _inAppBrowser(){ var ua=navigator.userAgent||''; return /FBAN|FBAV|Instagram|Messenger|Line\/|Twitter|WebView/i.test(ua); }
+function _netMsg(m){ return /load failed|fetch|network|failed to fetch/i.test(m||'') ? (_inAppBrowser()?'Please open mamaskitchenptown.com in Safari or Chrome (not the Messenger/Instagram browser), then try again.':'Could not reach the server — check your connection and try again in a moment.') : m; }
 async function doLogin(){
-  if(!sb){ acctMsg('li-msg','Accounts are temporarily unavailable.'); return; }
+  if(!sb){ acctMsg('li-msg','Accounts are temporarily unavailable — please try again shortly.'); return; }
   var email=gv('li-email'), pass=gv('li-pass');
   if(!email||!pass){ acctMsg('li-msg','Enter your email and password.'); return; }
   acctMsg('li-msg','Logging in…',true);
-  var r=await sb.auth.signInWithPassword({email:email,password:pass});
-  if(r.error){ acctMsg('li-msg',r.error.message); return; }
-  await refreshAuth(); showPage('account');
+  try{
+    var r=await sb.auth.signInWithPassword({email:email,password:pass});
+    if(r.error){ acctMsg('li-msg', _netMsg(r.error.message)); return; }
+    await refreshAuth(); showPage('account');
+  }catch(e){ acctMsg('li-msg', _netMsg('load failed')); }
+}
+async function doForgot(){
+  if(!sb){ acctMsg('li-msg','Accounts are temporarily unavailable — please try again shortly.'); return; }
+  var email=gv('li-email');
+  if(!email){ acctMsg('li-msg','Enter your email above first, then tap Forgot password.'); return; }
+  acctMsg('li-msg','Sending reset link…',true);
+  try{
+    var r=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/?pwreset=1'});
+    if(r.error){ acctMsg('li-msg', _netMsg(r.error.message)); return; }
+    acctMsg('li-msg','✅ Check your email — we sent you a link to reset your password.',true);
+  }catch(e){ acctMsg('li-msg', _netMsg('load failed')); }
+}
+function showResetTab(){
+  showPage('account');
+  var lo=document.getElementById('acct-loggedout'); if(lo) lo.style.display='block';
+  ['tab-login','tab-signup'].forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display='none'; });
+  var rt=document.getElementById('tab-reset'); if(rt) rt.style.display='block';
+}
+async function doReset(){
+  if(!sb){ acctMsg('rs-msg','Please try again in a moment.'); return; }
+  var p=gv('rs-pass');
+  if(p.length<6){ acctMsg('rs-msg','Password must be at least 6 characters.'); return; }
+  acctMsg('rs-msg','Updating…',true);
+  try{
+    var r=await sb.auth.updateUser({password:p});
+    if(r.error){ acctMsg('rs-msg', _netMsg(r.error.message)); return; }
+    acctMsg('rs-msg','✅ Password updated — you are now logged in!',true);
+    var rt=document.getElementById('tab-reset'); if(rt) rt.style.display='none';
+    await refreshAuth(); setTimeout(function(){ showPage('account'); },700);
+  }catch(e){ acctMsg('rs-msg', _netMsg('load failed')); }
 }
 
 async function doLogout(){ if(sb) await sb.auth.signOut(); await refreshAuth(); showPage('home'); }
@@ -2226,7 +2270,7 @@ try{ applyBox('everyday10', true); }catch(e){}
 recalc();
 handleCheckoutReturn();
 refreshAuth();
-if(sb){ sb.auth.onAuthStateChange(function(){ refreshAuth(); }); }
+if(sb){ sb.auth.onAuthStateChange(function(ev){ if(ev==='PASSWORD_RECOVERY'){ showResetTab(); } refreshAuth(); }); }
 </script>
 <style>
 #stickyBar{position:fixed;left:0;right:0;bottom:0;z-index:200;display:none;align-items:center;justify-content:space-between;gap:14px;background:#141414;color:#fff;padding:12px 18px;box-shadow:0 -4px 18px rgba(0,0,0,.22);}
