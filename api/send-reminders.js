@@ -22,6 +22,13 @@ function unsubToken(email) {
 module.exports = async (req, res) => {
   if (process.env.CRON_SECRET && req.headers.authorization !== 'Bearer ' + process.env.CRON_SECRET)
     return res.status(401).json({ error: 'unauthorized' });
+  // Keep-alive: touch Supabase on every daily cron run so the free project never auto-pauses
+  // (a paused project makes all customer logins fail with 'Load failed').
+  try {
+    const _KU = process.env.SUPABASE_URL, _KK = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (_KU && _KK) await fetch(_KU + '/rest/v1/orders?select=id&limit=1', { headers: { apikey: _KK, Authorization: 'Bearer ' + _KK } });
+  } catch (e) { /* keep-alive best effort */ }
+
   if (process.env.REMINDERS_ENABLED !== 'true')
     return res.status(200).json({ status: 'disabled — set REMINDERS_ENABLED=true in Vercel to turn on' });
 
