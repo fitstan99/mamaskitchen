@@ -526,6 +526,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 <body>
 
 <!-- NAV -->
+<div id="seasonBar" style="background:#141414;color:#fff;text-align:center;padding:9px 14px;font-size:13px;font-weight:500;">☀️ Summer season only — <strong style="color:#FFD34D">kitchen closes Sept 30</strong>. Order in <span id="sbClock" style="background:rgba(255,255,255,.14);border-radius:6px;padding:2px 8px;font-variant-numeric:tabular-nums">…</span> <span id="sbMode">for same-day delivery</span></div>
 <nav id="mainNav">
   <a class="nav-logo" href="#" onclick="showPage('home')">Mama's<span>Kitchen</span></a>
   <ul class="nav-links">
@@ -553,8 +554,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <section class="hero">
     <div class="hero-left">
       <div class="hero-tag">Provincetown's Only Meal Prep</div>
-      <h1>Fresh meals.<br><em>Made for you.</em><br>Every week.</h1>
-      <p class="hero-sub">Home-cooked, organic meals crafted by Mom — built exactly the way you want them — fresh every week.</p>
+      <h1>Fresh, high-protein meals.<br><em>Made by Mom.</em></h1>
+      <p class="hero-sub">Organic, made to order, delivered to your door in Ptown <strong>every day</strong>. Order by noon — eat tonight. Order by 8 PM — eat tomorrow.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="showPage('order')">Start Your Order</button>
         <button class="btn-secondary" onclick="showPage('menu')">View Menu</button>
@@ -612,8 +613,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div class="step fade-in">
         <div class="step-num">02</div>
         <div class="step-icon">📅</div>
-        <div class="step-title">Order by Sun or Wed</div>
-        <div class="step-desc">Build and pre-pay before midnight — Sunday for Tuesday delivery, Wednesday for Friday. Min 5 meals; order up to twice a week.</div>
+        <div class="step-title">Order by noon or 8 PM</div>
+        <div class="step-desc">Order by <strong>12 PM</strong> for same-day delivery, or by <strong>8 PM</strong> for tomorrow — every day of the week. Min 5 meals.</div>
       </div>
       <div class="step fade-in">
         <div class="step-num">03</div>
@@ -624,8 +625,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div class="step fade-in">
         <div class="step-num">04</div>
         <div class="step-icon">🎉</div>
-        <div class="step-title">Tue &amp; Fri delivery</div>
-        <div class="step-desc">Pick up or get delivery Tuesday &amp; Friday, 3&ndash;6 PM — we text you when it&rsquo;s ready. Big orders can be split across both days for freshness. Eat fresh for 3&ndash;4 days.</div>
+        <div class="step-title">Delivered 3&ndash;6 PM daily</div>
+        <div class="step-desc">Delivery every day, 3&ndash;6 PM — we text you when it&rsquo;s on the way. <strong>FREE delivery on 10+ meals</strong> ($9.99 under 10). Eat fresh for 3&ndash;4 days.</div>
       </div>
     </div>
   </section>
@@ -702,7 +703,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <section style="padding: 80px 8%; text-align:center; background: var(--white);">
     <div class="section-label">Ready to eat well?</div>
     <h2 style="font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;">Order closes<br><em style="color:var(--red)">Sun &amp; Wed midnight.</em></h2>
-    <p style="font-size:17px;color:var(--gray-400);max-width:480px;margin:0 auto 36px;font-weight:300;">Don't miss this week's batch. Build your meals now — fresh delivery Tuesday or Friday.</p>
+    <p style="font-size:17px;color:var(--gray-400);max-width:480px;margin:0 auto 36px;font-weight:300;">Order by noon and eat tonight — Mom cooks every single day. $20 off your first box.</p>
     <button class="btn-primary" style="font-size:17px;padding:18px 44px;" onclick="showPage('order')">Build My Meals →</button>
   </section>
 
@@ -718,7 +719,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   </div>
   <div class="menu-body">
     <div class="menu-note">
-      <strong>How it works:</strong> Every meal = 1 protein + 2 sides. Mix carbs and veggies however you like — double up (e.g. chicken + double rice) or one of each (e.g. chicken + rice + sweet potato), no upcharge either way. Cooked fresh, delivered Tuesday &amp; Friday.
+      <strong>How it works:</strong> Every meal = 1 protein + 2 sides. Mix carbs and veggies however you like — double up (e.g. chicken + double rice) or one of each (e.g. chicken + rice + sweet potato), no upcharge either way. Cooked fresh, delivered every day — same-day if you order by noon.
     </div>
 
     <div class="menu-section">
@@ -901,7 +902,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div style="background:var(--black);border-radius:16px;padding:36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
       <div>
         <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;">Ready to order?</div>
-        <div style="font-size:15px;color:rgba(255,255,255,0.5)">Orders close Sunday &amp; Wednesday midnight. Pickup or delivery Tuesday &amp; Friday 3&ndash;6 PM.</div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.5)">Order by noon → same-day delivery. By 8 PM → tomorrow. Every day, 3&ndash;6 PM.</div>
       </div>
       <button class="btn-primary" style="font-size:15px;padding:15px 32px;" onclick="showPage('order')">Order Now →</button>
     </div>
@@ -914,10 +915,10 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div class="order-header">
       <div class="section-label" style="color:rgba(255,255,255,0.35)">Place Your Order</div>
       <h1>Build your<br><em>perfect week.</em></h1>
-      <p>5-meal minimum, or order bulk only · Delivery Tuesday &amp; Friday · Order by Sunday or Wednesday midnight</p>
+      <p>5-meal minimum, or order bulk only · Delivery every day 3&ndash;6 PM · FREE delivery on 10+ meals</p>
     </div>
     <div class="order-deadline">
-      📅 &nbsp;<strong>Order by Sunday midnight</strong> → Tuesday delivery &nbsp;·&nbsp; <strong>or Wednesday midnight</strong> → Friday &nbsp;·&nbsp; 3&ndash;6 PM (24h+ ahead)
+      📅 &nbsp;<strong>Order by 12 PM</strong> → same-day delivery &nbsp;·&nbsp; <strong>by 8 PM</strong> → tomorrow &nbsp;·&nbsp; every day, 3&ndash;6 PM
     </div>
     <div class="order-guarantee">💯 <span>Try it risk-free — <strong>love your first week or we'll make it right, on us.</strong></span></div>
     <div class="order-countdown">⏰ Next cutoff in <strong id="ocClock">—</strong> &nbsp;·&nbsp; <strong id="ocWhich"></strong>, 3–6 PM</div>
@@ -1033,7 +1034,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <label class="consent-row"><input type="checkbox" id="consent-terms"><span>I accept the <a href="#" onclick="showPage('terms');return false;">Terms &amp; Privacy Policy</a> — orders are pre-paid &amp; made fresh to order. <span class="req-star">*</span></span></label>
       </div>
 
-            <div class="wiznav"><button type="button" class="wbtn back" onclick="goStep(1)">← Back</button><button type="button" class="wbtn next" onclick="goStep(3)">Continue to payment →</button></div>
+            <div class="wiznav"><button type="button" class="wbtn back" onclick="goStep(1)">← Back</button><button type="button" class="wbtn next" onclick="upsGate()">Continue to payment →</button></div>
       </div>
       <div class="wstep" id="wstep3">
       <div class="wiznav"><button type="button" class="wbtn back" onclick="goStep(2)">← Back to your details</button></div>
@@ -1073,7 +1074,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div id="extrasLines"></div>
         <hr class="s-divider">
         <div id="summaryRows"></div>
-        <div class="pay-note">Prices shown pre-tax. MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through CardConnect (Fiserv) — your card details never touch this website.</div>
+        <div class="pay-note">Prices shown pre-tax. FREE delivery on 10+ meals ($9.99 under 10). MA sales tax (6.25%) + card processing fee (3%) are added at checkout. Card payments are processed securely through CardConnect (Fiserv) — your card details never touch this website.</div>
       </div>
 
       <!-- PAYMENT -->
@@ -1085,7 +1086,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place My Order 🍽️</button>
       <div class="success-banner" id="successBanner">
         <h3>🎉 Order Received!</h3>
-        <p id="successMsg">Thank you! Your order has been sent to Mom's Kitchen. We'll text you to confirm your delivery (Tuesday or Friday, 3&ndash;6 PM) and reach out when your meals are ready. Big orders can be split across both delivery days for freshness. See you soon! 💛</p>
+        <p id="successMsg">Thank you! Your order has been sent to Mom's Kitchen. We'll text you to confirm your delivery window (3&ndash;6 PM, same-day or next-day) and reach out when your meals are on the way. P.S. Give a friend $20 off their first box — you get $20 in meal credit when they order. Just have them mention your name. 💛</p>
       </div>      </div>
 
     </div>
@@ -1355,9 +1356,9 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <section class="why-sec red">
     <div class="why-wrap">
       <div class="why-eyebrow">Here's the part you can still change</div>
-      <h2 class="why-h2">You can't get last year back. You can stop the bleeding this Sunday.</h2>
+      <h2 class="why-h2">You can't get last year back. You can stop the bleeding today.</h2>
       <p class="why-p">You can't undo the weeks you've already lost. But you can refuse to lose one more. You take every hour you've been pouring into shopping, peeling, cooking, and scrubbing — and you <strong>hand it to Mom.</strong></p>
-      <p class="why-p">Fresh, high-protein meals, made for you, ready every Tuesday &amp; Friday. No store. No prep. No dishes. One decision, made once — and your week is handled while you go live your actual life.</p>
+      <p class="why-p">Fresh, high-protein meals, made for you, delivered same-day or next-day. No store. No prep. No dishes. One decision, made once — and your week is handled while you go live your actual life.</p>
       <p class="why-p">The only question left is the one that's been quietly costing you all along: <strong>how much is your time really worth?</strong></p>
       <div style="margin-top:26px;">
         <button class="why-cta-btn" onclick="showPage('order')">Start My Plan — Take Back My Time →</button>
@@ -1376,7 +1377,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <p style="margin-top:6px;">Mama's Kitchen, Provincetown, MA. Last updated 2025.</p>
 
     <h3>1. Orders, pre-payment &amp; cancellations</h3>
-    <p>All orders are <strong>pre-ordered and pre-paid</strong> in full before cooking. There are two weekly order deadlines: <strong>Sunday at midnight EST</strong> (for Tuesday delivery) and <strong>Wednesday at midnight EST</strong> (for Friday delivery); orders must be placed at least 24 hours before the delivery window. Meals are cooked fresh and made available for pickup or delivery on <strong>Tuesday and Friday, 3–6 PM</strong>; larger orders may be split across both delivery days for freshness. Because every meal is prepared fresh to your order, orders generally cannot be changed or refunded once cooking has begun. If something is wrong with your order, contact us right away and we'll make it right.</p>
+    <p>All orders are <strong>pre-ordered and pre-paid</strong> in full before cooking. There are two daily order deadlines: <strong>12 PM EST</strong> for same-day delivery and <strong>8 PM EST</strong> for next-day delivery. Meals are cooked fresh and delivered daily between <strong>3–6 PM</strong>; larger orders may be split across delivery days for freshness. Delivery is free on orders of 10 or more meals; a $9.99 delivery fee applies to smaller orders. Because every meal is prepared fresh to your order, orders generally cannot be changed or refunded once cooking has begun. If something is wrong with your order, contact us right away and we'll make it right.</p>
 
     <h3>2. Freshness, storage &amp; food safety</h3>
     <p>Meals are fresh, never frozen, and are best enjoyed within <strong>3–4 days</strong> of pickup. Keep refrigerated. Reheat thoroughly before eating. Cooked weights are listed on labels; portion sizes are approximate.</p>
@@ -1400,7 +1401,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <p>If you opt into a recurring weekly order and authorize automatic billing, you agree that Mama's Kitchen may securely charge your saved payment method each week for that week's order total (which may vary if you change your plan), around the weekly order deadlines, until you pause or cancel. You can pause or cancel anytime from your account before the weekly deadline. Your card is stored securely as a token by CardConnect — we never see or store your full card number.</p>
 
     <h3>9. Pricing, taxes &amp; fees</h3>
-    <p>Prices are shown pre-tax. Massachusetts sales tax (6.25%) and a 3% card-processing fee are added at checkout. Prices and menu availability may change based on seasonal and local sourcing.</p>
+    <p>Prices are shown pre-tax. Massachusetts sales tax (6.25%) and a 3% card-processing fee are added at checkout. Orders under 10 meals include a $9.99 delivery fee; delivery is free on 10+ meals. Prices and menu availability may change based on seasonal and local sourcing.</p>
 
     <h3>10. Contact</h3>
     <p>Questions about your order or these terms? Text us at <a href="tel:+12132121290" style="color:var(--red);">+1 (213) 212-1290</a>, DM <a href="https://instagram.com/mamaskitchenptown" target="_blank" style="color:var(--red);">@mamaskitchenptown</a>, or use the chat feature. We're happy to help with any accommodations.</p>
@@ -1413,7 +1414,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
   <div class="footer-top">
     <div>
       <div class="footer-brand-name">Mama's<span>Kitchen</span></div>
-      <div class="footer-tagline">Fresh, homemade meal prep in Provincetown, MA. Cooked fresh by Mom, ready every Tuesday &amp; Friday. Made on demand — just for you.</div>
+      <div class="footer-tagline">Fresh, homemade meal prep in Provincetown, MA. Cooked fresh by Mom, delivered every day. Made on demand — just for you.</div>
     </div>
     <div>
       <div class="footer-heading">Pages</div>
@@ -1492,8 +1493,8 @@ var PROTEIN_MACROS=[{cal:47,p:8.8,c:0,f:1.0},{cal:50,p:7.7,c:0,f:2.0},{cal:58,p:
 var CARB_MACROS=[{cal:185,p:3.8,c:40,f:0.4},{cal:159,p:3.7,c:34,f:1.3},{cal:159,p:5.4,c:33,f:0.3},{cal:224,p:8.2,c:44,f:1.3},{cal:128,p:2.8,c:30,f:0.3},{cal:160,p:2.8,c:24,f:4.0},{cal:233,p:12.6,c:38,f:3.7},{cal:187,p:12.6,c:34,f:0.7},{cal:180,p:12.4,c:32,f:0.7},{cal:203,p:12.8,c:37,f:1.0},{cal:136,p:4.8,c:30,f:2.1},{cal:165,p:12.8,c:28,f:0.6}];
 var VEG_MACROS=[{cal:50,p:3.4,c:10,f:0.6},{cal:50,p:2.7,c:11,f:0.4},{cal:33,p:2.6,c:6,f:0.7},{cal:50,p:1.1,c:12,f:0.3},{cal:71,p:3.7,c:14,f:0.4}];
 var EXTRAS=[
-  {id:'drink',cat:'DRINK',name:'Probiotic Detox Elixir',unit:'500 ml bottle',price:4.99,min:5,cal:240,p:9.5,c:11,f:10.5},
-  {id:'cake',cat:'SWEET TREAT',name:"Mama's Protein Cake",unit:'~400 g container',price:9.99,min:3,cal:764,p:47,c:67,f:33},
+  {id:'drink',cat:'DRINK',name:'Probiotic Detox Elixir',unit:'500 ml bottle',price:4.99,min:1,cal:240,p:9.5,c:11,f:10.5},
+  {id:'cake',cat:'SWEET TREAT',name:"Mama's Protein Cake",unit:'~400 g container',price:9.99,min:1,cal:764,p:47,c:67,f:33},
   {id:'banitsa',cat:'HOUSE SPECIALS',name:'Banitsa',unit:'200 g container',price:7.99,min:7,cal:446,p:14,c:32,f:30},
   {id:'kebapche',cat:'HOUSE SPECIALS',name:'Kebap',unit:'200 g container',price:5.99,min:5,cal:550,p:42,c:4,f:40},
   {id:'kofte',cat:'HOUSE SPECIALS',name:'Kofte',unit:'200 g container',price:5.99,min:5,cal:550,p:42,c:4,f:40}
@@ -1661,14 +1662,18 @@ function recalc(){
   var exl=document.getElementById('extrasLines'); if(exl) exl.innerHTML=eHTML;
   var show15=tot>=15; var da=document.getElementById('discountAlert'); if(da) da.style.display=show15?'block':'none';
 
-  var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
+  var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc;
+  var delFee=(tot>=10||subtotal===0)?0:9.99;
+  var tax=(discounted+delFee)*0.0625, cc=(discounted+delFee+tax)*0.03;
   var tipEl=document.getElementById('customTip'), tipAmt=tipMode==='custom'?(parseFloat(tipEl?tipEl.value:0)||0):tipMode!=='none'?discounted*parseFloat(tipMode):0;
-  var total=discounted+tax+cc+tipAmt;
+  var total=discounted+delFee+tax+cc+tipAmt;
 
   var rows='<div class="s-line"><span>Subtotal</span><span>'+fmt(subtotal)+'</span></div>';
   if(subscribed) rows+='<div class="s-line discount"><span>Weekly subscription (−5%)</span><span>−'+fmt(subtotal*0.05)+'</span></div>';
   if(show15) rows+='<div class="s-line discount"><span>15+ meals bonus (−5%)</span><span>−'+fmt(subtotal*0.05)+'</span></div>';
   if(disc>0) rows+='<div class="s-line"><span>After discounts</span><span>'+fmt(discounted)+'</span></div>';
+  if(delFee>0){ rows+='<div class="s-line"><span>Delivery</span><span>'+fmt(delFee)+'</span></div>'; rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>🚚 Add '+(10-tot)+' more meal'+(10-tot===1?'':'s')+' → FREE delivery</span><span></span></div>'; }
+  else if(tot>=10){ rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>Delivery</span><span>FREE ✓</span></div>'; }
   rows+='<div class="s-line"><span>MA Sales Tax (6.25%)</span><span>'+fmt(tax)+'</span></div>';
   rows+='<div class="s-line"><span>Card Processing (3%)</span><span>'+fmt(cc)+'</span></div>';
   if(tipAmt>0) rows+='<div class="s-line"><span>Tip for Mom 💛</span><span>'+fmt(tipAmt)+'</span></div>';
@@ -1932,7 +1937,7 @@ function handleCheckoutReturn(){
     showPage('order');
     var b=document.getElementById('successBanner'); if(b) b.style.display='block';
     var msg=document.getElementById('successMsg');
-    if(msg) msg.innerHTML="Payment received — thank you! 🎉 Your order is confirmed. We'll text you to confirm your delivery (Tuesday or Friday, 3&ndash;6 PM) and when your meals are ready. Big orders can be split across both delivery days.";
+    if(msg) msg.innerHTML="Payment received — thank you! 🎉 Your order is confirmed. We'll text you to confirm your delivery window (3&ndash;6 PM). Give a friend $20 off their first box — you get $20 in meal credit when they order. Just have them mention your name!";
     var ob=document.getElementById('placeOrderBtn'); if(ob){ ob.disabled=true; ob.textContent='Paid ✓'; }
     setTimeout(function(){ if(b) window.scrollTo(0,b.offsetTop-100); },100);
   } else if(q.get('canceled')==='1'){
@@ -1995,7 +2000,7 @@ async function renderAccount(){
     +'<div style="font-family:var(--font-display);font-size:21px;font-weight:800;margin-bottom:8px;">Thank you for being part of Mama\'s Kitchen 💛</div>'
     +'<div style="font-size:14px;line-height:1.7;opacity:.96;">We\'re so grateful for your business — it truly means the world to us. We promise to keep serving you at the highest level: exceptional quality, fresh ingredients, and the same love Mom puts into every single meal. Thank you for trusting us to cook for you — we can\'t wait to feed you again. 🍽️</div></div>'; }
   var pk=document.getElementById('acct-pickup');
-  if(pk){ pk.innerHTML='<div style="display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--gray-600);"><span style="font-size:20px;">📅</span><div><strong>Next order deadlines:</strong> Sunday &amp; Wednesday at midnight EST.<br><strong>Delivery:</strong> Tuesday &amp; Friday, 3–6 PM.</div></div>'; }
+  if(pk){ pk.innerHTML='<div style="display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--gray-600);"><span style="font-size:20px;">📅</span><div><strong>Order by 12 PM</strong> → same-day delivery.<br><strong>By 8 PM</strong> → tomorrow. Delivery every day, 3–6 PM.</div></div>'; }
   var orders=[],meals=[],bulk=[];
   try{
     var oq=await sb.from('orders').select('id,ordered_at,total,subtotal,tax_amount,cc_fee,tip_amount,status,special_notes,reason,extras,is_recurring').order('ordered_at',{ascending:false}).limit(50);
@@ -2234,9 +2239,11 @@ function computeTotals(order){
   var eSub=0; (order.extras||[]).forEach(function(e){ eSub+=e.line||(e.qty*e.price); });
   var subtotal=mSub+bSub+eSub, show15=cnt>=15;
   var dSub=order.subscribed?subtotal*0.05:0, d15=show15?subtotal*0.05:0;
-  var discounted=subtotal-dSub-d15, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
+  var discounted=subtotal-dSub-d15;
+  var delFee=(cnt>=10||subtotal===0)?0:9.99;
+  var tax=(discounted+delFee)*0.0625, cc=(discounted+delFee+tax)*0.03;
   var tip=order.tipMode==='custom'?(order.customTip||0):(order.tipMode!=='none'?discounted*parseFloat(order.tipMode):0);
-  return {subtotal:subtotal,dSub:dSub,d15:d15,discounted:discounted,tax:tax,cc:cc,tip:tip,total:discounted+tax+cc+tip,cnt:cnt};
+  return {subtotal:subtotal,dSub:dSub,d15:d15,discounted:discounted,delFee:delFee,tax:tax,cc:cc,tip:tip,total:discounted+delFee+tax+cc+tip,cnt:cnt};
 }
 
 async function saveOrderToDb(order){
@@ -2342,19 +2349,160 @@ function goStep(n){
   var ob=document.querySelector('.order-body'); if(ob) window.scrollTo(0, ob.getBoundingClientRect().top+window.pageYOffset-80);
 }
 function toggleAllBoxes(){ var m=document.getElementById('boxPickerMore'),b=document.getElementById('seeAllBoxes'); if(!m)return; var open=m.style.display!=='none'; m.style.display=open?'none':'grid'; if(b)b.textContent=open?'See all 9 plans →':'Show fewer plans ↑'; }
-function ocNextCut(targetDay){ var now=new Date(); var e=new Date(now); var du=(targetDay-now.getDay()+7)%7; e.setDate(now.getDate()+du); e.setHours(23,59,59,0); if(e-now<=0) e.setDate(e.getDate()+7); return e; }
-function ocTick(){
-  var el=document.getElementById('ocClock'); if(!el)return;
+function ocNext(){
   var now=new Date();
-  var sun=ocNextCut(0), wed=ocNextCut(3);
-  var end,deliver;
-  if(sun<=wed){ end=sun; deliver='Tuesday delivery'; } else { end=wed; deliver='Friday delivery'; }
-  var diff=end-now; if(diff<0)diff=0;
+  var noon=new Date(now); noon.setHours(12,0,0,0);
+  var eve=new Date(now); eve.setHours(20,0,0,0);
+  if(now<noon) return {end:noon, deliver:'SAME-DAY delivery today'};
+  if(now<eve)  return {end:eve,  deliver:'delivery TOMORROW'};
+  var t=new Date(noon); t.setDate(t.getDate()+1);
+  return {end:t, deliver:'SAME-DAY delivery tomorrow'};
+}
+function ocTick(){
+  var c=ocNext();
+  var diff=c.end-new Date(); if(diff<0)diff=0;
   var d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),mn=Math.floor(diff%3600000/60000),sc=Math.floor(diff%60000/1000);
-  el.textContent=(d>0?d+'d ':'')+h+'h '+mn+'m '+sc+'s';
-  var wl=document.getElementById('ocWhich'); if(wl) wl.textContent=deliver;
+  var txt=(d>0?d+'d ':'')+h+'h '+mn+'m '+sc+'s';
+  var el=document.getElementById('ocClock'); if(el) el.textContent=txt;
+  var wl=document.getElementById('ocWhich'); if(wl) wl.textContent=c.deliver;
+  var sb=document.getElementById('sbClock'); if(sb) sb.textContent=txt;
+  var sm=document.getElementById('sbMode'); if(sm) sm.textContent=c.deliver.indexOf('SAME')===0?'for same-day delivery':'for delivery tomorrow';
 }
 setInterval(ocTick,1000); ocTick(); updateStepBar();
 </script>
+
+<!-- ── Lead popup + upsell interstitial ── -->
+<style>
+.mkpop-b{position:fixed;inset:0;background:rgba(15,15,15,.55);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
+.mkpop-b.show{display:flex}
+.mkpop{background:#fff;border-radius:20px;max-width:430px;width:100%;padding:34px 30px;position:relative;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.35)}
+.mkpop-x{position:absolute;top:12px;right:16px;font-size:22px;color:#aaa;cursor:pointer;background:none;border:none}
+.mkpop-badge{display:inline-block;background:#FDEAE8;color:var(--red,#E0342A);font-weight:700;font-size:12px;letter-spacing:1.5px;padding:6px 14px;border-radius:100px;margin-bottom:14px}
+.mkpop h3{font-family:var(--font-display,Georgia,serif);font-size:29px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
+.mkpop h3 em{color:var(--red,#E0342A)}
+.mkpop p{font-size:14.5px;color:#6b6b6b;line-height:1.6;margin-bottom:18px}
+.mkpop input{width:100%;padding:14px 16px;border:1.5px solid #e3d9cf;border-radius:10px;font-size:15px;margin-bottom:12px;box-sizing:border-box}
+.mkpop .mkbtn{width:100%;background:var(--red,#E0342A);color:#fff;border:none;padding:15px;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer}
+.mkpop-skip{margin-top:12px;font-size:12.5px;color:#b5aca2;cursor:pointer;background:none;border:none}
+.mkups .mkpop{max-width:470px;text-align:left}
+.mkups h3,.mkups>div>p{text-align:center}
+.mkups .mkpop-badge{display:block;text-align:center;margin:0 auto 14px;width:fit-content}
+.mkups-row{display:flex;align-items:center;gap:14px;border:1.5px solid #eee3d9;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.mkups-row .ph{width:58px;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:30px;background:radial-gradient(circle at 40% 30%,#E8F7EF,#CDEBD9);flex-shrink:0}
+.mkups-info{flex:1}
+.mkups-info b{font-size:14.5px;display:block}
+.mkups-info small{color:#6b6b6b;font-size:12.5px}
+.mkstep{display:flex;align-items:center;gap:10px}
+.mkstep button{width:32px;height:32px;border-radius:8px;border:1.5px solid #e3d9cf;background:#fff;font-size:18px;font-weight:700;cursor:pointer;line-height:1}
+.mkstep .q{min-width:22px;text-align:center;font-weight:700;font-size:16px}
+.mkups-t{display:flex;justify-content:space-between;font-size:14.5px;font-weight:600;padding:10px 4px 8px}
+.mkups-t .amt{color:#0E7A50;font-size:17px}
+.mkups-skip{display:block;margin:10px auto 0;font-size:12px;color:#c4bbb1;cursor:pointer;background:none;border:none;text-decoration:underline}
+</style>
+
+<div class="mkpop-b" id="mkPopB">
+  <div class="mkpop">
+    <button class="mkpop-x" onclick="mkPopClose()">✕</button>
+    <div id="mkPop1">
+      <div class="mkpop-badge">FIRST ORDER TREAT</div>
+      <h3>Get <em>$20 off</em><br>your first order</h3>
+      <p>Fresh, high-protein meals made by Mom — delivered same-day in Ptown. Drop your email and your $20 is waiting.</p>
+      <input type="email" id="mkPopEmail" placeholder="Your email" autocomplete="email">
+      <button class="mkbtn" onclick="mkPopNext()">Get my $20 →</button>
+      <button class="mkpop-skip" onclick="mkPopClose()">No, I don't want $20</button>
+    </div>
+    <div id="mkPop2" style="display:none">
+      <div class="mkpop-badge">ONE LAST STEP</div>
+      <h3>Claim your<br><em>$20 coupon</em></h3>
+      <p>To finish and claim your $20 coupon, add your name — so Mom knows who she's cooking for.</p>
+      <input type="text" id="mkPopName" placeholder="Your first name" autocomplete="given-name">
+      <button class="mkbtn" onclick="mkPopFinish()">Claim my $20 coupon →</button>
+    </div>
+    <div id="mkPop3" style="display:none">
+      <div class="mkpop-badge">YOU'RE IN 🎉</div>
+      <h3>Your <em>$20</em> is waiting</h3>
+      <p id="mkPopThanks">Mention this offer at checkout — your $20 comes off your first box.</p>
+      <button class="mkbtn" onclick="mkPopClose();showPage('order')">Build My Box →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mkpop-b mkups" id="mkUpsB">
+  <div class="mkpop">
+    <button class="mkpop-x" onclick="mkUpsGo(false)">✕</button>
+    <div class="mkpop-badge">WAIT — MOM BAKED THIS MORNING</div>
+    <h3>Don't open the fridge to an <em>empty dessert shelf</em></h3>
+    <p>Almost every box goes out with Mom's treats. Yours shouldn't be the sad one.</p>
+    <div class="mkups-row">
+      <div class="ph">🍰</div>
+      <div class="mkups-info"><b>Mama's Protein Cake</b><small>$9.99 · ~400 g · 47g protein · dessert that fits your macros</small></div>
+      <div class="mkstep"><button onclick="mkUpsQty('cake',-1)">−</button><span class="q" id="mkQCake">1</span><button onclick="mkUpsQty('cake',1)">+</button></div>
+    </div>
+    <div class="mkups-row">
+      <div class="ph">🥤</div>
+      <div class="mkups-info"><b>Probiotic Detox Elixir</b><small>$4.99 · 500 ml · gut-health boost, zero junk</small></div>
+      <div class="mkstep"><button onclick="mkUpsQty('drink',-1)">−</button><span class="q" id="mkQDrink">2</span><button onclick="mkUpsQty('drink',1)">+</button></div>
+    </div>
+    <div class="mkups-t"><span>Treats total</span><span class="amt" id="mkUpsAmt">$19.97</span></div>
+    <button class="mkbtn" id="mkUpsAdd" onclick="mkUpsGo(true)">Add to my order — $19.97 →</button>
+    <button class="mkups-skip" onclick="mkUpsGo(false)">Skip — send my box without treats</button>
+  </div>
+</div>
+
+<script>
+/* Lead popup */
+function mkPopOpen(){ try{ if(localStorage.getItem('mk_pop_done'))return; }catch(e){} document.getElementById('mkPopB').classList.add('show'); }
+function mkPopClose(){ document.getElementById('mkPopB').classList.remove('show'); try{ localStorage.setItem('mk_pop_done','1'); }catch(e){} }
+function mkPopNext(){
+  var e=document.getElementById('mkPopEmail').value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ document.getElementById('mkPopEmail').style.borderColor='#E0342A'; return; }
+  document.getElementById('mkPop1').style.display='none';
+  document.getElementById('mkPop2').style.display='block';
+}
+function mkPopFinish(){
+  var n=document.getElementById('mkPopName').value.trim();
+  if(!n){ document.getElementById('mkPopName').style.borderColor='#E0342A'; return; }
+  var e=document.getElementById('mkPopEmail').value.trim();
+  document.getElementById('mkPop2').style.display='none';
+  document.getElementById('mkPop3').style.display='block';
+  document.getElementById('mkPopThanks').textContent=n+", mention this offer at checkout — your $20 comes off your first box.";
+  try{ localStorage.setItem('mk_pop_done','1'); }catch(ex){}
+  try{
+    fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({_subject:'🎁 New $20 lead: '+n,name:n,email:e,source:'popup $20 offer',_template:'table'})});
+  }catch(ex){}
+}
+setTimeout(mkPopOpen,5000);
+document.getElementById('mkPopB').addEventListener('click',function(e){ if(e.target.id==='mkPopB') mkPopClose(); });
+
+/* Upsell interstitial between details and payment */
+var mkUpsQ={cake:1,drink:2}, mkUpsP={cake:9.99,drink:4.99};
+function mkUpsRender(){
+  document.getElementById('mkQCake').textContent=mkUpsQ.cake;
+  document.getElementById('mkQDrink').textContent=mkUpsQ.drink;
+  var t=(mkUpsQ.cake*mkUpsP.cake+mkUpsQ.drink*mkUpsP.drink).toFixed(2);
+  document.getElementById('mkUpsAmt').textContent='$'+t;
+  document.getElementById('mkUpsAdd').textContent=(mkUpsQ.cake+mkUpsQ.drink)>0?('Add to my order — $'+t+' →'):'Continue →';
+}
+function mkUpsQty(k,d){ mkUpsQ[k]=Math.max(0,mkUpsQ[k]+d); mkUpsRender(); }
+function upsGate(){
+  if(!wizValid2()) return;
+  if(window._mkUpsShown){ goStep(3); return; }
+  window._mkUpsShown=true; mkUpsRender();
+  document.getElementById('mkUpsB').classList.add('show');
+}
+function mkUpsGo(add){
+  document.getElementById('mkUpsB').classList.remove('show');
+  if(add){
+    var ec=document.getElementById('extra_cake'), ed=document.getElementById('extra_drink');
+    if(ec&&mkUpsQ.cake>0) ec.value=(parseInt(ec.value)||0)+mkUpsQ.cake;
+    if(ed&&mkUpsQ.drink>0) ed.value=(parseInt(ed.value)||0)+mkUpsQ.drink;
+    if(typeof recalc==='function') recalc();
+  }
+  goStep(3);
+}
+mkUpsRender();
+</script>
+
 </body>
 </html>
