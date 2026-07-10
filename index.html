@@ -1663,6 +1663,9 @@ function recalc(){
   var show15=tot>=15; var da=document.getElementById('discountAlert'); if(da) da.style.display=show15?'block':'none';
 
   var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc;
+  var _lead=(typeof mk20State==='function')?mk20State():null, credit=0;
+  if(_lead && tot>=10){ credit=Math.min(20,discounted); discounted-=credit; }
+  window._mk20Applied=credit>0;
   var delFee=(tot>=10||subtotal===0)?0:9.99;
   var tax=(discounted+delFee)*0.0625, cc=(discounted+delFee+tax)*0.03;
   var tipEl=document.getElementById('customTip'), tipAmt=tipMode==='custom'?(parseFloat(tipEl?tipEl.value:0)||0):tipMode!=='none'?discounted*parseFloat(tipMode):0;
@@ -1672,6 +1675,8 @@ function recalc(){
   if(subscribed) rows+='<div class="s-line discount"><span>Weekly subscription (−5%)</span><span>−'+fmt(subtotal*0.05)+'</span></div>';
   if(show15) rows+='<div class="s-line discount"><span>15+ meals bonus (−5%)</span><span>−'+fmt(subtotal*0.05)+'</span></div>';
   if(disc>0) rows+='<div class="s-line"><span>After discounts</span><span>'+fmt(discounted)+'</span></div>';
+  if(credit>0) rows+='<div class="s-line" style="color:var(--green);font-weight:800;"><span>🎁 Your first-box credit</span><span>−'+fmt(credit)+'</span></div>';
+  if(_lead && credit===0 && tot>0 && tot<10) rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>🎁 Your $20 credit applies on 10+ meals — add '+(10-tot)+' more</span><span></span></div>';
   if(delFee>0){ rows+='<div class="s-line"><span>Delivery</span><span>'+fmt(delFee)+'</span></div>'; rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>🚚 Add '+(10-tot)+' more meal'+(10-tot===1?'':'s')+' → FREE delivery</span><span></span></div>'; }
   else if(tot>=10){ rows+='<div class="s-line" style="color:var(--green);font-weight:700;"><span>Delivery</span><span>FREE ✓</span></div>'; }
   rows+='<div class="s-line"><span>MA Sales Tax (6.25%)</span><span>'+fmt(tax)+'</span></div>';
@@ -1776,6 +1781,7 @@ function emailOwner(order){
     'SHOPPING LIST (raw to buy)':sl.proteinLines.join('\n')||'—',
     'Sides needed (cooked)':sl.sideLines.join('\n')||'—',
     'Est. protein cost':'$'+sl.estProteinCost,
+    'FIRST-BOX $20 CREDIT':(window._mk20Applied?'⚠️ $20 CREDIT APPLIED — verify this is their FIRST order before confirming the charge':'—'),
     Subscription:order.subscribed?'Yes (5% off)':'No',
     Tip:order.tipMode,
     Notes:c.notes||'—',
@@ -1806,12 +1812,14 @@ function placeOrder(){
   var payUrl='https://builtformorec.securepayments.cardpointe.com/pay?total='+total.toFixed(2)+'&invoice='+encodeURIComponent(inv);
   if(currentUser){ try{ saveOrderToDb(order); }catch(e){} }
   // Make sure the kitchen gets the order BEFORE we navigate away, then go to the secure pay page.
+  if(window._mk20Applied) mk20MarkUsed();
   var done=false; function go(){ if(done) return; done=true; window.location.href=payUrl; }
   try{ emailOwner(order).then(go, go); }catch(e){ go(); }
   setTimeout(go, 2500);
 }
 
 async function finalizeOrder(order,btn,o){
+  if(window._mk20Applied) mk20MarkUsed();
   emailOwner(order).catch(function(){});
   var acctMade=false, acctPending=false;
   try{
@@ -2240,10 +2248,11 @@ function computeTotals(order){
   var subtotal=mSub+bSub+eSub, show15=cnt>=15;
   var dSub=order.subscribed?subtotal*0.05:0, d15=show15?subtotal*0.05:0;
   var discounted=subtotal-dSub-d15;
+  var credit=0; try{ var _l=mk20State(); if(_l && cnt>=10){ credit=Math.min(20,discounted); discounted-=credit; } }catch(e){}
   var delFee=(cnt>=10||subtotal===0)?0:9.99;
   var tax=(discounted+delFee)*0.0625, cc=(discounted+delFee+tax)*0.03;
   var tip=order.tipMode==='custom'?(order.customTip||0):(order.tipMode!=='none'?discounted*parseFloat(order.tipMode):0);
-  return {subtotal:subtotal,dSub:dSub,d15:d15,discounted:discounted,delFee:delFee,tax:tax,cc:cc,tip:tip,total:discounted+delFee+tax+cc+tip,cnt:cnt};
+  return {subtotal:subtotal,dSub:dSub,d15:d15,discounted:discounted,credit:credit,delFee:delFee,tax:tax,cc:cc,tip:tip,total:discounted+delFee+tax+cc+tip,cnt:cnt};
 }
 
 async function saveOrderToDb(order){
@@ -2421,7 +2430,7 @@ setInterval(ocTick,1000); ocTick(); updateStepBar();
     <div id="mkPop3" style="display:none">
       <div class="mkpop-badge">YOU'RE IN 🎉</div>
       <h3>Your <em>$20</em> is waiting</h3>
-      <p id="mkPopThanks">Mention this offer at checkout — your $20 comes off your first box.</p>
+      <p id="mkPopThanks">Your $20 is active — it applies automatically on your first box (10+ meals). Valid 7 days.</p>
       <button class="mkbtn" onclick="mkPopClose();showPage('order')">Build My Box →</button>
     </div>
   </div>
@@ -2450,6 +2459,26 @@ setInterval(ocTick,1000); ocTick(); updateStepBar();
 </div>
 
 <script>
+/* $20 first-box credit state */
+function mk20State(){
+  try{
+    var raw=localStorage.getItem('mk_lead'); if(!raw) return null;
+    var o=JSON.parse(raw); if(!o||o.used) return null;
+    if(Date.now()-(o.ts||0) > 7*86400000) return null;
+    return o;
+  }catch(e){ return null; }
+}
+function mk20MarkUsed(){
+  try{ var o=JSON.parse(localStorage.getItem('mk_lead')||'{}'); o.used=1; localStorage.setItem('mk_lead',JSON.stringify(o)); }catch(e){}
+}
+function mkSeasonCredit(){
+  try{
+    var bar=document.getElementById('seasonBar'); if(!bar) return;
+    if(mk20State()){ bar.innerHTML='🎁 <strong style="color:#FFD34D">Your $20 credit is active</strong> — applies automatically on 10+ meals. Order in <span id="sbClock" style="background:rgba(255,255,255,.14);border-radius:6px;padding:2px 8px;font-variant-numeric:tabular-nums">…</span> <span id="sbMode">…</span>'; if(typeof ocTick==='function') ocTick(); }
+  }catch(e){}
+}
+mkSeasonCredit();
+
 /* Lead popup */
 function mkPopOpen(){ try{ if(localStorage.getItem('mk_pop_done'))return; }catch(e){} document.getElementById('mkPopB').classList.add('show'); }
 function mkPopClose(){ document.getElementById('mkPopB').classList.remove('show'); try{ localStorage.setItem('mk_pop_done','1'); }catch(e){} }
@@ -2465,8 +2494,10 @@ function mkPopFinish(){
   var e=document.getElementById('mkPopEmail').value.trim();
   document.getElementById('mkPop2').style.display='none';
   document.getElementById('mkPop3').style.display='block';
-  document.getElementById('mkPopThanks').textContent=n+", mention this offer at checkout — your $20 comes off your first box.";
-  try{ localStorage.setItem('mk_pop_done','1'); }catch(ex){}
+  document.getElementById('mkPopThanks').textContent=n+", your $20 is active — it comes off automatically on your first box of 10+ meals. Valid 7 days.";
+  try{ localStorage.setItem('mk_pop_done','1'); localStorage.setItem('mk_lead',JSON.stringify({email:e,name:n,ts:Date.now()})); }catch(ex){}
+  try{ if(typeof recalc==='function') recalc(); }catch(ex){}
+  mkSeasonCredit();
   try{
     fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({_subject:'🎁 New $20 lead: '+n,name:n,email:e,source:'popup $20 offer',_template:'table'})});
