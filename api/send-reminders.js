@@ -34,16 +34,11 @@ module.exports = async (req, res) => {
 
   const q = req.query || {};
   const force = q.force === '1' || q.force === 'true';
-  // Two sends/week: Saturday (UTC day 6) ahead of the Sunday-midnight cutoff -> Tuesday delivery,
-  // and Tuesday (UTC day 2) ahead of the Wednesday-midnight cutoff -> Friday delivery.
+  // One weekly "restock" send: Thursday (UTC day 4). Cron runs daily at 14:00 UTC (keep-alive);
+  // this function self-gates to Thursdays. New model: order by noon = same-day, by 8 PM = next-day, every day.
   const dow = new Date().getUTCDay(); // 0 Sun ... 6 Sat
-  let cutoff = null, deliver = null;
-  if (dow === 6) { cutoff = 'Sunday at midnight'; deliver = 'Tuesday'; }
-  else if (dow === 2) { cutoff = 'Wednesday at midnight'; deliver = 'Friday'; }
-  if (!force && !cutoff)
-    return res.status(200).json({ status: 'not a send day (sends Tuesdays & Saturdays; use ?force=1 to test)' });
-  if (!cutoff) { cutoff = 'Sunday at midnight'; deliver = 'Tuesday'; } // default for forced manual test
-  const cutoffDay = cutoff.split(' ')[0]; // "Sunday" | "Wednesday"
+  if (!force && dow !== 4)
+    return res.status(200).json({ status: 'not a send day (sends Thursdays; use ?force=1 to test)' });
 
   const SUPA = process.env.SUPABASE_URL, KEY = process.env.SUPABASE_SERVICE_ROLE_KEY, RESEND = process.env.RESEND_API_KEY;
   if (!SUPA || !KEY) return res.status(500).json({ error: 'missing Supabase env' });
@@ -83,8 +78,9 @@ module.exports = async (req, res) => {
     const html = `<div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;color:#1a1a1a;">
       <h2 style="color:#E0342A;margin:0 0 6px;">Mama's Kitchen</h2>
       <p style="font-size:15px;line-height:1.6;">${hi}</p>
-      <p style="font-size:15px;line-height:1.6;">This week's kitchen is open! &#127869;&#65039; Lock in your fresh, made-by-Mom meals before the deadline.</p>
-      <p style="font-size:15px;line-height:1.6;"><strong>Order by ${cutoff}</strong> &middot; Pickup or delivery ${deliver} 3&ndash;6 PM.</p>
+      <p style="font-size:15px;line-height:1.6;">Fridge looking empty? Mom's kitchen is open every day now. &#127869;&#65039;</p>
+      <p style="font-size:15px;line-height:1.6;"><strong>Order by 8 PM tonight</strong> and your fresh meals are at your door tomorrow 3&ndash;6 PM &mdash; or order by noon and eat the same day. FREE delivery on 10+ meals.</p>
+      <p style="font-size:15px;line-height:1.6;">P.S. Give a friend $20 off their first box &mdash; you get $20 in meal credit when they order. Just have them mention your name.</p>
       <p style="margin:22px 0;"><a href="${SITE}/#order" style="background:#E0342A;color:#fff;text-decoration:none;font-weight:700;padding:13px 26px;border-radius:10px;display:inline-block;">Place my order &rarr;</a></p>
       <p style="font-size:13px;color:#777;line-height:1.6;">Mama's Kitchen &middot; Provincetown, MA<br><a href="${unsub}" style="color:#777;">Unsubscribe from these reminders</a></p>
     </div>`;
@@ -92,7 +88,7 @@ module.exports = async (req, res) => {
       const resp = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: 'Bearer ' + RESEND, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from: FROM, to: r.email, subject: `This week's menu is open — order by ${cutoffDay}`, html }),
+        body: JSON.stringify({ from: FROM, to: r.email, subject: `Fridge empty? Order by 8 PM — meals at your door tomorrow`, html }),
       });
       if (resp.ok) sent++; else { failed++; console.error('resend', r.email, await resp.text()); }
     } catch (e) { failed++; console.error('send', r.email, e && e.message); }
