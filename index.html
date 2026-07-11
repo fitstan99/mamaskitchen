@@ -702,7 +702,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
 
   <section style="padding: 80px 8%; text-align:center; background: var(--white);">
     <div class="section-label">Ready to eat well?</div>
-    <h2 style="font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;">Order closes<br><em style="color:var(--red)">Sun &amp; Wed midnight.</em></h2>
+    <h2 style="font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;">Order by noon.<br><em style="color:var(--red)">Eat tonight.</em></h2>
     <p style="font-size:17px;color:var(--gray-400);max-width:480px;margin:0 auto 36px;font-weight:300;">Order by noon and eat tonight — Mom cooks every single day. $20 off your first box.</p>
     <button class="btn-primary" style="font-size:17px;padding:18px 44px;" onclick="showPage('order')">Build My Meals →</button>
   </section>
@@ -1180,7 +1180,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-item-label">Location</div><div class="contact-item-val">Provincetown, Massachusetts</div></div></div>
         <div class="hours-box">
           <h3>Order Schedule</h3>
-          <div class="hours-row"><span>Order Deadline</span><span>Sun &amp; Wed midnight</span></div>
+          <div class="hours-row"><span>Order Deadline</span><span>Noon (same-day) · 8 PM (next-day)</span></div>
           <div class="hours-row"><span>Cook &amp; Pack</span><span>Mon &amp; Thu</span></div>
           <div class="hours-row"><span>Pickup / Delivery</span><span>Tue &amp; Fri 3–6 PM</span></div>
           <div class="hours-row"><span>Deliveries / Week</span><span>Up to 2 — Tue &amp; Fri</span></div>
@@ -1435,7 +1435,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       </ul>
       <div style="margin-top:20px;">
         <div class="footer-heading">Order Deadline</div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.6);">Sun &amp; Wed · Midnight EST<br>Delivery: Tue &amp; Fri, 3–6 PM</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);">Noon (same-day) · 8 PM (next-day)<br>Delivery: every day, 3–6 PM</div>
       </div>
     </div>
   </div>
@@ -1813,6 +1813,7 @@ function placeOrder(){
   if(currentUser){ try{ saveOrderToDb(order); }catch(e){} }
   // Make sure the kitchen gets the order BEFORE we navigate away, then go to the secure pay page.
   if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&c.email) sb.rpc('redeem_lead',{p_email:c.email}); }catch(e){} }
+  try{ localStorage.setItem('mk_survey_pending',JSON.stringify({email:c.email,name:c.name,ts:Date.now()})); }catch(e){}
   var done=false; function go(){ if(done) return; done=true; window.location.href=payUrl; }
   try{ emailOwner(order).then(go, go); }catch(e){ go(); }
   setTimeout(go, 2500);
@@ -1832,6 +1833,8 @@ async function finalizeOrder(order,btn,o){
   if(o.saveNew && sb && currentUser){ try{ await sb.from('profiles').update({cc_token:o.token,cc_exp:o.exp,cc_last4:o.last4}).eq('id',currentUser.id); if(currentProfile){currentProfile.cc_token=o.token;currentProfile.cc_exp=o.exp;currentProfile.cc_last4=o.last4;} }catch(e){} }
   if(currentUser){ saveOrderToDb(order).catch(function(e){ console.error('db save',e); }); }
   var b=document.getElementById('successBanner'); if(b) b.style.display='block';
+  try{ localStorage.setItem('mk_survey_pending',JSON.stringify({email:order.customer.email,name:order.customer.name,ts:Date.now()})); }catch(e){}
+  try{ setTimeout(mkSurveyOpen,1500); }catch(e){}
   var _sbDone=document.getElementById('stickyBar'); if(_sbDone) _sbDone.classList.remove('show');
   btn.textContent=o.fallback?'Order Submitted ✓':'Paid ✓';
   if(b) window.scrollTo(0, b.offsetTop-100);
@@ -2418,6 +2421,26 @@ setInterval(ocTick,1000); ocTick(); updateStepBar();
 </div>
 <style>@media(max-width:760px){ #mkTimer{ bottom:86px !important; left:10px !important; padding:8px 13px !important; } #mkTimer b[id=mkTimerClock]{ font-size:19px !important; } }</style>
 
+<div class="mkpop-b" id="mkSurvB">
+  <div class="mkpop" style="max-width:460px">
+    <button class="mkpop-x" onclick="mkSurveyClose()">✕</button>
+    <div id="mkSurvQ">
+      <div class="mkpop-badge" id="mkSurvNum">QUESTION 1 OF 10</div>
+      <h3 id="mkSurvTitle" style="font-size:24px"></h3>
+      <p style="margin-bottom:16px">Help Mom cook exactly what you need — 20 seconds, we promise.</p>
+      <div id="mkSurvOpts"></div>
+      <button class="mkpop-skip" onclick="mkSurveyClose()">Skip</button>
+    </div>
+    <div id="mkSurvDone" style="display:none">
+      <div class="mkpop-badge">THANK YOU 💛</div>
+      <h3>Mom's taking <em>notes</em></h3>
+      <p>Your answers help us cook better for you. And remember — give a friend $20 off their first box, get $20 in meal credit when they order.</p>
+      <button class="mkbtn" onclick="mkSurveyClose()">Done</button>
+    </div>
+  </div>
+</div>
+<style>.mksurv-o{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid #e3d9cf;border-radius:10px;padding:13px 16px;font-size:14.5px;font-weight:600;cursor:pointer;margin-bottom:9px;transition:.15s}.mksurv-o:hover{border-color:var(--red,#E0342A);background:#FFF6F5}</style>
+
 <div class="mkpop-b" id="mkPopB">
   <div class="mkpop">
     <button class="mkpop-x" onclick="mkPopClose()">✕</button>
@@ -2532,6 +2555,53 @@ function mkTimerTick(){
 setInterval(mkTimerTick,1000);
 setTimeout(function(){ try{ mkTimerStart(); }catch(e){} }, 20000); // everyone sees it after 20s on site
 mkTimerTick();
+
+/* Post-order questionnaire: 10 questions, 1 at a time, each answer saved instantly */
+var MK_SURVEY=[
+ ["What's your main goal with your meals?",["Build muscle","Lose fat","Save time","Eat healthier"]],
+ ["How many meals do you eat per day?",["2","3","4","5+"]],
+ ["Who are the meals for?",["Just me","Me + partner","Family","Roommates / crew"]],
+ ["How long are you in Ptown?",["Year-round","The whole season","A few weeks","Just visiting"]],
+ ["What usually stops you from eating well?",["No time to cook","Hate the cleanup","Never know what to eat","Takeout is too tempting"]],
+ ["How often would you like meals delivered?",["Every week","Twice a week","Every other week","Just this once"]],
+ ["What's your favorite protein?",["Chicken","Beef","Salmon / shrimp","Turkey / pork"]],
+ ["How did you find Mama's Kitchen?",["A friend told me","Instagram","Google","Saw it around town"]],
+ ["What would make you order more often?",["Lower prices","More variety","Bigger portions","Auto-repeat weekly"]],
+ ["Would you recommend us to a friend?",["Definitely","Probably","Maybe","Not yet"]]
+];
+var mkSurvI=0, mkSurvWho={email:'',name:''};
+function mkSurveyOpen(){
+  try{
+    if(localStorage.getItem('mk_survey_done')) return;
+    var pend=localStorage.getItem('mk_survey_pending'); if(!pend) return;
+    var o=JSON.parse(pend); mkSurvWho.email=o.email||''; mkSurvWho.name=o.name||'';
+  }catch(e){ return; }
+  mkSurvI=0; mkSurveyRender();
+  document.getElementById('mkSurvB').classList.add('show');
+}
+function mkSurveyRender(){
+  var q=MK_SURVEY[mkSurvI];
+  document.getElementById('mkSurvNum').textContent='QUESTION '+(mkSurvI+1)+' OF '+MK_SURVEY.length;
+  document.getElementById('mkSurvTitle').textContent=q[0];
+  var w=document.getElementById('mkSurvOpts'); w.innerHTML='';
+  q[1].forEach(function(opt){
+    var b=document.createElement('button'); b.className='mksurv-o'; b.textContent=opt;
+    b.onclick=function(){ mkSurveyAnswer(q[0],opt); };
+    w.appendChild(b);
+  });
+}
+function mkSurveyAnswer(question,answer){
+  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('save_survey_answer',{p_email:mkSurvWho.email,p_name:mkSurvWho.name,p_question:question,p_answer:answer}); }catch(e){}
+  mkSurvI++;
+  if(mkSurvI>=MK_SURVEY.length){
+    document.getElementById('mkSurvQ').style.display='none';
+    document.getElementById('mkSurvDone').style.display='block';
+    try{ localStorage.setItem('mk_survey_done','1'); localStorage.removeItem('mk_survey_pending'); }catch(e){}
+  } else { mkSurveyRender(); }
+}
+function mkSurveyClose(){ document.getElementById('mkSurvB').classList.remove('show'); }
+/* returning from the payment page: survey pops on next visit */
+setTimeout(function(){ try{ if(localStorage.getItem('mk_survey_pending')&&!localStorage.getItem('mk_survey_done')) mkSurveyOpen(); }catch(e){} }, 2500);
 
 /* Lead popup */
 function mkPopOpen(){
