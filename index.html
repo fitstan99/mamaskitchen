@@ -1765,7 +1765,11 @@ function computeShoppingList(order){
   return {proteinLines:lines, sideLines:sideLines, estProteinCost:totalCost.toFixed(2)};
 }
 
-function emailOwner(order){
+function sendOwnerPayload(payload){
+  return fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});
+}
+function emailOwner(order){ return sendOwnerPayload(buildOwnerPayload(order)); }
+function buildOwnerPayload(order){
   var c=order.customer;
   var sl=computeShoppingList(order);
   var payload={
@@ -1788,7 +1792,7 @@ function emailOwner(order){
     Consents:'SMS: '+(c.smsConsent?'YES':'no')+' | Email/marketing: '+(c.emailConsent?'YES':'no')+' | Terms: '+(c.terms?'accepted':'NOT accepted'),
     Totals:order.summaryText||'—'
   };
-  return fetch(FORMSUBMIT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});
+  return payload;
 }
 
 function toggleGuestPass(){ var w=document.getElementById('guest-pass-wrap'), m=document.getElementById('make-account'); if(w&&m){ w.style.display=m.checked?'block':'none'; if(!m.checked){ var p=document.getElementById('cust-pass'); if(p) p.value=''; } } }
@@ -1814,8 +1818,12 @@ function placeOrder(){
   // Make sure the kitchen gets the order BEFORE we navigate away, then go to the secure pay page.
   if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&c.email) sb.rpc('redeem_lead',{p_email:c.email}).then(function(){},function(){}); }catch(e){} }
   try{ localStorage.setItem('mk_survey_pending',JSON.stringify({email:c.email,name:c.name,ts:Date.now()})); }catch(e){}
+  try{ localStorage.setItem('mk_order_pending',JSON.stringify({inv:inv,ts:Date.now(),payload:buildOwnerPayload(order)})); }catch(e){}
   var done=false; function go(){ if(done) return; done=true; window.location.href=payUrl; }
-  try{ emailOwner(order).then(go, go); }catch(e){ go(); }
+  try{
+    if(typeof sb!=='undefined'&&sb){ sb.rpc('create_pending_order',{p_invoice:inv,p_email:c.email,p_name:c.name,p_payload:buildOwnerPayload(order)}).then(go,go); }
+    else { go(); }
+  }catch(e){ go(); }
   setTimeout(go, 2500);
 }
 
@@ -2555,6 +2563,25 @@ function mkTimerTick(){
 setInterval(mkTimerTick,1000);
 setTimeout(function(){ try{ mkTimerStart(); }catch(e){} }, 20000); // everyone sees it after 20s on site
 mkTimerTick();
+
+/* Order email fires only AFTER the customer returns from the payment page */
+function mkOrderReturnCheck(){
+  var raw=null; try{ raw=localStorage.getItem('mk_order_pending'); }catch(e){}
+  if(!raw) return;
+  var o; try{ o=JSON.parse(raw); }catch(e){ try{ localStorage.removeItem('mk_order_pending'); }catch(x){} return; }
+  var paid=/[?&#]paid=1/.test(location.href);
+  var age=Date.now()-(o.ts||0);
+  if(!paid && age<120000) return; // just placed — they're on their way to the payment page
+  var pl=o.payload||{};
+  pl._subject=(paid?'✅ PAID (payment page confirmed) — ':'🟡 VERIFY PAYMENT — customer returned — ')+(pl._subject||'Order');
+  pl['Payment']=paid
+    ? 'Customer completed the payment page and was redirected back. Verify the charge for invoice '+(o.inv||'?')+' in the CardPointe dashboard as usual.'
+    : 'Customer came BACK to the site after checkout, but payment is NOT confirmed. Check CardPointe for invoice '+(o.inv||'?')+' BEFORE cooking — they may have paid without the redirect, or abandoned.';
+  try{ sendOwnerPayload(pl).then(function(){},function(){}); }catch(e){}
+  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('mark_order_returned',{p_invoice:o.inv,p_paid:paid}).then(function(){},function(){}); }catch(e){}
+  try{ localStorage.removeItem('mk_order_pending'); }catch(e){}
+}
+setTimeout(mkOrderReturnCheck, 1800);
 
 /* Post-order questionnaire: 10 questions, 1 at a time, each answer saved instantly */
 var MK_SURVEY=[
