@@ -1812,7 +1812,7 @@ function placeOrder(){
   var payUrl='https://builtformorec.securepayments.cardpointe.com/pay?total='+total.toFixed(2)+'&invoice='+encodeURIComponent(inv);
   if(currentUser){ try{ saveOrderToDb(order); }catch(e){} }
   // Make sure the kitchen gets the order BEFORE we navigate away, then go to the secure pay page.
-  if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&c.email) sb.rpc('redeem_lead',{p_email:c.email}); }catch(e){} }
+  if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&c.email) sb.rpc('redeem_lead',{p_email:c.email}).then(function(){},function(){}); }catch(e){} }
   try{ localStorage.setItem('mk_survey_pending',JSON.stringify({email:c.email,name:c.name,ts:Date.now()})); }catch(e){}
   var done=false; function go(){ if(done) return; done=true; window.location.href=payUrl; }
   try{ emailOwner(order).then(go, go); }catch(e){ go(); }
@@ -1820,7 +1820,7 @@ function placeOrder(){
 }
 
 async function finalizeOrder(order,btn,o){
-  if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&order.customer&&order.customer.email) sb.rpc('redeem_lead',{p_email:order.customer.email}); }catch(e){} }
+  if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&order.customer&&order.customer.email) sb.rpc('redeem_lead',{p_email:order.customer.email}).then(function(){},function(){}); }catch(e){} }
   emailOwner(order).catch(function(){});
   var acctMade=false, acctPending=false;
   try{
@@ -2591,7 +2591,7 @@ function mkSurveyRender(){
   });
 }
 function mkSurveyAnswer(question,answer){
-  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('save_survey_answer',{p_email:mkSurvWho.email,p_name:mkSurvWho.name,p_question:question,p_answer:answer}); }catch(e){}
+  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('save_survey_answer',{p_email:mkSurvWho.email,p_name:mkSurvWho.name,p_question:question,p_answer:answer}).then(function(){},function(){}); }catch(e){}
   mkSurvI++;
   if(mkSurvI>=MK_SURVEY.length){
     document.getElementById('mkSurvQ').style.display='none';
@@ -2644,7 +2644,7 @@ function mkPopFinish(){
   document.getElementById('mkPop3').style.display='block';
   document.getElementById('mkPopThanks').textContent=n+", your $20 is active — it comes off automatically on your first box of 10+ meals. Valid 7 days.";
   try{ localStorage.setItem('mk_pop_done','1'); localStorage.setItem('mk_lead',JSON.stringify({email:e,name:n,ts:Date.now()})); }catch(ex){}
-  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('register_lead',{p_email:e,p_name:n}); }catch(ex){}
+  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('register_lead',{p_email:e,p_name:n}).then(function(){},function(){}); }catch(ex){}
   try{ mkTimerStart(); }catch(ex){}
   try{ if(typeof recalc==='function') recalc(); }catch(ex){}
   mkSeasonCredit();
