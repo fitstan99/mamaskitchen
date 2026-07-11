@@ -1663,7 +1663,7 @@ function recalc(){
   var show15=tot>=15; var da=document.getElementById('discountAlert'); if(da) da.style.display=show15?'block':'none';
 
   var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc;
-  var _lead=(typeof mk20State==='function')?mk20State():null, credit=0;
+  var _lead=(typeof mk20State==='function')?mk20State():null; if(!_lead&&window._mk20Server)_lead={server:1}; var credit=0;
   if(_lead && tot>=10){ credit=Math.min(20,discounted); discounted-=credit; }
   window._mk20Applied=credit>0;
   var delFee=(tot>=10||subtotal===0)?0:9.99;
@@ -1812,14 +1812,14 @@ function placeOrder(){
   var payUrl='https://builtformorec.securepayments.cardpointe.com/pay?total='+total.toFixed(2)+'&invoice='+encodeURIComponent(inv);
   if(currentUser){ try{ saveOrderToDb(order); }catch(e){} }
   // Make sure the kitchen gets the order BEFORE we navigate away, then go to the secure pay page.
-  if(window._mk20Applied) mk20MarkUsed();
+  if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&c.email) sb.rpc('redeem_lead',{p_email:c.email}); }catch(e){} }
   var done=false; function go(){ if(done) return; done=true; window.location.href=payUrl; }
   try{ emailOwner(order).then(go, go); }catch(e){ go(); }
   setTimeout(go, 2500);
 }
 
 async function finalizeOrder(order,btn,o){
-  if(window._mk20Applied) mk20MarkUsed();
+  if(window._mk20Applied){ mk20MarkUsed(); try{ if(typeof sb!=='undefined'&&sb&&order.customer&&order.customer.email) sb.rpc('redeem_lead',{p_email:order.customer.email}); }catch(e){} }
   emailOwner(order).catch(function(){});
   var acctMade=false, acctPending=false;
   try{
@@ -2248,7 +2248,7 @@ function computeTotals(order){
   var subtotal=mSub+bSub+eSub, show15=cnt>=15;
   var dSub=order.subscribed?subtotal*0.05:0, d15=show15?subtotal*0.05:0;
   var discounted=subtotal-dSub-d15;
-  var credit=0; try{ var _l=mk20State(); if(_l && cnt>=10){ credit=Math.min(20,discounted); discounted-=credit; } }catch(e){}
+  var credit=0; try{ var _l=mk20State(); if(!_l&&window._mk20Server)_l={server:1}; if(_l && cnt>=10){ credit=Math.min(20,discounted); discounted-=credit; } }catch(e){}
   var delFee=(cnt>=10||subtotal===0)?0:9.99;
   var tax=(discounted+delFee)*0.0625, cc=(discounted+delFee+tax)*0.03;
   var tip=order.tipMode==='custom'?(order.customTip||0):(order.tipMode!=='none'?discounted*parseFloat(order.tipMode):0);
@@ -2409,6 +2409,15 @@ setInterval(ocTick,1000); ocTick(); updateStepBar();
 .mkups-skip{display:block;margin:10px auto 0;font-size:12px;color:#c4bbb1;cursor:pointer;background:none;border:none;text-decoration:underline}
 </style>
 
+<div id="mkTimer" onclick="showPage('order')" style="display:none;position:fixed;left:14px;bottom:14px;z-index:800;background:#C11212;color:#fff;border-radius:14px;padding:10px 16px;box-shadow:0 14px 40px rgba(193,18,18,.45);cursor:pointer;align-items:center;gap:12px;font-family:var(--font-body,sans-serif);max-width:320px;">
+  <span style="font-size:20px;">⏰</span>
+  <span style="line-height:1.25;">
+    <b id="mkTimerHead" style="display:block;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;">ORDER BEFORE YOUR SPOT EXPIRES</b>
+    <b id="mkTimerClock" style="font-size:22px;font-variant-numeric:tabular-nums;letter-spacing:.5px;">7:47</b>
+  </span>
+</div>
+<style>@media(max-width:760px){ #mkTimer{ bottom:86px !important; left:10px !important; padding:8px 13px !important; } #mkTimer b[id=mkTimerClock]{ font-size:19px !important; } }</style>
+
 <div class="mkpop-b" id="mkPopB">
   <div class="mkpop">
     <button class="mkpop-x" onclick="mkPopClose()">✕</button>
@@ -2479,6 +2488,51 @@ function mkSeasonCredit(){
 }
 mkSeasonCredit();
 
+/* Cross-device credit: verify email against the leads table at checkout */
+window._mk20Server=false;
+async function mkCheckServerLead(email){
+  try{
+    if(!email||email.indexOf('@')<0||typeof sb==='undefined'||!sb) return;
+    if(mk20State()){ return; } // local credit already active
+    var r=await sb.rpc('check_lead',{p_email:email});
+    window._mk20Server=!!(r&&r.data&&r.data.eligible);
+    if(typeof recalc==='function') recalc();
+    if(window._mk20Server) mkSeasonCreditServer();
+  }catch(e){}
+}
+function mkSeasonCreditServer(){
+  try{ var bar=document.getElementById('seasonBar'); if(bar) bar.innerHTML='🎁 <strong style="color:#FFD34D">Welcome back — your $20 credit is active</strong> — it applies automatically on 10+ meals.'; }catch(e){}
+}
+document.addEventListener('change',function(e){ if(e.target&&e.target.id==='cust-email') mkCheckServerLead(String(e.target.value||'').trim()); });
+
+/* Reservation timer — holds $20 credit + cook-list spot, then falls back to the real cutoff */
+function mkTimerStart(){ try{ if(!localStorage.getItem('mk_timer_end')) localStorage.setItem('mk_timer_end', String(Date.now()+467000)); }catch(e){} mkTimerShow(); }
+function mkTimerShow(){ var el=document.getElementById('mkTimer'); if(el) el.style.display='flex'; }
+function mkTimerTick(){
+  var el=document.getElementById('mkTimer'); if(!el) return;
+  var end=0; try{ end=parseInt(localStorage.getItem('mk_timer_end')||'0'); }catch(e){}
+  if(!end){ return; }
+  mkTimerShow();
+  var left=end-Date.now();
+  var head=document.getElementById('mkTimerHead'), clk=document.getElementById('mkTimerClock');
+  if(left>0){
+    var m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
+    if(head) head.textContent = (mk20State()||window._mk20Server) ? 'RESERVED FOR YOU — $20 credit + cook-list spot' : 'ORDER BEFORE YOUR SPOT EXPIRES';
+    if(clk) clk.textContent = m+':'+(s<10?'0':'')+s;
+  } else {
+    var c=(typeof ocNext==='function')?ocNext():null;
+    if(c){
+      var diff=c.end-new Date(); if(diff<0)diff=0;
+      var hh=Math.floor(diff/3600000), mm=Math.floor(diff%3600000/60000);
+      if(head) head.textContent = c.deliver.indexOf('SAME')===0 ? 'ORDER BEFORE — same-day cutoff' : 'ORDER BEFORE — tomorrow\u2019s cook list closes';
+      if(clk) clk.textContent = hh+'h '+mm+'m';
+    }
+  }
+}
+setInterval(mkTimerTick,1000);
+setTimeout(function(){ try{ mkTimerStart(); }catch(e){} }, 20000); // everyone sees it after 20s on site
+mkTimerTick();
+
 /* Lead popup */
 function mkPopOpen(){ try{ if(localStorage.getItem('mk_pop_done'))return; }catch(e){} document.getElementById('mkPopB').classList.add('show'); }
 function mkPopClose(){ document.getElementById('mkPopB').classList.remove('show'); try{ localStorage.setItem('mk_pop_done','1'); }catch(e){} }
@@ -2496,6 +2550,8 @@ function mkPopFinish(){
   document.getElementById('mkPop3').style.display='block';
   document.getElementById('mkPopThanks').textContent=n+", your $20 is active — it comes off automatically on your first box of 10+ meals. Valid 7 days.";
   try{ localStorage.setItem('mk_pop_done','1'); localStorage.setItem('mk_lead',JSON.stringify({email:e,name:n,ts:Date.now()})); }catch(ex){}
+  try{ if(typeof sb!=='undefined'&&sb) sb.rpc('register_lead',{p_email:e,p_name:n}); }catch(ex){}
+  try{ mkTimerStart(); }catch(ex){}
   try{ if(typeof recalc==='function') recalc(); }catch(ex){}
   mkSeasonCredit();
   try{
