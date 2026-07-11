@@ -29,6 +29,29 @@ module.exports = async (req, res) => {
     if (_KU && _KK) await fetch(_KU + '/rest/v1/orders?select=id&limit=1', { headers: { apikey: _KK, Authorization: 'Bearer ' + _KK } });
   } catch (e) { /* keep-alive best effort */ }
 
+  // Daily ops digest: checkouts started in the last 36h that never came back confirmed.
+  try {
+    const dSUPA = process.env.SUPABASE_URL, dKEY = process.env.SUPABASE_SERVICE_ROLE_KEY, dRESEND = process.env.RESEND_API_KEY;
+    if (dSUPA && dKEY && dRESEND) {
+      const sb0 = createClient(dSUPA, dKEY, { auth: { persistSession: false } });
+      const since = new Date(Date.now() - 36 * 3600 * 1000).toISOString();
+      const { data: pend } = await sb0.from('pending_orders').select('invoice,email,name,created_at').eq('status', 'pending').gte('created_at', since);
+      if (pend && pend.length) {
+        const rows = pend.map(p => `${String(p.created_at).slice(0, 16).replace('T', ' ')} · <b>${p.invoice}</b> · ${p.name} (${p.email})`).join('<br>');
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + dRESEND, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: process.env.REMINDER_FROM || "Mama's Kitchen <onboarding@resend.dev>",
+            to: 'fitstan99@gmail.com',
+            subject: `⚠️ ${pend.length} checkout(s) not confirmed — check CardPointe`,
+            html: `<div style="font-family:Arial,sans-serif;max-width:560px;"><p>These customers reached the payment page but never returned to the site. Check the CardPointe dashboard for these invoices — <b>some may have PAID</b>:</p><p>${rows}</p><p>If paid: cook &amp; deliver as usual. If not: a friendly text might close them.</p><p style="color:#777;font-size:12px;">Mama's Kitchen ops digest · https://mamaskitchenptown.com</p></div>`,
+          }),
+        });
+      }
+    }
+  } catch (e) { console.error('pending digest', e && e.message); }
+
   if (process.env.REMINDERS_ENABLED !== 'true')
     return res.status(200).json({ status: 'disabled — set REMINDERS_ENABLED=true in Vercel to turn on' });
 
