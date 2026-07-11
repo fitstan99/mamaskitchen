@@ -2385,7 +2385,7 @@ setInterval(ocTick,1000); ocTick(); updateStepBar();
 .mkpop-b{position:fixed;inset:0;background:rgba(15,15,15,.55);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
 .mkpop-b.show{display:flex}
 .mkpop{background:#fff;border-radius:20px;max-width:430px;width:100%;padding:34px 30px;position:relative;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.35)}
-.mkpop-x{position:absolute;top:12px;right:16px;font-size:22px;color:#aaa;cursor:pointer;background:none;border:none}
+.mkpop-x{position:absolute;top:10px;right:12px;font-size:12px;color:#e6e0d8;cursor:pointer;background:none;border:none;padding:2px}
 .mkpop-badge{display:inline-block;background:#FDEAE8;color:var(--red,#E0342A);font-weight:700;font-size:12px;letter-spacing:1.5px;padding:6px 14px;border-radius:100px;margin-bottom:14px}
 .mkpop h3{font-family:var(--font-display,Georgia,serif);font-size:29px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
 .mkpop h3 em{color:var(--red,#E0342A)}
@@ -2534,8 +2534,32 @@ setTimeout(function(){ try{ mkTimerStart(); }catch(e){} }, 20000); // everyone s
 mkTimerTick();
 
 /* Lead popup */
-function mkPopOpen(){ try{ if(localStorage.getItem('mk_pop_done'))return; }catch(e){} document.getElementById('mkPopB').classList.add('show'); }
-function mkPopClose(){ document.getElementById('mkPopB').classList.remove('show'); try{ localStorage.setItem('mk_pop_done','1'); }catch(e){} }
+function mkPopOpen(){
+  try{
+    if(localStorage.getItem('mk_pop_done')) return;
+    var sn=parseInt(localStorage.getItem('mk_pop_snooze')||'0'); if(sn&&Date.now()<sn) return;
+  }catch(e){}
+  document.getElementById('mkPopB').classList.add('show');
+}
+function mkPopClose(){
+  document.getElementById('mkPopB').classList.remove('show');
+  try{
+    if(localStorage.getItem('mk_pop_done')) return;
+    var n=parseInt(localStorage.getItem('mk_pop_closes')||'0')+1;
+    localStorage.setItem('mk_pop_closes',String(n));
+    if(n===1){ setTimeout(mkPopAgain,120000); } // one comeback after 2 minutes
+    else { localStorage.setItem('mk_pop_snooze',String(Date.now()+86400000)); } // then quiet for 24h
+  }catch(e){}
+}
+function mkPopAgain(){
+  try{
+    if(localStorage.getItem('mk_pop_done')) return;
+    var b=document.querySelector('#mkPop1 .mkpop-badge'), t=document.querySelector('#mkPop1 h3');
+    if(b) b.textContent='LAST CALL';
+    if(t) t.innerHTML='Still here? Your <em>$20</em><br>is still on the table';
+  }catch(e){}
+  document.getElementById('mkPopB').classList.add('show');
+}
 function mkPopNext(){
   var e=document.getElementById('mkPopEmail').value.trim();
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ document.getElementById('mkPopEmail').style.borderColor='#E0342A'; return; }
@@ -2560,7 +2584,7 @@ function mkPopFinish(){
   }catch(ex){}
 }
 setTimeout(mkPopOpen,5000);
-document.getElementById('mkPopB').addEventListener('click',function(e){ if(e.target.id==='mkPopB') mkPopClose(); });
+/* backdrop click intentionally does not dismiss — choice required */
 
 /* Upsell interstitial between details and payment */
 var mkUpsQ={cake:1,drink:2}, mkUpsP={cake:9.99,drink:4.99};
