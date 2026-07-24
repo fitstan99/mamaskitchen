@@ -11,16 +11,16 @@
 //   CARDPOINTE_USER  = builthpp       (your gateway username)
 
 const PROTEINS = [
-  { label: "Mom's Organic Chicken Breast",        base: 16, up: 1.5 },
-  { label: "Mom's Organic Ground Turkey 93/7",    base: 16, up: 1.5 },
-  { label: "Mom's Organic Pork Chops",            base: 16, up: 1.5 },
-  { label: "Mom's Grass-Fed Ground Beef 93/7",    base: 16, up: 1.5 },
-  { label: "Mom's Wild-Caught Salmon",            base: 22, up: 2.5 },
-  { label: "Mom's Wild-Caught Shrimp",            base: 22, up: 2.5 },
+  { label: "Mom's Organic Chicken Breast",        base: 15.99, up: 1.5 },
+  { label: "Mom's Organic Ground Turkey 93/7",    base: 15.99, up: 1.5 },
+  { label: "Mom's Organic Pork Chops",            base: 15.99, up: 1.5 },
+  { label: "Mom's Grass-Fed Ground Beef 93/7",    base: 15.99, up: 1.5 },
+  { label: "Mom's Wild-Caught Salmon",            base: 21.99, up: 2.5 },
+  { label: "Mom's Wild-Caught Shrimp",            base: 21.99, up: 2.5 },
 ];
-const BULK_PROTEIN = [18, 18, 18, 20, 24, 24];
-const BULK_CARB = 8, BULK_VEG = 8;
-const EXTRAS_PRICE = { drink: 5, cake: 10, banitsa: 8 };
+const BULK_PROTEIN = [17.99, 17.99, 17.99, 19.99, 23.99, 23.99];
+const BULK_CARB = 7.99, BULK_VEG = 7.99;
+const EXTRAS_PRICE = { drink: 4.99, cake: 9.99, banitsa: 7.99, kebapche: 5.99, kofte: 5.99 };
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ error: 'Method not allowed' }); }
@@ -60,12 +60,14 @@ module.exports = async (req, res) => {
   const show15 = mealCount >= 15;
   const discount = (order.subscribed ? subtotal * 0.05 : 0) + (show15 ? subtotal * 0.05 : 0);
   const discounted = subtotal - discount;
-  const tax = discounted * 0.0625;
-  const cardFee = (discounted + tax) * 0.03;
+  const smallBatch = (mealCount > 0 && mealCount < 10) ? 15 : 0;
+  const taxBase = discounted + smallBatch;
+  const tax = taxBase * 0.0625;
+  const cardFee = (taxBase + tax) * 0.03;
   let tip = 0;
   if (order.tipMode === 'custom') tip = Math.max(0, parseFloat(order.customTip) || 0);
   else if (order.tipMode && order.tipMode !== 'none') tip = discounted * parseFloat(order.tipMode);
-  const total = discounted + tax + cardFee + tip;
+  const total = taxBase + tax + cardFee + tip;
   if (total < 0.5) return res.status(400).json({ error: 'Amount too low' });
 
   const cust = order.customer || {};
