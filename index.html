@@ -613,7 +613,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
         <div class="step-num">02</div>
         <div class="step-icon">📅</div>
         <div class="step-title">Order by Sun or Wed</div>
-        <div class="step-desc">Build and pre-pay before midnight — Sunday for Tuesday delivery, Wednesday for Friday. Min 5 meals; order up to twice a week.</div>
+        <div class="step-desc">Build and pre-pay before midnight — Sunday for Tuesday delivery, Wednesday for Friday. 10-meal weeks get our best price. Order up to twice a week.</div>
       </div>
       <div class="step fade-in">
         <div class="step-num">03</div>
@@ -646,7 +646,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:24px;">
         <div style="font-size:32px;margin-bottom:10px;">💰</div>
         <div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:6px;">Subscribe & save</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;">Save 5% weekly with a subscription. Order 15+ meals for an extra 5% off.</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;">Save 5% weekly with a subscription. 10-meal weeks get our best per-meal price; 15+ saves an extra 5%.</div>
       </div>
       <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:24px;">
         <div style="font-size:32px;margin-bottom:10px;">🏷️</div>
@@ -935,7 +935,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
     <div class="order-header">
       <div class="section-label" style="color:rgba(255,255,255,0.35)">Place Your Order</div>
       <h1>Build your<br><em>perfect week.</em></h1>
-      <p>5-meal minimum, or order bulk only · Delivery Tuesday &amp; Friday · Order by Sunday or Wednesday midnight</p>
+      <p>New here? Try 5 meals · 10-meal weeks = best price · Delivery Tuesday &amp; Friday · Order by Sunday or Wednesday midnight</p>
     </div>
     <div class="order-deadline">
       📅 &nbsp;<strong>Order by Sunday midnight</strong> → Tuesday delivery &nbsp;·&nbsp; <strong>or Wednesday midnight</strong> → Friday &nbsp;·&nbsp; 3&ndash;6 PM (24h+ ahead)
@@ -985,7 +985,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <!-- MEAL CONFIGS -->
       <div class="order-section-title">Build Your Meals</div>
       <div id="configs"></div>
-      <div style="font-size:13px;color:var(--gray-400);margin-bottom:28px;">💡 Order 15+ meals total across all configurations for an extra 5% off.</div>
+      <div style="font-size:13px;color:var(--gray-400);margin-bottom:28px;">💡 10 meals = our best price. Orders under 10 add a $15 small-batch fee. Hit 15+ for an extra 5% off.</div>
 
       <!-- SPECIAL INSTRUCTIONS -->
       <div class="order-sec-header">Special Instructions</div>
@@ -1060,8 +1060,8 @@ footer { background: var(--black); padding: 60px 8% 30px; }
       <div class="wiznav"><button type="button" class="wbtn back" onclick="goStep(2)">← Back to your details</button></div>
 <!-- SUBSCRIPTION -->
       <div class="sub-banner-order">
-        <div class="sub-banner-order-title">⭐ Weekly Subscription — Save 5% Every Week</div>
-        <div class="sub-banner-order-sub">Subscribe and lock in 5% off every order. Cancel anytime.</div>
+        <div class="sub-banner-order-title">⭐ Subscribe &amp; Save 5% — the easiest way to eat well every week</div>
+        <div class="sub-banner-order-sub">Lock in a weekly delivery, save 5% on every order, and never think about dinner again. Cancel anytime.</div>
         <div class="toggle-wrap">
           <div class="toggle-track" id="subToggle" onclick="toggleSub()"><div class="toggle-thumb"></div></div>
           <span class="toggle-label" id="subLabel">Subscribe and save 5%</span>
@@ -1204,7 +1204,7 @@ footer { background: var(--black); padding: 60px 8% 30px; }
           <div class="hours-row"><span>Cook &amp; Pack</span><span>Mon &amp; Thu</span></div>
           <div class="hours-row"><span>Pickup / Delivery</span><span>Tue &amp; Fri 3–6 PM</span></div>
           <div class="hours-row"><span>Deliveries / Week</span><span>Up to 2 — Tue &amp; Fri</span></div>
-          <div class="hours-row"><span>Minimum Order</span><span>5 meals</span></div>
+          <div class="hours-row"><span>Minimum Order</span><span>5 meals · 10 = best price</span></div>
         </div>
       </div>
       <div class="contact-form-box">
@@ -1543,6 +1543,8 @@ function sideName(val){ if(!val) return null; var t=val.charAt(0), j=parseInt(va
 function sideType(val){ return val? (val.charAt(0)==='c'?'carb':'veg') : null; }
 
 var BOXES={
+  trial5:{name:'Trial Week · 5',meals:5,trial:true,desc:'New here? A half-week to try us — 5 meals, one time.',emoji:'3× 🍗🍚🥦 · 2× 🦃🍠🫛',cfgs:[
+    {p:0,oz:5,s1:'c0',s2:'v0',q:3},{p:1,oz:5,s1:'c4',s2:'v1',q:2}]},
   everyday10:{name:'Everyday 10',meals:10,desc:'Classic chicken & turkey — our most affordable box.',emoji:'5× 🍗🍚🥦 · 5× 🦃🍠🫛',cfgs:[
     {p:0,oz:5,s1:'c0',s2:'v0',q:5},{p:1,oz:5,s1:'c4',s2:'v1',q:5}]},
   protein10:{name:'High-Protein 10',meals:10,desc:'Bigger 7 oz portions — built for muscle gain.',emoji:'5× 🍗🍚🥦 · 5× 🥩🍠🫛',cfgs:[
@@ -1564,16 +1566,16 @@ var BOXES={
 };
 function boxPrice(b){ var t=0; b.cfgs.forEach(function(cf){ t+=mealPrice(String(cf.p),cf.oz)*cf.q; }); return t; }
 function buildBoxPicker(){
-  var FEATURED=['everyday10','protein10','family15'];
+  var FEATURED=['trial5','everyday10','family15'];
   var main=document.getElementById('boxPicker'); var more=document.getElementById('boxPickerMore');
   if(!main) return; main.innerHTML=''; if(more) more.innerHTML='';
-  Object.keys(BOXES).forEach(function(k){ var b=BOXES[k]; var pr=boxPrice(b);
-    var badge=(k==='everyday10')?'<div class="bc-badge">⭐ MOST POPULAR</div>':'';
+  Object.keys(BOXES).forEach(function(k){ var b=BOXES[k]; var pr=boxPrice(b); var eff=pr+(b.meals<10?15:0);
+    var badge=(k==='everyday10')?'<div class="bc-badge">⭐ MOST POPULAR</div>':(k==='trial5'?'<div class="bc-badge" style="background:var(--green);">✨ NEW? START HERE</div>':'');
     var card='<div class="box-card'+(k==='everyday10'?' bc-pop':'')+'" id="box-'+k+'" onclick="applyBox(\''+k+'\')">'+badge+
       '<div class="bc-meals">'+b.meals+' meals</div>'+
       '<div class="bc-name">'+b.name+'</div>'+
       '<div class="bc-desc">'+b.desc+'</div>'+'<div class="bc-emoji" style="font-size:16px;line-height:1.55;margin:2px 0 9px;letter-spacing:.5px;">'+(b.emoji||'')+'</div>'+
-      '<div class="bc-price">'+fmt(pr)+' <small>before tax · ~'+fmt(pr/b.meals)+'/meal</small></div>'+
+      '<div class="bc-price">'+fmt(eff)+' <small>before tax · ~'+fmt(eff/b.meals)+'/meal'+(b.meals<10?' · incl. small-batch fee':'')+'</small></div>'+
       ((b.meals>15)?('<div class="bc-pp" style="font-size:12px;color:var(--green);font-weight:800;margin:5px 0 2px;">👥 '+(b.group||'Group')+' plan · '+fmt(pr/(b.meals/10))+' per person / week</div><div style="font-size:10.5px;color:var(--gray-400);margin-bottom:3px;">based on ~10 meals each</div>'):'')+
       '<div class="bc-pick">Use this box</div>'+
     '</div>';
@@ -1683,14 +1685,16 @@ function recalc(){
   var exl=document.getElementById('extrasLines'); if(exl) exl.innerHTML=eHTML;
   var show15=tot>=15; var da=document.getElementById('discountAlert'); if(da) da.style.display=show15?'block':'none';
 
-  var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc, tax=discounted*0.0625, cc=(discounted+tax)*0.03;
+  var subtotal=mSub+bSub+eSub, disc=(subscribed?subtotal*0.05:0)+(show15?subtotal*0.05:0), discounted=subtotal-disc;
+  var smallBatch=(tot>0&&tot<10)?15:0, taxBase=discounted+smallBatch, tax=taxBase*0.0625, cc=(taxBase+tax)*0.03;
   var tipEl=document.getElementById('customTip'), tipAmt=tipMode==='custom'?(parseFloat(tipEl?tipEl.value:0)||0):tipMode!=='none'?discounted*parseFloat(tipMode):0;
-  var total=discounted+tax+cc+tipAmt;
+  var total=taxBase+tax+cc+tipAmt;
 
   var rows='<div class="s-line"><span>Subtotal</span><span>'+fmt(subtotal)+'</span></div>';
   if(subscribed) rows+='<div class="s-line discount"><span>Weekly subscription (−5%)</span><span>−'+fmt(subtotal*0.05)+'</span></div>';
   if(show15) rows+='<div class="s-line discount"><span>15+ meals bonus (−5%)</span><span>−'+fmt(subtotal*0.05)+'</span></div>';
   if(disc>0) rows+='<div class="s-line"><span>After discounts</span><span>'+fmt(discounted)+'</span></div>';
+  if(smallBatch>0) rows+='<div class="s-line"><span>Small-batch fee (under 10 meals)</span><span>'+fmt(smallBatch)+'</span></div>';
   rows+='<div class="s-line"><span>MA Sales Tax (6.25%)</span><span>'+fmt(tax)+'</span></div>';
   rows+='<div class="s-line"><span>Card Processing (3%)</span><span>'+fmt(cc)+'</span></div>';
   if(tipAmt>0) rows+='<div class="s-line"><span>Tip for Mom 💛</span><span>'+fmt(tipAmt)+'</span></div>';
