@@ -1525,7 +1525,7 @@ function extrasData(){ var arr=[]; EXTRAS.forEach(function(x){ var el=document.g
 var BULK_P = [{l:"Mom's Organic Chicken Breast",p:17.99},{l:"Mom's Organic Ground Turkey 93/7",p:17.99},{l:"Mom's Organic Pork Chops",p:17.99},{l:"Mom's Grass-Fed Ground Beef 93/7",p:19.99},{l:"Mom's Wild-Caught Salmon",p:23.99},{l:"Mom's Wild-Caught Shrimp",p:23.99}];
 var BULK_C = CARBS.map(function(x){return{l:x,p:7.99};});
 var BULK_V = VEGS.map(function(x){return{l:x,p:7.99};});
-var subscribed = false, tipMode = 'none';
+var subscribed = true, tipMode = 'none';
 
 function fmt(n){ return '$'+n.toFixed(2); }
 function sizeOpts(pi){
@@ -2293,6 +2293,7 @@ buildBulk('bulkCarbs', BULK_C, CARB_MACROS, 3.2);
 buildBulk('bulkVeggies', BULK_V, VEG_MACROS, 3.2);
 buildCardFrame();
 buildExtras();
+try{ var _st0=document.getElementById('subToggle'); if(_st0) _st0.classList.add('on'); var _sl0=document.getElementById('subLabel'); if(_sl0) _sl0.textContent='Subscribed ✓ — 5% off applied!'; }catch(e){}
 try{ applyBox('everyday10', true); }catch(e){}
 recalc();
 handleCheckoutReturn();
